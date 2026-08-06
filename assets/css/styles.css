@@ -137,14 +137,9 @@ a {
   opacity: 0.55;
   cursor: not-allowed;
 }
-.wa-icon {
-  width: 20px;
-  height: 20px;
-  flex: 0 0 auto;
-}
 .hero {
   position: relative;
-  min-height: clamp(620px, 78vh, 760px);
+  min-height: clamp(600px, calc(100svh - 78px), 720px);
   display: grid;
   align-items: center;
   overflow: hidden;
@@ -175,8 +170,8 @@ a {
 }
 .hero-content {
   position: relative;
-  padding: 88px 0 72px;
-  max-width: 760px;
+  padding: 54px 0 64px;
+  max-width: 720px;
 }
 .eyebrow {
   display: inline-flex;
@@ -202,8 +197,8 @@ h3 {
   letter-spacing: -0.045em;
 }
 h1 {
-  font-size: clamp(3rem, 5.4vw, 5.45rem);
-  max-width: 780px;
+  font-size: clamp(3rem, 5vw, 4.75rem);
+  max-width: 720px;
 }
 h2 {
   font-size: clamp(2.2rem, 4.5vw, 4rem);
@@ -447,10 +442,27 @@ section {
   padding: 0;
   overflow: hidden;
 }
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
 .blog-card img {
   width: 100%;
   aspect-ratio: 16/10;
   object-fit: cover;
+}
+.blog-card h2 {
+  font-size: 1.55rem;
+  margin-top: 8px;
+}
+.blog-card .blog-body {
+  min-height: 310px;
+  display: flex;
+  flex-direction: column;
+}
+.blog-card .card-link {
+  margin-top: auto;
 }
 .blog-body {
   padding: 25px;
@@ -491,6 +503,9 @@ section {
   color: var(--muted);
   font-size: 1.1rem;
 }
+.page-hero + section {
+  padding-top: 58px;
+}
 .service-row {
   display: grid;
   grid-template-columns: 0.7fr 1.3fr;
@@ -508,7 +523,8 @@ section {
   padding: 70px 0;
 }
 .article h1 {
-  font-size: clamp(2.7rem, 6vw, 5rem);
+  font-size: clamp(2.7rem, 5vw, 4.15rem);
+  line-height: 1.03;
 }
 .article h2 {
   font-size: 2rem;
@@ -525,6 +541,30 @@ section {
 .article .lead {
   font-size: 1.25rem;
   color: #e3e6ea;
+}
+.article-toc {
+  margin: 34px 0 42px;
+  padding: 26px 30px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+}
+.article-toc strong {
+  display: block;
+  margin-bottom: 10px;
+}
+.article-toc ol {
+  margin: 0;
+  padding-left: 20px;
+}
+.article-toc a {
+  color: #c9cfd6;
+}
+.article-toc a:hover {
+  color: #ff6572;
+}
+.article-faq {
+  margin-top: 50px;
 }
 .breadcrumb {
   font-size: 0.85rem;
@@ -567,20 +607,34 @@ section {
   right: 22px;
   bottom: 22px;
   z-index: 45;
-  background: #25d366;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
+  background: transparent;
+  width: 64px;
+  height: 64px;
   display: grid;
   place-items: center;
-  box-shadow: var(--shadow);
-  opacity: 0.82;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  opacity: 1;
+  border: 0;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
 }
 .wa-float img {
-  width: 38px;
-  height: 38px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
+}
+@media (min-width: 851px) and (max-height: 900px) {
+  .hero {
+    min-height: calc(100svh - 78px);
+  }
+  .hero-content {
+    padding: 36px 0 48px;
+  }
+  .hero h1 {
+    font-size: clamp(3.4rem, 4.2vw, 4.35rem);
+  }
+  .hero p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 }
 .credits {
   font-size: 0.78rem;
@@ -606,7 +660,7 @@ section {
     display: flex;
   }
   .hero {
-    min-height: 650px;
+    min-height: 620px;
   }
   .hero-media:after {
     background: linear-gradient(
@@ -617,10 +671,13 @@ section {
     );
   }
   .hero-content {
-    padding: 78px 0 62px;
+    padding: 58px 0 54px;
   }
   .grid {
     grid-template-columns: 1fr 1fr;
+  }
+  .blog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .feature,
   .address {
@@ -656,14 +713,23 @@ section {
   .footer-grid {
     grid-template-columns: 1fr;
   }
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+  .blog-card .blog-body {
+    min-height: 0;
+  }
   .trust {
     margin-top: 0;
   }
   .hero {
-    min-height: 660px;
+    min-height: 620px;
   }
   section {
     padding: 72px 0;
+  }
+  .page-hero + section {
+    padding-top: 42px;
   }
   .card {
     padding: 24px;
@@ -722,8 +788,12 @@ section {
   .wa-float {
     right: 16px;
     bottom: 16px;
-    width: 54px;
-    height: 54px;
+    width: 58px;
+    height: 58px;
+  }
+  .wa-float img {
+    width: 58px;
+    height: 58px;
   }
   .legal {
     display: block;

@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://toyo-services.vercel.app/</loc><lastmod>2026-08-05</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://toyo-services.vercel.app/servicios/</loc><lastmod>2026-08-05</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://toyo-services.vercel.app/blog/</loc><lastmod>2026-08-05</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://toyo-services.vercel.app/blog/cada-cuanto-cambiar-aceite-toyota/</loc><lastmod>2026-08-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://toyo-services.vercel.app/blog/senales-transmision-toyota/</loc><lastmod>2026-08-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://toyo-services.vercel.app/blog/mantenimiento-toyota-cartagena/</loc><lastmod>2026-08-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/</loc><lastmod>2026-08-05</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/servicios/</loc><lastmod>2026-08-05</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/</loc><lastmod>2026-08-05</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/cada-cuanto-cambiar-aceite-toyota/</loc><lastmod>2026-08-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/senales-transmision-toyota/</loc><lastmod>2026-08-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/mantenimiento-toyota-cartagena/</loc><lastmod>2026-08-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/mantenimiento-preventivo-toyota-cartagena/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/mecanica-avanzada-toyota-cartagena/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/repuestos-toyota-originales-homologados-cartagena/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/accesorios-toyota-cartagena-guia/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/transformaciones-toyota-hilux-4x4-cartagena/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/actualizacion-estetica-toyota-cartagena/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/suspension-toyota-ruidos-vibraciones-cartagena/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/frenos-toyota-mantenimiento-cartagena/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/sistema-refrigeracion-toyota-cartagena/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toyo-services-psi.vercel.app/blog/check-engine-diagnostico-electronico-toyota/</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

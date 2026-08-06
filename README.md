@@ -6,7 +6,7 @@ Sitio estático de un taller independiente especializado exclusivamente en mante
 
 Importa este repositorio en Vercel como proyecto estático. No requiere comando de compilación.
 
-Antes de lanzar el dominio definitivo, reemplaza `https://toyo-services.vercel.app` en los canonical, datos estructurados, `sitemap.xml` y `robots.txt` si Vercel asigna otro dominio.
+Antes de lanzar el dominio definitivo, reemplaza `https://toyo-services-psi.vercel.app` en los canonical, datos estructurados, `sitemap.xml` y `robots.txt` si Vercel asigna otro dominio.
 
 El botón de WhatsApp está intencionalmente inactivo hasta disponer del número comercial.
 
