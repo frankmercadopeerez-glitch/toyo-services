@@ -1,1 +1,16 @@
-const menu=document.querySelector('.menu'),links=document.querySelector('.nav-links');if(menu&&links){menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')))}document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
+const menu = document.querySelector(".menu"),
+  links = document.querySelector(".nav-links");
+if (menu && links) {
+  menu.addEventListener("click", () => {
+    const open = links.classList.toggle("open");
+    menu.setAttribute("aria-expanded", String(open));
+  });
+  links
+    .querySelectorAll("a")
+    .forEach((a) =>
+      a.addEventListener("click", () => links.classList.remove("open")),
+    );
+}
+document
+  .querySelectorAll("[data-year]")
+  .forEach((el) => (el.textContent = new Date().getFullYear()));
