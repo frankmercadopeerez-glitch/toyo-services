@@ -452,23 +452,31 @@ section {
 }
 .blog-card img {
   width: 100%;
-  aspect-ratio: 16/10;
+  height: clamp(155px, 12vw, 190px);
   object-fit: cover;
 }
 .blog-card h2 {
-  font-size: 1.55rem;
-  margin-top: 8px;
+  font-size: 1.3rem;
+  line-height: 1.12;
+  margin: 7px 0 8px;
 }
 .blog-card .blog-body {
-  min-height: 310px;
+  min-height: 235px;
   display: flex;
   flex-direction: column;
+}
+.blog-card .blog-body p {
+  margin: 0 0 14px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 .blog-card .card-link {
   margin-top: auto;
 }
 .blog-body {
-  padding: 25px;
+  padding: 20px 22px;
 }
 .tag {
   font-size: 0.72rem;
@@ -728,6 +736,9 @@ section {
   }
   .blog-card .blog-body {
     min-height: 0;
+  }
+  .blog-card img {
+    height: min(54vw, 220px);
   }
   .trust {
     margin-top: 0;
