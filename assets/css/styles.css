@@ -386,6 +386,23 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  min-height: 42px;
+  padding: 9px 14px;
+  border: 1px solid #ff5361;
+  border-left-width: 4px;
+  color: #fff;
+  font-size: 0.78rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+.service-content .card-link:hover {
+  background: var(--red);
+  border-color: var(--red);
 }
 .service-content .card-link span {
   font-size: 1.05rem;
