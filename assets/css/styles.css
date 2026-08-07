@@ -426,7 +426,7 @@ section {
   border-radius: 0;
 }
 .feature-img:before {
-  content: "Toyota solamente";
+  content: "Trabajo especializado";
   position: absolute;
   z-index: 2;
   left: -22px;
@@ -556,6 +556,34 @@ section {
 .service-row span {
   font-weight: 900;
   color: #ff5361;
+}
+.service-row-image {
+  width: 100%;
+  height: 210px;
+  margin-bottom: 22px;
+  object-fit: cover;
+  object-position: center;
+}
+.image-credits article {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+}
+.image-credits article > span,
+.image-credits article > a {
+  color: #ff6572;
+  font-weight: 800;
+}
+.image-credits h2 {
+  margin: 0 0 3px;
+  font-size: 1.25rem;
+}
+.image-credits p {
+  margin: 0;
+  color: var(--muted);
 }
 .article {
   width: min(calc(100% - 40px), 780px);
@@ -774,6 +802,13 @@ section {
   }
   .blog-card img {
     height: min(54vw, 220px);
+  }
+  .image-credits article {
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+  }
+  .image-credits article > a {
+    grid-column: 2;
   }
   .trust {
     margin-top: 0;
