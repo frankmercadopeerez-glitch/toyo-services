@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Toyo Services</title>
+  <path fill="#ed1b2f" d="M4 4h56v10H14v36h36V34h10v26H4z"/>
+  <path fill="#fff" d="M20 20h30v9H40v23H30V29H20z"/>
+  <path fill="#ed1b2f" d="M47 20h13v9H47z"/>
+</svg>
