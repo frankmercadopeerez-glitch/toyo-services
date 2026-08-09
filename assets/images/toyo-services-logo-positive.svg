@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 64" role="img" aria-labelledby="title desc">
+  <title id="title">Toyo Services</title>
+  <desc id="desc">Monograma geométrico TS, versión para fondos claros</desc>
+  <ellipse cx="48" cy="32" rx="43" ry="27" fill="#ffffff" stroke="#111318" stroke-width="4"/>
+  <path fill="#111318" d="M17 17h36v9H40v22H30V26H17Z"/>
+  <path fill="none" stroke="#ed1b2f" stroke-width="7" stroke-linecap="square" stroke-linejoin="round" d="M77 20.5H63c-5 0-8 2.5-8 6s3 6 8 6h6c6 0 9.5 3.5 9.5 8.5s-4 3.5-9.5 3.5H53"/>
+</svg>
