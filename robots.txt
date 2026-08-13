@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://toyo-services-psi.vercel.app/sitemap.xml
+Sitemap: https://toyoservicescartagena.com/sitemap.xml

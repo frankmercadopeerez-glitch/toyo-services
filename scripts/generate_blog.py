@@ -2,7 +2,7 @@ from pathlib import Path
 import html, json
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = "https://toyo-services-psi.vercel.app"
+BASE = "https://toyoservicescartagena.com"
 
 articles = [
  {
@@ -206,7 +206,7 @@ for index_page in sorted(ROOT.rglob("index.html")):
     else: priority = "0.5"
     sitemap_urls.append((f"{BASE}{route}", priority))
 sitemap_body = "\n".join(
-    f"  <url><loc>{url}</loc><lastmod>2026-08-09</lastmod><priority>{priority}</priority></url>"
+    f"  <url><loc>{url}</loc><lastmod>2026-08-12</lastmod><priority>{priority}</priority></url>"
     for url, priority in sitemap_urls
 )
 (ROOT / "sitemap.xml").write_text(
