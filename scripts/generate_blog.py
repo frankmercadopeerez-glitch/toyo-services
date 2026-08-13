@@ -1,8 +1,11 @@
 from pathlib import Path
-import html, json
+import html, json, math, re
+
+from image_dimensions import sync_html_image_dimensions
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = "https://toyoservicescartagena.com"
+BUSINESS_ID = f"{BASE}/#business"
 
 articles = [
  {
@@ -109,12 +112,227 @@ articles = [
 
 articles += json.loads((ROOT / "scripts" / "seo_articles.json").read_text(encoding="utf-8"))
 articles += [article for article in json.loads((ROOT / "scripts" / "additional_services_articles.json").read_text(encoding="utf-8")) if not article.get("disabled")]
+articles += json.loads((ROOT / "scripts" / "legacy_articles.json").read_text(encoding="utf-8"))
 
-existing = [
- ("cada-cuanto-cambiar-aceite-toyota","¿Cada cuánto cambiar el aceite de un Toyota?","Aceite","5 min","blog-oil-guide.webp","Intervalos, señales y factores de uso que debes considerar."),
- ("senales-transmision-toyota","Señales de una transmisión Toyota que pide revisión","Transmisión","6 min","blog-transmission-guide.webp","Tirones, demoras, fugas y cambios de comportamiento que requieren diagnóstico."),
- ("mantenimiento-toyota-cartagena","Mantenimiento Toyota para el clima de Cartagena","Cartagena","6 min","blog-cartagena-climate-guide.webp","Calor, humedad, tráfico y trayectos cortos: qué sistemas debes vigilar.")
-]
+# Cada URL responde a una intención informativa y entrega la conversión a una
+# única página comercial. Esto evita que varias guías compitan entre sí por la
+# misma consulta y elimina los CTA genéricos hacia /servicios/.
+EDITORIAL = {
+ "mantenimiento-preventivo-toyota-cartagena": (
+  "Mantenimiento preventivo Toyota en Cartagena",
+  "Guía de mantenimiento preventivo Toyota en Cartagena: sistemas que conviene revisar según modelo, historial, uso, tiempo y kilometraje.",
+  "plan preventivo por sistemas", "/servicios/mantenimiento-general/", "mantenimiento general"
+ ),
+ "mecanica-avanzada-toyota-cartagena": (
+  "Mecánica Toyota en Cartagena: diagnóstico avanzado",
+  "Conoce cómo se diagnostican fallas complejas de motor, transmisión, refrigeración y electrónica Toyota antes de autorizar una reparación.",
+  "diagnóstico de fallas complejas", "/servicios/mecanica-avanzada/", "mecánica avanzada"
+ ),
+ "repuestos-toyota-originales-homologados-cartagena": (
+  "Repuestos Toyota en Cartagena: cómo elegirlos",
+  "Aprende a elegir repuestos Toyota en Cartagena por referencia, sistema, compatibilidad, trazabilidad y alcance de instalación y garantía.",
+  "selección y compatibilidad de repuestos", "/servicios/repuestos/", "repuestos Toyota"
+ ),
+ "accesorios-toyota-cartagena-guia": (
+  "Accesorios Toyota: instalación segura en Cartagena",
+  "Guía para elegir e instalar accesorios Toyota en Cartagena sin afectar seguridad, cableado, sensores, capacidad de carga ni mantenimiento.",
+  "instalación segura de accesorios", "/servicios/modificaciones/", "modificaciones"
+ ),
+ "transformaciones-toyota-hilux-4x4-cartagena": (
+  "Modificaciones Toyota Hilux y 4x4 en Cartagena",
+  "Cómo planear modificaciones para Toyota Hilux y otros 4x4 considerando suspensión, carga, ruedas, iluminación, seguridad y mantenimiento.",
+  "planificación de modificaciones 4x4", "/servicios/modificaciones/", "modificaciones"
+ ),
+ "actualizacion-estetica-toyota-cartagena": (
+  "Cómo renovar la estética de tu Toyota en Cartagena",
+  "Guía para evaluar una actualización estética Toyota en Cartagena: estado inicial, compatibilidad, integración visual, instalación y cuidados.",
+  "renovación estética compatible", "/servicios/actualizacion-estetica/", "actualización estética"
+ ),
+ "suspension-toyota-ruidos-vibraciones-cartagena": (
+  "Diagnóstico de ruidos en suspensión Toyota",
+  "Aprende a diferenciar ruidos y vibraciones de suspensión Toyota y qué revisar en amortiguadores, bujes, rótulas, dirección, llantas y rines.",
+  "diagnóstico general de ruidos de suspensión", "/servicios/frenos-suspension/", "frenos y suspensión"
+ ),
+ "frenos-toyota-mantenimiento-cartagena": (
+  "Frenos Toyota en Cartagena: señales y revisión",
+  "Identifica ruidos, vibraciones, cambios de pedal y testigos de los frenos Toyota, y conoce qué debe comprobarse antes de cambiar componentes.",
+  "señales y diagnóstico del sistema de frenos", "/servicios/frenos-suspension/", "frenos y suspensión"
+ ),
+ "sistema-refrigeracion-toyota-cartagena": (
+  "Refrigeración Toyota: cómo evitar recalentamientos",
+  "Guía del sistema de refrigeración Toyota en Cartagena: refrigerante, radiador, ventiladores, bomba, termostato, mangueras y señales de alerta.",
+  "prevención de recalentamiento", "/servicios/motor-refrigeracion/", "motor y refrigeración"
+ ),
+ "check-engine-diagnostico-electronico-toyota": (
+  "Check Engine Toyota: diagnóstico paso a paso",
+  "Qué hacer cuando enciende el Check Engine de un Toyota y cómo se relacionan códigos, datos en vivo, inspección y pruebas antes de reparar.",
+  "interpretación y diagnóstico del Check Engine", "/servicios/diagnostico-electronico/", "diagnóstico electrónico"
+ ),
+ "cambio-aceite-toyota-cartagena": (
+  "Qué incluye un cambio de aceite Toyota",
+  "Descubre qué debe incluir un cambio de aceite Toyota en Cartagena: confirmación del lubricante y filtro, inspecciones y registro del servicio.",
+  "alcance comercial del cambio de aceite", "/servicios/aceite-filtros/", "aceite y filtros"
+ ),
+ "aceite-recomendado-toyota-hilux-diesel": (
+  "Aceite Toyota Hilux diésel: norma y viscosidad",
+  "Guía para elegir aceite de una Toyota Hilux diésel según motor, año, manual, viscosidad, norma, filtro y condiciones reales de utilización.",
+  "selección de aceite para Hilux diésel", "/servicios/aceite-filtros/", "aceite y filtros"
+ ),
+ "mantenimiento-toyota-prado-cartagena": (
+  "Checklist de mantenimiento para Toyota Prado",
+  "Checklist de mantenimiento Toyota Prado en Cartagena: motor, refrigeración, transmisión, sistema 4x4, frenos, suspensión, ruedas e historial.",
+  "mantenimiento integral de Toyota Prado", "/servicios/mantenimiento-general/", "mantenimiento general"
+ ),
+ "rines-toyota-prado-medidas-recomendadas": (
+  "Rines Toyota Prado: medidas, offset y carga",
+  "Qué revisar al elegir rines para Toyota Prado: diámetro, ancho, offset, PCD, centro, capacidad de carga, llanta, confort y espacio disponible.",
+  "compatibilidad de rines para Toyota Prado", "/servicios/modificaciones/", "modificaciones"
+ ),
+ "suspension-toyota-prado-cartagena": (
+  "Suspensión Toyota Prado: qué revisar por versión",
+  "Guía de suspensión Toyota Prado por versión: configuración, síntomas, amortiguadores, bujes, dirección, rodamientos, ruedas y alineación.",
+  "diagnóstico de suspensión para Toyota Prado", "/servicios/frenos-suspension/", "frenos y suspensión"
+ ),
+ "llantas-toyota-prado-medida-presion": (
+  "Llantas Toyota Prado: medida, carga y presión",
+  "Cómo elegir llantas para Toyota Prado por medida, índice de carga, presión indicada, uso, desgaste y compatibilidad con la versión y el rin.",
+  "selección de llantas para Toyota Prado", "/servicios/modificaciones/", "modificaciones"
+ ),
+ "aire-acondicionado-toyota-cartagena": (
+  "Aire acondicionado Toyota en Cartagena",
+  "Diagnóstico del aire acondicionado Toyota en Cartagena: poco frío, fugas, compresor, ventiladores, filtro de cabina y carga por especificación.",
+  "diagnóstico del aire acondicionado", "/servicios/mecanica-avanzada/", "mecánica avanzada"
+ ),
+ "bateria-toyota-senales-cambio-cartagena": (
+  "Batería Toyota: señales y pruebas en clima cálido",
+  "Reconoce señales de batería débil en un Toyota y las pruebas de arranque, carga, conexiones y consumo necesarias antes de reemplazarla.",
+  "diagnóstico de batería y sistema de carga", "/servicios/diagnostico-electronico/", "diagnóstico electrónico"
+ ),
+ "latoneria-pintura-toyota-cartagena": (
+  "Proceso de latonería y pintura para Toyota",
+  "Guía del proceso de latonería y pintura para Toyota en Cartagena: evaluación del daño, preparación, igualación de color, armado y control final.",
+  "proceso de reparación de carrocería y pintura", "/servicios/latoneria-pintura/", "latonería y pintura"
+ ),
+ "mantenimiento-toyota-fortuner-cartagena": (
+  "Mantenimiento Toyota Fortuner: viaje, carga y 4x4",
+  "Guía de mantenimiento Toyota Fortuner en Cartagena para viaje y carga: motor, refrigeración, frenos, suspensión, transmisión, 4x4 y ruedas.",
+  "mantenimiento integral de Toyota Fortuner", "/servicios/mantenimiento-general/", "mantenimiento general"
+ ),
+ "ppf-toyota-cartagena-proteccion-pintura": (
+  "PPF para Toyota en Cartagena: guía de protección",
+  "Guía de PPF para Toyota en Cartagena: límites de protección, zonas de cobertura, preparación de pintura, instalación, curado y mantenimiento.",
+  "protección de pintura con PPF", "/servicios/ppf/", "PPF"
+ ),
+ "recubrimiento-ceramico-cristal-liquido-toyota-cartagena": (
+  "Recubrimiento cerámico Toyota: beneficios reales",
+  "Qué aporta un recubrimiento cerámico para Toyota, cómo se prepara la pintura, qué no protege y qué cuidados influyen en su duración.",
+  "beneficios y límites del recubrimiento cerámico", "/servicios/recubrimiento-ceramico/", "recubrimiento cerámico"
+ ),
+ "proteccion-anticorrosiva-toyota-cartagena": (
+  "Cómo proteger los bajos de tu Toyota en Cartagena",
+  "Conoce cómo se evalúa y aplica protección anticorrosiva a un Toyota en Cartagena: inspección de bajos, preparación, zonas críticas y seguimiento.",
+  "protección de bajos frente al ambiente costero", "/servicios/proteccion-anticorrosiva/", "protección anticorrosiva"
+ ),
+ "proteccion-interior-toyota-cuero-plasticos-cartagena": (
+  "Cuidado interior Toyota en clima cálido",
+  "Cómo limpiar y proteger cuero, plásticos, vinilo y tapicería Toyota en Cartagena sin dejar brillo excesivo, residuos ni superficies resbalosas.",
+  "cuidado de cuero, plásticos y tapicería", "/servicios/proteccion-interior/", "protección interior"
+ ),
+ "cada-cuanto-cambiar-aceite-toyota": (
+  "Cuándo cambiar el aceite de un Toyota",
+  "Aprende cuándo revisar y cambiar el aceite de un Toyota según el manual, el tiempo, el kilometraje, el uso y las condiciones de conducción.",
+  "momento correcto para cambiar el aceite", "/servicios/aceite-filtros/", "aceite y filtros"
+ ),
+ "senales-transmision-toyota": (
+  "Transmisión Toyota: señales que requieren revisión",
+  "Reconoce tirones, demoras, fugas, ruidos y alertas de una transmisión Toyota, y entiende por qué el diagnóstico debe preceder cualquier reparación.",
+  "señales tempranas de problemas de transmisión", "/servicios/transmision/", "transmisión"
+ ),
+ "mantenimiento-toyota-cartagena": (
+  "Mantenimiento Toyota en el clima de Cartagena",
+  "Guía para cuidar un Toyota en Cartagena frente a calor, humedad, tráfico y recorridos cortos, sin reemplazar el programa específico del fabricante.",
+  "mantenimiento condicionado por el clima de Cartagena", "/servicios/mantenimiento-general/", "mantenimiento general"
+ )
+}
+
+# Los temas cercanos comparten servicio comercial, pero no la misma pregunta.
+# Estas aperturas dejan explícito qué resuelve cada guía y qué deja a las demás.
+INTRO_OVERRIDES = {
+ "actualizacion-estetica-toyota-cartagena": (
+  "Esta guía ayuda a decidir si conviene restaurar, reemplazar o integrar cada elemento antes de iniciar una actualización estética. "
+  "El foco está en evaluar compatibilidad, coherencia visual y cuidados posteriores, no en presentar un catálogo de piezas."
+ ),
+ "cambio-aceite-toyota-cartagena": (
+  "Esta guía no fija un intervalo universal: explica qué debe incluir un servicio de cambio de aceite, cómo se confirma el lubricante y el filtro, "
+  "y qué inspecciones y registros conviene recibir al terminar. Para decidir cuándo hacerlo, consulta la guía específica sobre intervalos."
+ ),
+ "cada-cuanto-cambiar-aceite-toyota": (
+  "Aquí la pregunta es cuándo revisar o cambiar el aceite. La respuesta parte del manual, el tiempo, el kilometraje y las condiciones de uso; "
+  "no describe el alcance comercial del servicio ni sustituye la especificación de una versión concreta."
+ ),
+ "aceite-recomendado-toyota-hilux-diesel": (
+  "Esta guía se concentra en seleccionar aceite para una Hilux diésel mediante motor, año, manual, norma y viscosidad. "
+  "No propone una viscosidad única para todas las Hilux ni define por sí sola el intervalo de cambio."
+ ),
+ "rines-toyota-prado-medidas-recomendadas": (
+  "El foco de esta guía es la geometría y capacidad del rin: diámetro, ancho, offset, PCD, centro y carga. "
+  "La presión y el índice de la llanta se verifican aparte con la información aplicable a la versión."
+ ),
+ "llantas-toyota-prado-medida-presion": (
+  "Esta guía trata la llanta: medida, índice de carga y velocidad, presión indicada, desgaste y uso. "
+  "Cambiar el rin exige además revisar offset, ancho, centro y espacio disponible en la Prado."
+ ),
+ "suspension-toyota-ruidos-vibraciones-cartagena": (
+  "Esta guía organiza el diagnóstico por síntoma para distintos Toyota: cuándo aparece el ruido, cómo se siente la vibración y qué conjuntos deben inspeccionarse. "
+  "No presupone que el amortiguador sea la causa ni sustituye una revisión específica de la versión."
+ ),
+ "suspension-toyota-prado-cartagena": (
+  "Aquí el análisis se limita a Toyota Prado y a las diferencias que pueden existir entre generaciones, versiones, equipamiento y modificaciones previas. "
+  "El objetivo es identificar primero la configuración instalada y después relacionarla con el síntoma."
+ ),
+ "mantenimiento-toyota-prado-cartagena": (
+  "Esta guía funciona como checklist integral para una Toyota Prado: historial, motor, transmisión, sistema 4x4, frenos, suspensión y ruedas. "
+  "Las guías de rines, llantas y suspensión profundizan por separado en compatibilidad y síntomas."
+ ),
+ "mantenimiento-toyota-fortuner-cartagena": (
+  "Esta guía prioriza el uso habitual de una Toyota Fortuner con pasajeros, equipaje, carretera o sistema 4x4. "
+  "El plan se adapta a su versión y motorización; no copia automáticamente el checklist de una Prado ni un intervalo genérico para SUV."
+ ),
+ "latoneria-pintura-toyota-cartagena": (
+  "Esta guía explica las etapas de una reparación de carrocería: evaluación, conformado, preparación, color, armado y control final. "
+  "Su propósito es ayudar a revisar el alcance y el acabado esperado antes de autorizar el trabajo."
+ ),
+ "proteccion-anticorrosiva-toyota-cartagena": (
+  "Esta guía explica cómo inspeccionar los bajos y decidir dónde una protección anticorrosiva puede aportar valor. "
+  "No asume que todo vehículo costero necesita la misma aplicación ni que el recubrimiento sustituye la limpieza y las revisiones periódicas."
+ ),
+}
+
+for article in articles:
+    title, description, intent, service_path, service_label = EDITORIAL[article["slug"]]
+    article.update({
+        "title": title,
+        "description": description,
+        "intent": intent,
+        "service_path": service_path,
+        "service_label": service_label,
+        "dateModified": "2026-08-13",
+    })
+    if article["slug"] in INTRO_OVERRIDES:
+        article["intro"] = INTRO_OVERRIDES[article["slug"]]
+
+if len(articles) != len(EDITORIAL) or len({article["slug"] for article in articles}) != len(articles):
+    raise ValueError("Cada artículo debe tener un slug único y una asignación editorial")
+if len({article["intent"] for article in articles}) != len(articles):
+    raise ValueError("Cada artículo debe responder a una intención informativa única")
+for article in articles:
+    if len(article["title"]) > 60:
+        raise ValueError(f"Título demasiado largo: {article['slug']}")
+    if not 125 <= len(article["description"]) <= 155:
+        raise ValueError(f"Meta description fuera de rango: {article['slug']}")
+    service_page = ROOT / article["service_path"].strip("/") / "index.html"
+    if not service_page.exists():
+        raise FileNotFoundError(f"No existe el servicio propietario de {article['slug']}: {service_page}")
 
 extras = {
  "Mantenimiento":[
@@ -159,64 +377,286 @@ extras = {
  ]
 }
 
-header = '''<header class="site-header"><nav class="nav container"><a class="brand" href="/"><img class="brand-logo" src="/assets/images/toyo-services-logo.svg" alt="" width="42" height="42" /><span>TOYO <span>SERVICES</span></span></a><button class="menu" aria-expanded="false" aria-label="Abrir menú">☰</button><div class="nav-links"><a href="/">Inicio</a><a href="/servicios/">Servicios</a><a aria-current="page" href="/blog/">Guía Toyota</a><a href="/#ubicacion">Ubicación</a></div></nav></header>'''
-footer = '''<footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="/"><img class="brand-logo" src="/assets/images/toyo-services-logo.svg" alt="" width="42" height="42" /><span>TOYO <span>SERVICES</span></span></a><p class="muted">Mantenimiento, mecánica, repuestos y acabados premium en Cartagena.</p></div><div><h3>Servicios</h3><a href="/servicios/#mantenimiento-general">Mantenimiento</a><a href="/servicios/#mecanica-avanzada">Mecánica avanzada</a><a href="/servicios/#repuestos">Repuestos</a></div><div><h3>Información</h3><a href="/legal/">Condiciones del servicio</a><a href="/privacidad/">Privacidad y datos</a></div></div><div class="legal"><span>© <span data-year></span> Toyo Services.</span><span>Taller independiente no afiliado a Toyota Motor Corporation.</span></div></div></footer><span class="wa-float" title="WhatsApp disponible próximamente" aria-label="WhatsApp disponible próximamente"><img src="/assets/images/whatsapp-logo.png" alt="" aria-hidden="true"></span><script src="/assets/js/main.js?v=16" defer></script>'''
+# Refuerzos propios para los clústeres con mayor riesgo de solapamiento. Las
+# guías por modelo no reutilizan los dos apartados genéricos de su categoría.
+ARTICLE_EXTRAS = {
+ "cambio-aceite-toyota-cartagena": [
+  ("Qué pedir en una cotización", ["La propuesta debe identificar el vehículo, la especificación y cantidad de lubricante, la referencia del filtro y las comprobaciones incluidas. Así se comparan alcances equivalentes y no solo un precio aislado.", "Si durante el servicio aparecen fuga, rosca dañada o un filtro incorrecto instalado previamente, el trabajo adicional se explica y autoriza por separado."]),
+  ("Después de recibir el vehículo", ["Comprueba que no existan testigos ni fugas y conserva el registro del producto y kilometraje. El nivel se revisa con el procedimiento indicado para ese motor, porque el momento y la superficie de medición influyen.", "Una etiqueta de próximo servicio ayuda como recordatorio, pero no reemplaza el programa del manual ni la vigilancia periódica del nivel."]),
+  ("Recepción y trazabilidad", ["Antes de abrir un envase se confirma la identificación del Toyota y se registra lo autorizado. La factura debe permitir reconocer producto, filtro y cantidad; una frase genérica como cambio de aceite dificulta reconstruir el historial.", "Si el vehículo tiene protector inferior, blindaje o una modificación que cambia el acceso, se revisa su montaje al retirar y volver a instalar. Cualquier fijación ausente se informa en lugar de ocultarla."]),
+  ("Lubricante usado y limpieza del trabajo", ["El aceite retirado se contiene sin contaminar suelo, agua ni otros residuos y se entrega al canal de manejo correspondiente. Esta etapa forma parte de un servicio ordenado aunque no sea visible al conducir.", "La zona del filtro y del tapón se deja limpia para que una fuga posterior pueda identificarse. Limpiar no significa ocultar evidencia previa: las manchas encontradas se documentan antes de intervenir."])
+ ],
+ "aceite-recomendado-toyota-hilux-diesel": [
+  ("Trabajo, carga y ralentí", ["Una Hilux utilizada con carga, polvo, recorridos cortos o mucho ralentí puede trabajar en condiciones distintas a una camioneta de carretera. El manual define cómo tratar esos escenarios; no se corrigen eligiendo por costumbre un aceite más grueso.", "Registrar horas de uso cuando el vehículo las muestra, consumo y reposiciones ayuda a interpretar mejor el mantenimiento que mirar únicamente el odómetro."]),
+  ("Motor y sistema de emisiones", ["La ficha técnica confirma que existen distintas motorizaciones y configuraciones Hilux. En versiones diésel con sistemas de control de emisiones, el lubricante debe ser compatible con la especificación correspondiente.", "Si el nivel aumenta, aparecen regeneraciones anormales, humo o pérdida de potencia, no se prolonga el intervalo ni se cambia de producto a ciegas: se diagnostica la condición."])
+ ],
+ "mantenimiento-toyota-prado-cartagena": [
+  ("Historial de una Prado usada", ["En una unidad sin registros se comprueban fluidos, fugas, códigos, ruedas y funcionamiento 4x4 antes de asumir que una pieza fue atendida. También se documentan accesorios, elevación, blindaje o cambios de rin que alteren carga y geometría.", "La línea base permite separar mantenimiento pendiente de una falla actual y evita reemplazar de nuevo componentes que sí tienen evidencia reciente."]),
+  ("Peso, ruedas y uso real", ["Pasajeros, equipaje, remolque y terreno cambian el esfuerzo sobre frenos, llantas y suspensión. Se revisan capacidad y presión aplicables a la versión, sin copiar valores de otra generación.", "Antes de un viaje se corrigen vibraciones, desgaste irregular y pérdidas de fluidos con tiempo suficiente para probar la reparación."])
+ ],
+ "mantenimiento-toyota-fortuner-cartagena": [
+  ("Uso familiar, carretera y carga", ["Una Fortuner que circula con pasajeros y equipaje exige atención a llantas, frenos y temperatura. El plan parte de la capacidad y configuración de la versión, no de una pauta genérica para cualquier SUV.", "Antes de viajar se inspecciona con anticipación para poder corregir hallazgos y confirmar el resultado en condiciones normales."]),
+  ("Versiones diésel y gasolina", ["La gama Fortuner incluye configuraciones de motor diferentes; por eso cambian combustible, fluidos y componentes de emisiones. La ficha técnica y el manual de la unidad determinan qué aplica.", "En una versión diésel, pérdida de potencia, humo o alertas del sistema de emisiones necesitan diagnóstico; no se resuelven automáticamente con un cambio de aceite o filtro."])
+ ],
+ "suspension-toyota-prado-cartagena": [
+  ("Configuración y equipamiento de la versión", ["La suspensión puede variar entre generaciones y versiones, e incluir componentes o controles distintos. Antes de cotizar se identifica el sistema instalado y cualquier modificación previa.", "Un repuesto compatible por apariencia puede tener tasa, recorrido o conexión diferente. Se verifica referencia y función antes del montaje."]),
+  ("Confort frente a control", ["Una Prado puede sentirse rígida por presión, tipo de llanta o carga, mientras un rebote excesivo puede involucrar amortiguación. La prueba busca separar percepción de una holgura o componente fuera de condición.", "Después de reparar se comprueban altura, torque, giro, frenado y ausencia de roces; la alineación es el cierre del proceso cuando corresponde, no el diagnóstico inicial."])
+ ],
+ "mantenimiento-toyota-cartagena": [
+  ("Aire acondicionado y tráfico", ["Si el aire enfría en carretera pero pierde capacidad detenido, se revisan caudal, condensador, ventiladores y estado del circuito. Añadir refrigerante sin medir no demuestra ni corrige la causa.", "El sistema de aire y la refrigeración del motor comparten la necesidad de un flujo de aire correcto, pero cada uno requiere pruebas propias."]),
+  ("Después de playa, lluvia intensa o inundación", ["La exposición ocasional no significa que exista daño, pero justifica observar bajos, conectores, frenos, rodamientos y acumulaciones. El lavado se hace sin dirigir presión hacia componentes sensibles.", "Si el agua alcanzó zonas no previstas por el fabricante, se prioriza una inspección antes de encender o continuar conduciendo; el alcance depende del nivel y tiempo de exposición."])
+ ]
+}
+
+CATEGORY_EXTRA_OWNERS = {
+    "mantenimiento-preventivo-toyota-cartagena",
+    "mecanica-avanzada-toyota-cartagena",
+    "repuestos-toyota-originales-homologados-cartagena",
+    "accesorios-toyota-cartagena-guia",
+    "transformaciones-toyota-hilux-4x4-cartagena",
+    "actualizacion-estetica-toyota-cartagena",
+    "suspension-toyota-ruidos-vibraciones-cartagena",
+    "frenos-toyota-mantenimiento-cartagena",
+    "sistema-refrigeracion-toyota-cartagena",
+    "check-engine-diagnostico-electronico-toyota",
+}
+
+TOYOTA_MAINTENANCE = (
+    "Mantenimiento planeado Toyota Colombia",
+    "https://www.toyota.com.co/postventa/mantenimiento/planeado",
+)
+PRADO_PAGE = (
+    "Land Cruiser Prado: información y materiales oficiales",
+    "https://www.toyota.com.co/vehiculos/camionetas/land-cruiser-prado",
+)
+PRADO_SPECS = (
+    "Ficha técnica oficial Land Cruiser Prado",
+    "https://www.toyota.com.co/images/pdf/LANDCRUISER-PRADO.pdf",
+)
+FORTUNER_PAGE = (
+    "Toyota Fortuner: información y materiales oficiales",
+    "https://www.toyota.com.co/vehiculos/camionetas/fortuner",
+)
+FORTUNER_SPECS = (
+    "Ficha técnica oficial Toyota Fortuner",
+    "https://www.toyota.com.co/images/pdf/FT-FORTUNER.pdf",
+)
+HILUX_SPECS = (
+    "Ficha técnica oficial Toyota Hilux",
+    "https://www.toyota.com.co/images/pdf/FT_TOYOTA_HILUX.pdf",
+)
+
+planned_maintenance_sources = {
+    "mantenimiento-preventivo-toyota-cartagena",
+    "cambio-aceite-toyota-cartagena",
+    "cada-cuanto-cambiar-aceite-toyota",
+    "mantenimiento-toyota-cartagena",
+}
+
+SOURCE_NOTES_BY_SERVICE = {
+    "/servicios/mantenimiento-general/": "Cruza el programa de mantenimiento con el manual, el historial y la configuración exacta del vehículo antes de fijar prioridades.",
+    "/servicios/mecanica-avanzada/": "Solicita que cada conclusión esté vinculada con síntomas reproducidos, códigos registrados, inspecciones o valores medidos; una guía general no reemplaza esas pruebas.",
+    "/servicios/repuestos/": "Confirma VIN, referencia, fabricante, compatibilidad, garantía y procedimiento de instalación antes de comprar o autorizar una pieza.",
+    "/servicios/modificaciones/": "Verifica medidas, capacidad, puntos de montaje, interferencias, requisitos legales y mantenimiento del componente exacto antes de instalarlo.",
+    "/servicios/actualizacion-estetica/": "Compara material, acabado, compatibilidad con sensores y cuidados del elemento exacto; una fotografía de catálogo no demuestra ajuste ni durabilidad.",
+    "/servicios/frenos-suspension/": "La referencia y el procedimiento dependen de versión, configuración y condición. Pide inspección de holguras, ruedas y fijaciones antes de reemplazar componentes.",
+    "/servicios/motor-refrigeracion/": "Comprueba especificación del refrigerante, diseño del circuito y valores de prueba aplicables al motor; color y apariencia no identifican por sí solos un fluido.",
+    "/servicios/diagnostico-electronico/": "Conserva códigos, datos congelados y síntomas antes de borrar información. La documentación del sistema y las mediciones deben respaldar el diagnóstico.",
+    "/servicios/aceite-filtros/": "Confirma en el manual de la unidad la norma, viscosidad, capacidad, filtro e intervalo aplicables al motor y a sus condiciones de uso.",
+    "/servicios/latoneria-pintura/": "Antes de autorizar, revisa alcance del desarme, reparación, preparación, sistema de pintura, método de igualación y criterios de entrega.",
+    "/servicios/ppf/": "Solicita ficha técnica del PPF, cobertura acordada, preparación, garantía, curado y cuidados del producto exacto que se instalará.",
+    "/servicios/recubrimiento-ceramico/": "Solicita ficha técnica del recubrimiento, preparación, número de capas cuando aplique, curado, mantenimiento y exclusiones de garantía.",
+    "/servicios/proteccion-anticorrosiva/": "Verifica producto, zonas incluidas, preparación, compatibilidad con cauchos y drenajes, método de aplicación y programa de inspección posterior.",
+    "/servicios/proteccion-interior/": "Identifica primero cuero, textil, vinilo o plástico y comprueba ficha técnica, compatibilidad, acabado y cuidados del producto que se utilizará.",
+    "/servicios/transmision/": "La especificación del fluido, el nivel, la temperatura de comprobación y el procedimiento cambian por transmisión; confirma la documentación de la unidad.",
+}
+
+for article in articles:
+    sources = [TOYOTA_MAINTENANCE] if article["slug"] in planned_maintenance_sources else []
+    if "prado" in article["slug"]:
+        sources = [PRADO_PAGE, PRADO_SPECS]
+    elif "fortuner" in article["slug"]:
+        sources = [FORTUNER_PAGE, FORTUNER_SPECS, TOYOTA_MAINTENANCE]
+    elif "hilux" in article["slug"]:
+        sources = [HILUX_SPECS, TOYOTA_MAINTENANCE]
+    article["sources"] = sources
+    article["source_note"] = SOURCE_NOTES_BY_SERVICE[article["service_path"]]
+
+RELATED_OVERRIDES = {
+    "mantenimiento-preventivo-toyota-cartagena": ["bateria-toyota-senales-cambio-cartagena", "sistema-refrigeracion-toyota-cartagena", "frenos-toyota-mantenimiento-cartagena"],
+    "accesorios-toyota-cartagena-guia": ["actualizacion-estetica-toyota-cartagena", "proteccion-interior-toyota-cuero-plasticos-cartagena", "transformaciones-toyota-hilux-4x4-cartagena"],
+    "actualizacion-estetica-toyota-cartagena": ["latoneria-pintura-toyota-cartagena", "proteccion-interior-toyota-cuero-plasticos-cartagena", "accesorios-toyota-cartagena-guia"],
+    "latoneria-pintura-toyota-cartagena": ["actualizacion-estetica-toyota-cartagena", "ppf-toyota-cartagena-proteccion-pintura", "recubrimiento-ceramico-cristal-liquido-toyota-cartagena"],
+    "ppf-toyota-cartagena-proteccion-pintura": ["recubrimiento-ceramico-cristal-liquido-toyota-cartagena", "proteccion-anticorrosiva-toyota-cartagena", "latoneria-pintura-toyota-cartagena"],
+    "recubrimiento-ceramico-cristal-liquido-toyota-cartagena": ["ppf-toyota-cartagena-proteccion-pintura", "proteccion-interior-toyota-cuero-plasticos-cartagena", "actualizacion-estetica-toyota-cartagena"],
+    "proteccion-anticorrosiva-toyota-cartagena": ["ppf-toyota-cartagena-proteccion-pintura", "mantenimiento-toyota-cartagena", "recubrimiento-ceramico-cristal-liquido-toyota-cartagena"],
+    "proteccion-interior-toyota-cuero-plasticos-cartagena": ["actualizacion-estetica-toyota-cartagena", "recubrimiento-ceramico-cristal-liquido-toyota-cartagena", "accesorios-toyota-cartagena-guia"],
+    "cambio-aceite-toyota-cartagena": ["aceite-recomendado-toyota-hilux-diesel", "mantenimiento-preventivo-toyota-cartagena", "repuestos-toyota-originales-homologados-cartagena"],
+    "cada-cuanto-cambiar-aceite-toyota": ["mantenimiento-toyota-cartagena", "mantenimiento-preventivo-toyota-cartagena", "aceite-recomendado-toyota-hilux-diesel"],
+    "aceite-recomendado-toyota-hilux-diesel": ["cambio-aceite-toyota-cartagena", "cada-cuanto-cambiar-aceite-toyota", "transformaciones-toyota-hilux-4x4-cartagena"],
+    "mantenimiento-toyota-prado-cartagena": ["suspension-toyota-prado-cartagena", "rines-toyota-prado-medidas-recomendadas", "llantas-toyota-prado-medida-presion"],
+    "suspension-toyota-prado-cartagena": ["suspension-toyota-ruidos-vibraciones-cartagena", "mantenimiento-toyota-prado-cartagena", "llantas-toyota-prado-medida-presion"],
+    "rines-toyota-prado-medidas-recomendadas": ["llantas-toyota-prado-medida-presion", "mantenimiento-toyota-prado-cartagena", "suspension-toyota-prado-cartagena"],
+    "llantas-toyota-prado-medida-presion": ["rines-toyota-prado-medidas-recomendadas", "suspension-toyota-prado-cartagena", "mantenimiento-toyota-prado-cartagena"],
+    "mantenimiento-toyota-fortuner-cartagena": ["mantenimiento-preventivo-toyota-cartagena", "senales-transmision-toyota", "mantenimiento-toyota-cartagena"],
+    "mecanica-avanzada-toyota-cartagena": ["check-engine-diagnostico-electronico-toyota", "senales-transmision-toyota", "aire-acondicionado-toyota-cartagena"],
+    "aire-acondicionado-toyota-cartagena": ["mecanica-avanzada-toyota-cartagena", "sistema-refrigeracion-toyota-cartagena", "mantenimiento-toyota-cartagena"],
+    "suspension-toyota-ruidos-vibraciones-cartagena": ["suspension-toyota-prado-cartagena", "frenos-toyota-mantenimiento-cartagena", "llantas-toyota-prado-medida-presion"],
+    "senales-transmision-toyota": ["mecanica-avanzada-toyota-cartagena", "check-engine-diagnostico-electronico-toyota", "mantenimiento-toyota-fortuner-cartagena"],
+    "mantenimiento-toyota-cartagena": ["mantenimiento-preventivo-toyota-cartagena", "aire-acondicionado-toyota-cartagena", "proteccion-anticorrosiva-toyota-cartagena"],
+}
+
+CONCLUSIONS_BY_SERVICE = {
+    "/servicios/mantenimiento-general/": (
+        "Convierte la revisión en un plan",
+        "El resultado útil no es una lista de piezas, sino un orden de trabajo basado en seguridad, condición e historial. Documenta lo realizado y deja fecha o criterio de seguimiento para cada pendiente."
+    ),
+    "/servicios/mecanica-avanzada/": (
+        "Exige evidencia antes de reparar",
+        "Una hipótesis debe convertirse en una causa comprobada mediante inspección, datos o mediciones. Autoriza el alcance cuando puedas relacionar el síntoma, la prueba y la intervención propuesta."
+    ),
+    "/servicios/repuestos/": (
+        "Compatibilidad antes que apariencia",
+        "Una pieza parecida no necesariamente corresponde a la versión. Confirma identificación, referencia, especificación y condiciones de instalación antes de comparar únicamente precio o disponibilidad."
+    ),
+    "/servicios/modificaciones/": (
+        "Piensa en el vehículo como un conjunto",
+        "Rines, llantas, suspensión, carga, iluminación y accesorios se afectan entre sí. Define el objetivo, comprueba compatibilidades y revisa el resultado completo después de instalar."
+    ),
+    "/servicios/actualizacion-estetica/": (
+        "Primero el estado; después el diseño",
+        "Corregir daños, fijaciones y superficies envejecidas crea una base mejor para cualquier actualización. Elige elementos que respeten funciones, proporciones y mantenimiento futuro."
+    ),
+    "/servicios/frenos-suspension/": (
+        "Un síntoma no identifica la pieza",
+        "Ruido, vibración, deriva o rebote pueden involucrar más de un conjunto. Reproduce la condición, inspecciona holguras y ruedas, y confirma el resultado después de intervenir."
+    ),
+    "/servicios/motor-refrigeracion/": (
+        "La temperatura no admite improvisación",
+        "Si existe recalentamiento, pérdida de refrigerante o una alerta, detén el diagnóstico por su causa y evita limitarte a rellenar. Una prueba posterior debe confirmar presión, circulación y control térmico."
+    ),
+    "/servicios/diagnostico-electronico/": (
+        "El código orienta; las pruebas confirman",
+        "Conserva la información de la falla y relaciona códigos con datos, cableado, alimentación y condición mecánica. Borrar una advertencia no demuestra que el sistema haya quedado corregido."
+    ),
+    "/servicios/aceite-filtros/": (
+        "Manual, versión y uso real",
+        "La decisión correcta combina especificación e intervalo aplicables con el historial y la utilización del vehículo. Registra producto, filtro, fecha y kilometraje para que el siguiente servicio parta de información verificable."
+    ),
+    "/servicios/latoneria-pintura/": (
+        "El acabado empieza en la preparación",
+        "Alineación, reparación del sustrato, preparación y control de color importan tanto como el brillo final. Revisa también armado, sellos, luces y piezas cercanas antes de recibir el vehículo."
+    ),
+    "/servicios/ppf/": (
+        "Cobertura y preparación definen el resultado",
+        "Acordar zonas, condición previa de la pintura, bordes y cuidados evita expectativas equivocadas. El PPF reduce ciertos daños de uso, pero no sustituye mantenimiento ni corrige defectos debajo de la película."
+    ),
+    "/servicios/recubrimiento-ceramico/": (
+        "Brillo no equivale a blindaje",
+        "El recubrimiento facilita ciertos cuidados de la superficie, pero su desempeño depende de preparación, aplicación y mantenimiento. Compara la promesa con la ficha técnica del producto elegido."
+    ),
+    "/servicios/proteccion-anticorrosiva/": (
+        "La inspección define dónde intervenir",
+        "Limpieza, acceso a drenajes y condición de los bajos determinan el alcance. Después de aplicar, programa revisiones para detectar golpes, desprendimientos o zonas que necesiten corrección."
+    ),
+    "/servicios/proteccion-interior/": (
+        "Cada material necesita un tratamiento distinto",
+        "Cuero, textil, vinilo y plástico no se limpian ni protegen de la misma forma. Prueba compatibilidad, evita residuos y conserva instrucciones para el cuidado cotidiano."
+    ),
+    "/servicios/transmision/": (
+        "Diagnostica antes de abrir o cambiar fluido",
+        "Registra cuándo aparece el síntoma y comprueba nivel, condición, temperatura, códigos y soportes según el diseño. El alcance debe responder a la causa encontrada, no solo a la sensación al conducir."
+    ),
+}
+
+def article_sections(article):
+    category_extras = extras.get(article["category"], []) if article["slug"] in CATEGORY_EXTRA_OWNERS else []
+    return article["sections"] + ARTICLE_EXTRAS.get(article["slug"], category_extras)
+
+def article_related(article):
+    lookup = {candidate["slug"]: candidate for candidate in articles}
+    candidates = [lookup[slug] for slug in RELATED_OVERRIDES.get(article["slug"], []) if slug in lookup and slug != article["slug"]]
+    candidates += [candidate for candidate in articles if candidate["slug"] != article["slug"] and candidate["service_path"] == article["service_path"] and candidate not in candidates]
+    candidates += [candidate for candidate in articles if candidate["slug"] != article["slug"] and candidate["category"] == article["category"] and candidate not in candidates]
+    candidates += [candidate for candidate in articles if candidate["slug"] != article["slug"] and candidate not in candidates]
+    return candidates[:3]
+
+def reading_minutes(article):
+    conclusion_title, conclusion_text = CONCLUSIONS_BY_SERVICE[article["service_path"]]
+    parts = [article["title"], article["intro"], conclusion_title, conclusion_text, article["source_note"]]
+    for section_title, paragraphs in article_sections(article):
+        parts.append(section_title)
+        parts.extend(paragraphs)
+    for question, answer in article["faqs"]:
+        parts.extend((question, answer))
+    word_count = len(re.findall(r"\b[\wÁÉÍÓÚÜÑáéíóúüñ]+\b", " ".join(parts), flags=re.UNICODE))
+    return max(3, math.ceil(word_count / 200))
+
+for article in articles:
+    article["read_minutes"] = reading_minutes(article)
+    article["read"] = f'{article["read_minutes"]} min'
+
+required_related_inbound = {
+    "actualizacion-estetica-toyota-cartagena",
+    "aire-acondicionado-toyota-cartagena",
+    "latoneria-pintura-toyota-cartagena",
+    "proteccion-anticorrosiva-toyota-cartagena",
+    "proteccion-interior-toyota-cuero-plasticos-cartagena",
+}
+related_inbound = {
+    target: sum(target in {candidate["slug"] for candidate in article_related(article)} for article in articles)
+    for target in required_related_inbound
+}
+if any(count == 0 for count in related_inbound.values()):
+    raise ValueError(f"Guías sin enlaces relacionados entrantes: {related_inbound}")
+
+header = '''<header class="site-header"><nav class="nav container"><a class="brand" href="/"><img class="brand-logo" src="/assets/images/toyo-services-logo.svg" alt="" width="60" height="40" /><span>TOYO <span>SERVICES</span></span></a><button class="menu" aria-expanded="false" aria-label="Abrir menú">☰</button><div class="nav-links"><a href="/">Inicio</a><a href="/servicios/">Servicios</a><a href="/modelos/">Modelos</a><a aria-current="page" href="/blog/">Guía Toyota</a><a href="/#ubicacion">Área de atención</a></div></nav></header>'''
+footer = '''<footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="/"><img class="brand-logo" src="/assets/images/toyo-services-logo.svg" alt="" width="60" height="40" /><span>TOYO <span>SERVICES</span></span></a><p class="muted">Mantenimiento, mecánica, repuestos y acabados premium en Cartagena.</p></div><div><h3>Explora</h3><a href="/servicios/">Servicios</a><a href="/modelos/">Modelos Toyota</a><a href="/blog/">Guía Toyota</a><a href="/nosotros/">Nosotros</a></div><div><h3>Información</h3><a href="/preguntas-frecuentes/">Preguntas frecuentes</a><a href="/legal/">Condiciones del servicio</a><a href="/privacidad/">Privacidad y datos</a><a href="/creditos-imagenes/">Créditos visuales</a></div></div><div class="legal"><span>© <span data-year></span> Toyo Services.</span><span>Taller independiente no afiliado a Toyota Motor Corporation.</span></div></div></footer><span class="wa-float" title="WhatsApp disponible próximamente" aria-label="WhatsApp disponible próximamente"><img src="/assets/images/whatsapp-logo.png" width="224" height="225" alt="" aria-hidden="true"></span><script src="/assets/js/main.js?v=18" defer></script>'''
 
 def article_page(a):
     canonical=f"{BASE}/blog/{a['slug']}/"
     faq_schema={"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":ans}} for q,ans in a["faqs"]]}
-    posting={"@context":"https://schema.org","@type":"BlogPosting","headline":a["title"],"description":a["description"],"datePublished":a.get("datePublished","2026-08-09"),"dateModified":"2026-08-09","inLanguage":"es-CO","author":{"@type":"Organization","name":"Toyo Services","url":BASE},"publisher":{"@type":"Organization","name":"Toyo Services","url":BASE},"image":f"{BASE}/assets/images/{a['image']}","mainEntityOfPage":canonical}
+    posting={"@context":"https://schema.org","@type":"BlogPosting","headline":a["title"],"description":a["description"],"datePublished":a.get("datePublished","2026-08-09"),"dateModified":a["dateModified"],"timeRequired":f'PT{a["read_minutes"]}M',"inLanguage":"es-CO","articleSection":a["category"],"keywords":a["intent"],"author":{"@type":"Organization","@id":BUSINESS_ID,"name":"Toyo Services","url":f"{BASE}/nosotros/"},"publisher":{"@type":"Organization","@id":BUSINESS_ID,"name":"Toyo Services","url":BASE},"about":{"@type":"Service","@id":f"{BASE}{a['service_path']}#service","name":a["service_label"],"url":f"{BASE}{a['service_path']}"},"image":f"{BASE}/assets/images/{a['image']}","mainEntityOfPage":{"@type":"WebPage","@id":canonical}}
     breadcrumb_schema={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":f"{BASE}/"},{"@type":"ListItem","position":2,"name":"Guía Toyota","item":f"{BASE}/blog/"},{"@type":"ListItem","position":3,"name":a["title"],"item":canonical}]}
-    all_sections=a['sections']+extras.get(a['category'],[])
+    all_sections=article_sections(a)
     toc=''.join(f'<li><a href="#s{i}">{html.escape(title)}</a></li>' for i,(title,_) in enumerate(all_sections,1))
     body=''
     for i,(title,paragraphs) in enumerate(all_sections,1):
         body+=f'<h2 id="s{i}">{html.escape(title)}</h2>'+''.join(f'<p>{html.escape(p)}</p>' for p in paragraphs)
+        if i == 1:
+            body += (
+                '<aside class="article-service-context"><strong>Del diagnóstico a una solución concreta.</strong> '
+                f'Si necesitas evaluar este punto en tu vehículo, conoce el <a href="{a["service_path"]}">'
+                f'servicio de {html.escape(a["service_label"])}</a> para Toyota en Cartagena.</aside>'
+            )
     faqs=''.join(f'<details><summary>{html.escape(q)}</summary><p>{html.escape(ans)}</p></details>' for q,ans in a['faqs'])
-    related_candidates=[x for x in articles if x['slug'] != a['slug'] and x['category'] == a['category']]
-    related_candidates += [x for x in articles if x['slug'] != a['slug'] and x not in related_candidates]
-    related=''.join(f'<li><a href="/blog/{x["slug"]}/">{html.escape(x["title"])}</a></li>' for x in related_candidates[:3])
-    return f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(a['title'])} | Toyo Services</title><meta name="description" content="{html.escape(a['description'])}"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{canonical}"><meta property="og:type" content="article"><meta property="og:title" content="{html.escape(a['title'])}"><meta property="og:description" content="{html.escape(a['description'])}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}/assets/images/{a['image']}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/assets/images/favicon.svg"><link rel="stylesheet" href="/assets/css/styles.css?v=11"><script type="application/ld+json">{json.dumps(posting,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(faq_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(breadcrumb_schema,ensure_ascii=False)}</script></head><body>{header}<main class="article"><nav class="breadcrumb" aria-label="Migas de pan"><a href="/">Inicio</a> / <a href="/blog/">Guía Toyota</a> / {html.escape(a['category'])}</nav><span class="eyebrow">{html.escape(a['category'])} Toyota</span><h1>{html.escape(a['title'])}</h1><p class="lead">{html.escape(a['intro'])}</p><img src="/assets/images/{a['image']}" width="1200" height="800" alt="{html.escape(a['title'])}" fetchpriority="high"><aside class="article-toc"><strong>En esta guía</strong><ol>{toc}</ol></aside>{body}<h2>Una recomendación responsable</h2><p>Esta guía ofrece orientación general y no sustituye la inspección del vehículo. El procedimiento, las referencias y el alcance cambian según modelo, año, versión, historial y condición. En Toyo Services revisamos cada vehículo y explicamos el diagnóstico antes de autorizar reparaciones o modificaciones.</p><section class="faq article-faq"><h2>Preguntas frecuentes</h2>{faqs}</section><aside class="related-guides"><h2>Guías relacionadas</h2><ul>{related}</ul></aside><div class="actions"><a class="btn btn-primary" href="/servicios/">Ver servicios</a><a class="btn btn-outline" href="/#ubicacion">Ubicación en Cartagena</a></div></main>{footer}</body></html>'''
+    related=''.join(f'<li><a href="/blog/{x["slug"]}/">{html.escape(x["title"])}</a></li>' for x in article_related(a))
+    source_links=''.join(f'<li><a href="{html.escape(url)}" rel="noopener">{html.escape(label)}</a></li>' for label,url in a['sources'])
+    source_heading="Fuentes y documentos para verificar" if source_links else "Qué verificar antes del servicio"
+    source_section=(
+        f'<section class="article-sources"><h2>{source_heading}</h2>'
+        f'<p>{html.escape(a["source_note"])}</p>'
+        + (f'<ul>{source_links}</ul>' if source_links else '')
+        + '</section>'
+    )
+    conclusion_heading, conclusion_text = CONCLUSIONS_BY_SERVICE[a["service_path"]]
+    cta_label=f'Conocer el servicio de {a["service_label"]}'
+    return f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(a['title'])}</title><meta name="description" content="{html.escape(a['description'])}"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{canonical}"><meta property="og:type" content="article"><meta property="og:title" content="{html.escape(a['title'])}"><meta property="og:description" content="{html.escape(a['description'])}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}/assets/images/{a['image']}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/assets/images/favicon.svg"><link rel="stylesheet" href="/assets/css/styles.css?v=18"><script type="application/ld+json">{json.dumps(posting,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(faq_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(breadcrumb_schema,ensure_ascii=False)}</script></head><body>{header}<main class="article"><nav class="breadcrumb" aria-label="Migas de pan"><a href="/">Inicio</a> / <a href="/blog/">Guía Toyota</a> / {html.escape(a['category'])}</nav><span class="eyebrow">{html.escape(a['category'])} Toyota</span><h1>{html.escape(a['title'])}</h1><p class="article-byline">Contenido elaborado por <a href="/nosotros/">Toyo Services</a> · <time datetime="2026-08-13">actualizado el 13 de agosto de 2026</time></p><p class="lead">{html.escape(a['intro'])}</p><img src="/assets/images/{a['image']}" width="1200" height="800" alt="{html.escape(a['title'])}" fetchpriority="high"><aside class="article-toc"><strong>En esta guía</strong><ol>{toc}</ol></aside>{body}<h2>{html.escape(conclusion_heading)}</h2><p>{html.escape(conclusion_text)}</p>{source_section}<section class="faq article-faq"><h2>Preguntas frecuentes</h2>{faqs}</section><aside class="related-guides"><h2>Guías relacionadas</h2><ul>{related}</ul></aside><div class="actions"><a class="btn btn-primary" href="{a['service_path']}">{html.escape(cta_label)}</a><a class="btn btn-outline" href="/#ubicacion">Ver área de atención</a></div></main>{footer}</body></html>'''
 
 for article in articles:
     folder=ROOT/'blog'/article['slug']; folder.mkdir(parents=True,exist_ok=True)
-    page=article_page(article).replace('/assets/css/styles.css?v=11','/assets/css/styles.css?v=16').replace('/assets/images/favicon.svg','/assets/images/favicon.svg?v=3').replace('/assets/images/toyo-services-logo.svg','/assets/images/toyo-services-logo.svg?v=3')
+    page=article_page(article).replace('/assets/images/favicon.svg','/assets/images/favicon.svg?v=3').replace('/assets/images/toyo-services-logo.svg','/assets/images/toyo-services-logo.svg?v=3')
+    page=sync_html_image_dimensions(page, ROOT)
     (folder/'index.html').write_text(page,encoding='utf-8')
 
 cards=[]
 for a in articles:
     cards.append((a['slug'],a['title'],a['category'],a['read'],a['image'],a['description']))
-cards += existing
-card_html=''.join(f'''<article class="card blog-card"><a class="blog-card-hit" href="/blog/{slug}/" aria-label="Leer: {html.escape(title)}"></a><img loading="lazy" src="/assets/images/{img}" width="800" height="500" alt="{html.escape(title)}"><div class="blog-body"><span class="tag">{html.escape(cat)} · {read}</span><h2>{html.escape(title)}</h2><p>{html.escape(desc)}</p><span class="card-link">Leer artículo →</span></div></article>''' for slug,title,cat,read,img,desc in cards)
-item_schema={"@context":"https://schema.org","@type":"CollectionPage","name":"Guía Toyota de Toyo Services","url":f"{BASE}/blog/","hasPart":[{"@type":"BlogPosting","headline":title,"url":f"{BASE}/blog/{slug}/"} for slug,title,*_ in cards]}
-blog=f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guía Toyota: mantenimiento, mecánica y cuidado | Cartagena</title><meta name="description" content="Guías sobre mantenimiento Toyota, PPF, recubrimiento cerámico, anticorrosión, Prado, rines, suspensión y mecánica en Cartagena."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{BASE}/blog/"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/assets/images/favicon.svg"><link rel="stylesheet" href="/assets/css/styles.css?v=11"><script type="application/ld+json">{json.dumps(item_schema,ensure_ascii=False)}</script></head><body>{header}<main><header class="page-hero"><div class="container"><div class="breadcrumb"><a href="/">Inicio</a> / Guía Toyota</div><span class="eyebrow">Conocimiento especializado</span><h1>Información para cuidar, reparar y mejorar tu vehículo.</h1><p>{len(cards)} guías para tomar mejores decisiones sobre mantenimiento, diagnóstico, repuestos, seguridad, modificaciones y conservación.</p></div></header><section><div class="container"><div class="blog-grid">{card_html}</div></div></section></main>{footer}</body></html>'''
-(ROOT/'blog'/'index.html').write_text(blog.replace('/assets/css/styles.css?v=11','/assets/css/styles.css?v=16').replace('/assets/images/favicon.svg','/assets/images/favicon.svg?v=3').replace('/assets/images/toyo-services-logo.svg','/assets/images/toyo-services-logo.svg?v=3'),encoding='utf-8')
-
-sitemap_urls = []
-for index_page in sorted(ROOT.rglob("index.html")):
-    relative = index_page.relative_to(ROOT)
-    if any(part.startswith(".") for part in relative.parts):
-        continue
-    if 'content="noindex' in index_page.read_text(encoding="utf-8").lower():
-        continue
-    route = "/" if relative.as_posix() == "index.html" else f"/{relative.parent.as_posix().strip('/')}/"
-    if route == "/": priority = "1.0"
-    elif route in {"/servicios/", "/blog/"}: priority = "0.9"
-    elif route.startswith(("/servicios/", "/blog/")): priority = "0.8"
-    else: priority = "0.5"
-    sitemap_urls.append((f"{BASE}{route}", priority))
-sitemap_body = "\n".join(
-    f"  <url><loc>{url}</loc><lastmod>2026-08-12</lastmod><priority>{priority}</priority></url>"
-    for url, priority in sitemap_urls
-)
-(ROOT / "sitemap.xml").write_text(
-    '<?xml version="1.0" encoding="UTF-8"?>\n'
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    f'{sitemap_body}\n</urlset>\n',
-    encoding="utf-8",
-)
-(ROOT / "robots.txt").write_text(
-    f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n",
-    encoding="utf-8",
-)
-print(f"Generated {len(articles)} new articles and blog index with {len(cards)} entries")
+card_html=''.join(f'''<article class="card blog-card"><a class="blog-card-content" href="/blog/{slug}/"><img loading="lazy" src="/assets/images/{img}" width="800" height="500" alt="{html.escape(title)}"><div class="blog-body"><span class="tag">{html.escape(cat)} · {read}</span><h2>{html.escape(title)}</h2><p>{html.escape(desc)}</p><span class="card-link" aria-hidden="true">Leer artículo →</span></div></a></article>''' for slug,title,cat,read,img,desc in cards)
+item_schema={"@context":"https://schema.org","@type":"CollectionPage","@id":f"{BASE}/blog/#collection","name":"Guía Toyota de Toyo Services","url":f"{BASE}/blog/","publisher":{"@id":BUSINESS_ID},"hasPart":[{"@type":"BlogPosting","headline":title,"url":f"{BASE}/blog/{slug}/"} for slug,title,*_ in cards]}
+blog_breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":f"{BASE}/"},{"@type":"ListItem","position":2,"name":"Guía Toyota","item":f"{BASE}/blog/"}]}
+blog=f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guía Toyota en Cartagena | Toyo Services</title><meta name="description" content="Guías de Toyo Services sobre mantenimiento, diagnóstico, repuestos, aceite, Prado, Fortuner, Hilux y cuidado Toyota en Cartagena."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{BASE}/blog/"><meta property="og:type" content="website"><meta property="og:title" content="Guía Toyota en Cartagena | Toyo Services"><meta property="og:description" content="Información útil sobre mantenimiento, diagnóstico, repuestos y cuidado Toyota."><meta property="og:url" content="{BASE}/blog/"><meta property="og:image" content="{BASE}/assets/images/blog-maintenance-guide.webp"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/assets/images/favicon.svg"><link rel="stylesheet" href="/assets/css/styles.css?v=18"><script type="application/ld+json">{json.dumps(item_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(blog_breadcrumb,ensure_ascii=False)}</script></head><body>{header}<main><header class="page-hero blog-hero"><div class="container"><div class="breadcrumb"><a href="/">Inicio</a> / Guía Toyota</div><span class="eyebrow">Conocimiento especializado</span><h1>Guías para cuidar y mantener tu Toyota en Cartagena.</h1><p>{len(cards)} guías para tomar mejores decisiones sobre mantenimiento, diagnóstico, repuestos, seguridad, modificaciones y conservación.</p></div></header><section><div class="container"><div class="blog-grid">{card_html}</div></div></section></main>{footer}</body></html>'''
+blog=blog.replace('/assets/images/favicon.svg','/assets/images/favicon.svg?v=3').replace('/assets/images/toyo-services-logo.svg','/assets/images/toyo-services-logo.svg?v=3')
+blog=sync_html_image_dimensions(blog, ROOT)
+(ROOT/'blog'/'index.html').write_text(blog,encoding='utf-8')
+print(f"Generated {len(articles)} articles and blog index with {len(cards)} entries")
