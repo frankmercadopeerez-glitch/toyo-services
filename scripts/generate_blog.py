@@ -238,6 +238,21 @@ EDITORIAL = {
   "Cómo limpiar y proteger cuero, plásticos, vinilo y tapicería Toyota en Cartagena sin dejar brillo excesivo, residuos ni superficies resbalosas.",
   "cuidado de cuero, plásticos y tapicería", "/servicios/proteccion-interior/", "protección interior"
  ),
+ "toyota-consume-aceite-humo-azul": (
+  "Toyota consume aceite o echa humo azul: causas",
+  "Qué revisar si tu Toyota consume aceite o expulsa humo azul: medición, fugas, PCV, turbo, sellos, compresión y posible reparación del motor.",
+  "causas del consumo de aceite y humo azul", "/servicios/reparacion-motor/", "reparación de motor"
+ ),
+ "toyota-no-enciende-causas": (
+  "Toyota no enciende: causas y diagnóstico",
+  "Qué revisar cuando un Toyota no enciende: batería, terminales, arranque, alternador, inmovilizador, combustible, encendido y diagnóstico.",
+  "diagnóstico de un Toyota que no enciende", "/servicios/reparacion-motor/", "reparación de motor"
+ ),
+ "reparar-o-cambiar-motor-toyota": (
+  "¿Reparar o cambiar el motor Toyota? Guía práctica",
+  "Cómo decidir entre reparar, rectificar, reconstruir o cambiar un motor Toyota según diagnóstico, mediciones, repuestos, trazabilidad y garantía.",
+  "decisión entre reparar o reemplazar el motor", "/servicios/reparacion-motor/", "reparación de motor"
+ ),
  "cada-cuanto-cambiar-aceite-toyota": (
   "Cuándo cambiar el aceite de un Toyota",
   "Aprende cuándo revisar y cambiar el aceite de un Toyota según el manual, el tiempo, el kilometraje, el uso y las condiciones de conducción.",
@@ -316,8 +331,14 @@ for article in articles:
         "intent": intent,
         "service_path": service_path,
         "service_label": service_label,
-        "dateModified": "2026-08-13",
+        "dateModified": "2026-08-20" if article["slug"] in {
+            "toyota-consume-aceite-humo-azul",
+            "toyota-no-enciende-causas",
+            "reparar-o-cambiar-motor-toyota",
+        } else "2026-08-13",
     })
+    if article["dateModified"] == "2026-08-20":
+        article["datePublished"] = "2026-08-20"
     if article["slug"] in INTRO_OVERRIDES:
         article["intro"] = INTRO_OVERRIDES[article["slug"]]
 
@@ -469,6 +490,7 @@ SOURCE_NOTES_BY_SERVICE = {
     "/servicios/proteccion-anticorrosiva/": "Verifica producto, zonas incluidas, preparación, compatibilidad con cauchos y drenajes, método de aplicación y programa de inspección posterior.",
     "/servicios/proteccion-interior/": "Identifica primero cuero, textil, vinilo o plástico y comprueba ficha técnica, compatibilidad, acabado y cuidados del producto que se utilizará.",
     "/servicios/transmision/": "La especificación del fluido, el nivel, la temperatura de comprobación y el procedimiento cambian por transmisión; confirma la documentación de la unidad.",
+    "/servicios/reparacion-motor/": "Solicita valores medidos, piezas y mecanizados incluidos, referencias, trabajos externos, pruebas posteriores y condiciones de garantía antes de autorizar una reparación interna.",
 }
 
 for article in articles:
@@ -504,6 +526,9 @@ RELATED_OVERRIDES = {
     "suspension-toyota-ruidos-vibraciones-cartagena": ["suspension-toyota-prado-cartagena", "frenos-toyota-mantenimiento-cartagena", "llantas-toyota-prado-medida-presion"],
     "senales-transmision-toyota": ["mecanica-avanzada-toyota-cartagena", "check-engine-diagnostico-electronico-toyota", "mantenimiento-toyota-fortuner-cartagena"],
     "mantenimiento-toyota-cartagena": ["mantenimiento-preventivo-toyota-cartagena", "aire-acondicionado-toyota-cartagena", "proteccion-anticorrosiva-toyota-cartagena"],
+    "toyota-consume-aceite-humo-azul": ["reparar-o-cambiar-motor-toyota", "sistema-refrigeracion-toyota-cartagena", "cambio-aceite-toyota-cartagena"],
+    "toyota-no-enciende-causas": ["check-engine-diagnostico-electronico-toyota", "bateria-toyota-senales-cambio-cartagena", "reparar-o-cambiar-motor-toyota"],
+    "reparar-o-cambiar-motor-toyota": ["toyota-consume-aceite-humo-azul", "mecanica-avanzada-toyota-cartagena", "repuestos-toyota-originales-homologados-cartagena"],
 }
 
 CONCLUSIONS_BY_SERVICE = {
@@ -566,6 +591,10 @@ CONCLUSIONS_BY_SERVICE = {
     "/servicios/transmision/": (
         "Diagnostica antes de abrir o cambiar fluido",
         "Registra cuándo aparece el síntoma y comprueba nivel, condición, temperatura, códigos y soportes según el diseño. El alcance debe responder a la causa encontrada, no solo a la sensación al conducir."
+    ),
+    "/servicios/reparacion-motor/": (
+        "Mide antes de desmontar y compara alcances completos",
+        "La decisión responsable relaciona el síntoma con pruebas, tolerancias y causa raíz. Compara piezas, mecanizados, armado, verificaciones y garantía, no únicamente el precio inicial."
     ),
 }
 
@@ -646,6 +675,9 @@ def article_page(a):
 for article in articles:
     folder=ROOT/'blog'/article['slug']; folder.mkdir(parents=True,exist_ok=True)
     page=article_page(article).replace('/assets/images/favicon.svg','/assets/images/favicon.svg?v=3').replace('/assets/images/toyo-services-logo.svg','/assets/images/toyo-services-logo.svg?v=3')
+    if article["dateModified"] == "2026-08-20":
+        page=page.replace('datetime="2026-08-13">actualizado el 13 de agosto de 2026', 'datetime="2026-08-20">actualizado el 20 de agosto de 2026')
+    page=page.replace(f'<span class="eyebrow">{html.escape(article["category"])} Toyota Toyota</span>', f'<span class="eyebrow">{html.escape(article["category"])} Toyota</span>')
     page=sync_html_image_dimensions(page, ROOT)
     (folder/'index.html').write_text(page,encoding='utf-8')
 
