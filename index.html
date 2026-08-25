@@ -28,11 +28,10 @@
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#080a0d" />
-    <link
-      rel="icon"
-      href="/assets/images/favicon.svg?v=3"
-      type="image/svg+xml"
-    />
+    <link rel="icon" href="/favicon.ico?v=4" sizes="any" />
+    <link rel="icon" href="/assets/images/favicon.svg?v=4" type="image/svg+xml" />
+    <link rel="icon" href="/assets/images/favicon-48.png?v=4" type="image/png" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png?v=4" sizes="180x180" />
     <link rel="manifest" href="/site.webmanifest" />
     <link
       rel="preload"
@@ -40,16 +39,49 @@
       href="/assets/images/toyo-hero-toyota.webp"
       fetchpriority="high"
     />
-    <link rel="stylesheet" href="/assets/css/styles.css?v=19" />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=20" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
+        "@type": "AutoRepair",
         "@id": "https://toyoservicescartagena.com/#business",
         "name": "Toyo Services",
         "description": "Taller premium especializado en mantenimiento general, mecánica avanzada, repuestos, modificaciones, latonería, pintura y actualización estética Toyota en Cartagena.",
         "url": "https://toyoservicescartagena.com/",
-        "logo": "https://toyoservicescartagena.com/assets/images/toyo-services-logo.svg",
+        "telephone": "+57 301 863 8164",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Avenida Pedro de Heredia, sector Cuatro Vientos, junto a la estación Primax",
+          "addressLocality": "Cartagena de Indias",
+          "addressRegion": "Bolívar",
+          "addressCountry": "CO"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 10.4064192,
+          "longitude": -75.5045153
+        },
+        "hasMap": "https://www.google.com/maps/place/Multillantas/@10.406534,-75.5046544,91m/data=!3m1!1e3!4m6!3m5!1s0x8ef625bd0829d82d:0x45c91efa0e6b59ef!8m2!3d10.4064192!4d-75.5045153!16s%2Fg%2F11ddxvjl68",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+57 301 863 8164",
+          "contactType": "customer service",
+          "availableLanguage": "Spanish"
+        },
+        "sameAs": [
+          "https://www.instagram.com/toyoservicescartagena/",
+          "https://www.facebook.com/profile.php?id=61593607053478"
+        ],
+        "logo": {
+          "@type": "ImageObject",
+          "@id": "https://toyoservicescartagena.com/#logo",
+          "url": "https://toyoservicescartagena.com/assets/images/toyo-services-logo-512.png",
+          "contentUrl": "https://toyoservicescartagena.com/assets/images/toyo-services-logo-512.png",
+          "width": 512,
+          "height": 512,
+          "caption": "Logo de Toyo Services"
+        },
         "image": "https://toyoservicescartagena.com/assets/images/toyo-hero-toyota.webp",
         "areaServed": {
           "@type": "City",
@@ -181,9 +213,9 @@
             estética con un estándar de atención premium.
           </p>
           <div class="actions">
-            <a class="btn btn-primary" href="/servicios/"
-              >Explorar servicios →</a
-            ><a class="btn btn-outline" href="#ubicacion">Área de atención</a>
+            <a class="btn btn-primary" href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20informaci%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener"
+              >Escribir por WhatsApp</a
+            ><a class="btn btn-outline" href="/servicios/">Explorar servicios →</a>
            </div>
         </div>
       </section>
@@ -468,25 +500,25 @@
         </div>
       </section>
       <section class="location" id="ubicacion">
-        <div class="container address address-pending">
+        <div class="container address">
           <div>
             <span class="eyebrow">Área de atención</span>
             <h2>Servicio especializado en Cartagena</h2>
             <p class="muted">
-              Atendemos el área de Cartagena. La dirección definitiva del local
-              y los canales de cita se publicarán aquí cuando la señalización y
-              la recepción estén confirmadas.
+              Avenida Pedro de Heredia, sector Cuatro Vientos, junto a la
+              estación Primax, Cartagena de Indias, Bolívar.
             </p>
-            <a class="btn btn-outline" href="/preguntas-frecuentes/"
-              >Consultar información disponible</a
-            >
+            <div class="actions">
+              <a class="btn btn-primary" href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20agendar%20una%20visita%20para%20mi%20Toyota." target="_blank" rel="noopener">Agendar por WhatsApp</a>
+              <a class="btn btn-outline" href="https://www.google.com/maps/place/Multillantas/@10.406534,-75.5046544,91m/data=!3m1!1e3!4m6!3m5!1s0x8ef625bd0829d82d:0x45c91efa0e6b59ef!8m2!3d10.4064192!4d-75.5045153!16s%2Fg%2F11ddxvjl68" target="_blank" rel="noopener">Cómo llegar</a>
+            </div>
           </div>
           <div class="location-status" aria-label="Estado de la ubicación">
-            <span>Cartagena de Indias</span>
-            <strong>Dirección en proceso de confirmación</strong>
+            <span>Cartagena de Indias · Cuatro Vientos</span>
+            <strong>Junto a la estación Primax</strong>
             <p>
-              Publicaremos el punto exacto únicamente cuando el local tenga
-              señalización y recepción listas para atender visitantes.
+              Escríbenos antes de visitarnos para confirmar disponibilidad y
+              coordinar la recepción de tu Toyota. Teléfono: +57 301 863 8164.
             </p>
           </div>
         </div>
@@ -609,8 +641,8 @@
       <div class="band">
         <div class="container">
           <h2>¿Tu Toyota necesita revisión?</h2>
-          <a class="btn btn-outline" href="#ubicacion"
-            >Área de atención en Cartagena</a
+          <a class="btn btn-outline" href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20agendar%20una%20revisi%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener"
+            >Agendar por WhatsApp</a
           >
         </div>
       </div>
@@ -631,6 +663,10 @@
             <p class="muted">
               Mantenimiento, mecánica, repuestos y acabados premium en
               Cartagena.
+            </p>
+            <p class="footer-contact">
+              <a href="tel:+573018638164">+57 301 863 8164</a>
+              <a href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20informaci%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener">WhatsApp</a>
             </p>
           </div>
           <div>
@@ -658,11 +694,11 @@
         </div>
       </div>
     </footer>
-    <span
+    <a
       class="wa-float"
-      title="WhatsApp disponible próximamente"
-      aria-label="WhatsApp disponible próximamente"
-      ><img src="/assets/images/whatsapp-logo.png" alt="" aria-hidden="true" width="224" height="225"></span>
+      href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20informaci%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener" title="Escribir a Toyo Services por WhatsApp"
+      aria-label="Escribir a Toyo Services por WhatsApp"
+      ><img src="/assets/images/whatsapp-logo.png" alt="" aria-hidden="true" width="224" height="225"></a>
     <script src="/assets/js/main.js?v=18" defer></script>
   </body>
 </html>

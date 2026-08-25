@@ -1,5 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 64">
-  <ellipse cx="48" cy="32" rx="43" ry="27" fill="#080a0d" stroke="#ed1b2f" stroke-width="5"/>
-  <path fill="#ffffff" d="M17 17h36v9H40v22H30V26H17Z"/>
-  <path fill="none" stroke="#ed1b2f" stroke-width="7" stroke-linecap="square" stroke-linejoin="round" d="M77 20.5H63c-5 0-8 2.5-8 6s3 6 8 6h6c6 0 9.5 3.5 9.5 8.5s-4 3.5-9.5 3.5H53"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Toyo Services</title>
+  <rect width="512" height="512" rx="104" fill="#080a0d"/>
+  <ellipse cx="256" cy="256" rx="205" ry="146" fill="none" stroke="#ed1b2f" stroke-width="28"/>
+  <path fill="#f5f7fa" d="M105 169h182v48h-66v132h-54V217h-62Z"/>
+  <path fill="none" stroke="#ed1b2f" stroke-width="38" stroke-linecap="square" stroke-linejoin="round" d="M398 188h-76c-28 0-46 14-46 34s18 34 46 34h32c35 0 54 19 54 48s-22 39-54 39h-74"/>
 </svg>

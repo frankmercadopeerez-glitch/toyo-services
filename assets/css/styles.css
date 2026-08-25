@@ -1000,6 +1000,19 @@ section {
   display: block;
   margin: 7px 0;
 }
+.footer-contact {
+  margin-top: 18px;
+  color: #747d87;
+}
+.footer .footer-contact a {
+  display: inline;
+  margin: 0;
+  color: #f4f6f8;
+  font-weight: 800;
+}
+.footer .footer-contact a:hover {
+  color: #ff3346;
+}
 .legal {
   border-top: 1px solid var(--line);
   margin-top: 35px;
