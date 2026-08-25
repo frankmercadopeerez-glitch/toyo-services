@@ -39,7 +39,7 @@
       href="/assets/images/toyo-hero-toyota.webp"
       fetchpriority="high"
     />
-    <link rel="stylesheet" href="/assets/css/styles.css?v=20" />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=21" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -245,6 +245,68 @@
               <p>Identificación por VIN y referencia para Prado, Fortuner, Hilux, RAV4, Corolla y otros <a href="/modelos/">modelos Toyota</a>.</p>
             </div>
           </div>
+        </div>
+      </section>
+      <section class="contact-form-section" id="cotizar" aria-labelledby="cotizar-titulo">
+        <div class="container contact-form-layout">
+          <div class="contact-form-intro">
+            <span class="eyebrow">Atención por WhatsApp</span>
+            <h2 id="cotizar-titulo">Cuéntanos qué necesita tu Toyota</h2>
+            <p>
+              Completa los datos básicos. Al enviar, abriremos WhatsApp con la
+              solicitud organizada para atenderte en el
+              <strong>+57 301 863 8164</strong>.
+            </p>
+            <p class="muted">
+              No reemplaza la inspección del vehículo ni constituye una
+              cotización definitiva.
+            </p>
+          </div>
+          <form class="contact-form" data-whatsapp-form>
+            <div class="form-field">
+              <label for="contact-name">Nombre</label>
+              <input id="contact-name" name="nombre" type="text" autocomplete="name" required maxlength="80" />
+            </div>
+            <div class="form-field">
+              <label for="contact-model">Modelo Toyota</label>
+              <input id="contact-model" name="modelo" type="text" placeholder="Ej. Prado, Fortuner, Hilux" required maxlength="60" />
+            </div>
+            <div class="form-field">
+              <label for="contact-year">Año</label>
+              <input id="contact-year" name="anio" type="number" inputmode="numeric" min="1980" max="2027" placeholder="Ej. 2020" />
+            </div>
+            <div class="form-field">
+              <label for="contact-service">Servicio</label>
+              <select id="contact-service" name="servicio" required>
+                <option value="">Selecciona una opción</option>
+                <option>Mantenimiento general</option>
+                <option>Cambio de aceite y filtros</option>
+                <option>Diagnóstico electrónico</option>
+                <option>Reparación de motor</option>
+                <option>Transmisión</option>
+                <option>Frenos y suspensión</option>
+                <option>Repuestos</option>
+                <option>Latonería y pintura</option>
+                <option>Modificaciones</option>
+                <option>PPF</option>
+                <option>Recubrimiento cerámico</option>
+                <option>Protección anticorrosiva</option>
+                <option>Otro servicio</option>
+              </select>
+            </div>
+            <div class="form-field form-field-wide">
+              <label for="contact-message">¿Qué presenta o qué deseas realizar?</label>
+              <textarea id="contact-message" name="mensaje" rows="4" required maxlength="700" placeholder="Describe síntomas, ruidos, testigos o el trabajo que deseas cotizar."></textarea>
+            </div>
+            <label class="form-consent form-field-wide">
+              <input type="checkbox" name="privacidad" required />
+              <span>Acepto enviar estos datos por WhatsApp y he leído la <a href="/privacidad/">política de privacidad</a>.</span>
+            </label>
+            <div class="form-submit form-field-wide">
+              <button class="btn btn-primary" type="submit">Enviar solicitud por WhatsApp</button>
+              <span>Responderemos desde el número oficial de Toyo Services.</span>
+            </div>
+          </form>
         </div>
       </section>
       <section>
@@ -699,6 +761,6 @@
       href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20informaci%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener" title="Escribir a Toyo Services por WhatsApp"
       aria-label="Escribir a Toyo Services por WhatsApp"
       ><img src="/assets/images/whatsapp-logo.png" alt="" aria-hidden="true" width="224" height="225"></a>
-    <script src="/assets/js/main.js?v=18" defer></script>
+    <script src="/assets/js/main.js?v=19" defer></script>
   </body>
 </html>

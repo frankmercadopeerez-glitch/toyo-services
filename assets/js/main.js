@@ -45,3 +45,27 @@ if (links) {
 document
   .querySelectorAll("[data-year]")
   .forEach((el) => (el.textContent = new Date().getFullYear()));
+
+const whatsappForm = document.querySelector("[data-whatsapp-form]");
+if (whatsappForm) {
+  whatsappForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!whatsappForm.reportValidity()) return;
+
+    const data = new FormData(whatsappForm);
+    const value = (name) => String(data.get(name) || "").trim();
+    const lines = [
+      "Hola Toyo Services. Quiero solicitar atención para mi Toyota.",
+      "",
+      `Nombre: ${value("nombre")}`,
+      `Modelo: ${value("modelo")}`,
+      `Año: ${value("anio") || "No indicado"}`,
+      `Servicio: ${value("servicio")}`,
+      `Detalle: ${value("mensaje")}`,
+      "",
+      "Enviado desde toyoservicescartagena.com",
+    ];
+    const url = `https://wa.me/573018638164?text=${encodeURIComponent(lines.join("\n"))}`;
+    window.location.assign(url);
+  });
+}
