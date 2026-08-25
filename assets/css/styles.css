@@ -7,6 +7,7 @@
   --muted: #a8b0ba;
   --red: #eb0a1e;
   --red2: #ff3345;
+  --red-on-dark: #ff3346;
   --max: 1180px;
   --shadow: 0 22px 70px rgba(0, 0, 0, 0.35);
 }
@@ -79,7 +80,7 @@ a {
   flex: 0 0 60px;
 }
 .brand span span {
-  color: var(--red);
+  color: var(--red-on-dark);
 }
 .nav-links {
   display: flex;
@@ -1479,7 +1480,7 @@ section {
   margin-top: 28px;
 }
 .faq-note a {
-  color: var(--red);
+  color: var(--red-on-dark);
 }
 .service-detail-hero {
   padding: 84px 0 64px;

@@ -2,10 +2,25 @@ from pathlib import Path
 import html, json, math, re
 
 from image_dimensions import sync_html_image_dimensions
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = "https://toyoservicescartagena.com"
 BUSINESS_ID = f"{BASE}/#business"
+
+
+def responsive_attrs(filename, sizes):
+    source = ROOT / "assets" / "images" / filename
+    with Image.open(source) as image:
+        original_width = image.width
+    stem = Path(filename).stem
+    candidates = [
+        f"/assets/images/{stem}-{width}w.webp {width}w"
+        for width in (400, 640, 960, 1120, 1440)
+        if width < original_width and (source.with_name(f"{stem}-{width}w.webp")).exists()
+    ]
+    candidates.append(f"/assets/images/{filename} {original_width}w")
+    return f'srcset="{", ".join(candidates)}" sizes="{sizes}"'
 
 articles = [
  {
@@ -323,6 +338,31 @@ INTRO_OVERRIDES = {
  ),
 }
 
+SOURCE_UPDATE_SLUGS = {
+    "accesorios-toyota-cartagena-guia",
+    "actualizacion-estetica-toyota-cartagena",
+    "aire-acondicionado-toyota-cartagena",
+    "bateria-toyota-senales-cambio-cartagena",
+    "check-engine-diagnostico-electronico-toyota",
+    "frenos-toyota-mantenimiento-cartagena",
+    "latoneria-pintura-toyota-cartagena",
+    "mecanica-avanzada-toyota-cartagena",
+    "ppf-toyota-cartagena-proteccion-pintura",
+    "proteccion-anticorrosiva-toyota-cartagena",
+    "proteccion-interior-toyota-cuero-plasticos-cartagena",
+    "recubrimiento-ceramico-cristal-liquido-toyota-cartagena",
+    "repuestos-toyota-originales-homologados-cartagena",
+    "senales-transmision-toyota",
+    "sistema-refrigeracion-toyota-cartagena",
+    "suspension-toyota-ruidos-vibraciones-cartagena",
+}
+
+NEW_ENGINE_ARTICLES = {
+    "toyota-consume-aceite-humo-azul",
+    "toyota-no-enciende-causas",
+    "reparar-o-cambiar-motor-toyota",
+}
+
 for article in articles:
     title, description, intent, service_path, service_label = EDITORIAL[article["slug"]]
     article.update({
@@ -331,13 +371,15 @@ for article in articles:
         "intent": intent,
         "service_path": service_path,
         "service_label": service_label,
-        "dateModified": "2026-08-20" if article["slug"] in {
-            "toyota-consume-aceite-humo-azul",
-            "toyota-no-enciende-causas",
-            "reparar-o-cambiar-motor-toyota",
-        } else "2026-08-13",
+        "dateModified": (
+            "2026-08-25"
+            if article["slug"] in SOURCE_UPDATE_SLUGS
+            else "2026-08-20"
+            if article["slug"] in NEW_ENGINE_ARTICLES
+            else "2026-08-13"
+        ),
     })
-    if article["dateModified"] == "2026-08-20":
+    if article["slug"] in NEW_ENGINE_ARTICLES:
         article["datePublished"] = "2026-08-20"
     if article["slug"] in INTRO_OVERRIDES:
         article["intro"] = INTRO_OVERRIDES[article["slug"]]
@@ -444,7 +486,7 @@ CATEGORY_EXTRA_OWNERS = {
 
 TOYOTA_MAINTENANCE = (
     "Mantenimiento planeado Toyota Colombia",
-    "https://www.toyota.com.co/mi-toyota/mantenimiento/planeado",
+    "https://www.toyota.com.co/postventa/mantenimiento/planeado",
 )
 TOYOTA_MANUALS = (
     "Manuales y garantías Toyota por modelo y año",
@@ -453,6 +495,30 @@ TOYOTA_MANUALS = (
 TOYOTA_BATTERY = (
     "Toyota: señales para revisar o reemplazar la batería",
     "https://www.toyota.com/espanol/car-tips/replace-car-battery/",
+)
+TOYOTA_OWNER_RESOURCES = (
+    "Recursos oficiales Toyota para propietarios y manuales",
+    "https://www.toyota.com/owners/",
+)
+TOYOTA_GENUINE_PARTS = (
+    "Toyota: repuestos y accesorios por vehículo y VIN",
+    "https://www.toyota.com/espanol/owners/genuine-parts/",
+)
+TOYOTA_COLLISION = (
+    "Toyota: criterios para reparación de colisiones",
+    "https://www.toyota.com/owners/collision-center/",
+)
+THREE_M_PPF = (
+    "Referencia técnica de película PPF automotriz (3M)",
+    "https://multimedia.3m.com/mws/media/2159829O/product-bulletin-ppf-series-100-en-we.pdf",
+)
+THREE_M_CERAMIC = (
+    "Referencia técnica de recubrimiento cerámico automotriz (3M)",
+    "https://multimedia.3m.com/mws/media/1990834O/3m-ceramic-coating-tds-39901.pdf",
+)
+THREE_M_CORROSION = (
+    "Procedimientos de protección anticorrosiva automotriz (3M)",
+    "https://multimedia.3m.com/mws/media/2428117O/3m-cavity-wax-plus-08852-tds-ceemea.pdf",
 )
 PRADO_PAGE = (
     "Land Cruiser Prado: información y materiales oficiales",
@@ -466,6 +532,25 @@ HILUX_SPECS = (
     "Toyota Hilux: información y materiales oficiales",
     "https://www.toyota.com.co/vehiculo/hilux-3",
 )
+
+DEFAULT_SOURCES_BY_SERVICE = {
+    "/servicios/mantenimiento-general/": [TOYOTA_MAINTENANCE, TOYOTA_MANUALS],
+    "/servicios/mecanica-avanzada/": [TOYOTA_OWNER_RESOURCES, TOYOTA_MANUALS],
+    "/servicios/repuestos/": [TOYOTA_GENUINE_PARTS, TOYOTA_MANUALS],
+    "/servicios/modificaciones/": [TOYOTA_GENUINE_PARTS, TOYOTA_MANUALS],
+    "/servicios/actualizacion-estetica/": [TOYOTA_GENUINE_PARTS, TOYOTA_MANUALS],
+    "/servicios/frenos-suspension/": [TOYOTA_MANUALS, TOYOTA_GENUINE_PARTS],
+    "/servicios/motor-refrigeracion/": [TOYOTA_MANUALS, TOYOTA_MAINTENANCE],
+    "/servicios/diagnostico-electronico/": [TOYOTA_MANUALS, TOYOTA_OWNER_RESOURCES],
+    "/servicios/aceite-filtros/": [TOYOTA_MANUALS, TOYOTA_MAINTENANCE],
+    "/servicios/latoneria-pintura/": [TOYOTA_COLLISION, TOYOTA_GENUINE_PARTS],
+    "/servicios/ppf/": [THREE_M_PPF],
+    "/servicios/recubrimiento-ceramico/": [THREE_M_CERAMIC],
+    "/servicios/proteccion-anticorrosiva/": [THREE_M_CORROSION],
+    "/servicios/proteccion-interior/": [TOYOTA_MANUALS],
+    "/servicios/transmision/": [TOYOTA_MANUALS, TOYOTA_GENUINE_PARTS],
+    "/servicios/reparacion-motor/": [TOYOTA_MANUALS, TOYOTA_GENUINE_PARTS],
+}
 
 planned_maintenance_sources = {
     "mantenimiento-preventivo-toyota-cartagena",
@@ -494,7 +579,9 @@ SOURCE_NOTES_BY_SERVICE = {
 }
 
 for article in articles:
-    sources = [TOYOTA_MAINTENANCE] if article["slug"] in planned_maintenance_sources else []
+    sources = list(DEFAULT_SOURCES_BY_SERVICE[article["service_path"]])
+    if article["slug"] in planned_maintenance_sources:
+        sources = [TOYOTA_MAINTENANCE, TOYOTA_MANUALS]
     if "prado" in article["slug"]:
         sources = [PRADO_PAGE, TOYOTA_MAINTENANCE]
     elif "fortuner" in article["slug"]:
@@ -627,6 +714,16 @@ def reading_minutes(article):
     word_count = len(re.findall(r"\b[\wÁÉÍÓÚÜÑáéíóúüñ]+\b", " ".join(parts), flags=re.UNICODE))
     return max(3, math.ceil(word_count / 200))
 
+
+def spanish_date(value):
+    year, month, day = value.split("-")
+    months = {
+        "01": "enero", "02": "febrero", "03": "marzo", "04": "abril",
+        "05": "mayo", "06": "junio", "07": "julio", "08": "agosto",
+        "09": "septiembre", "10": "octubre", "11": "noviembre", "12": "diciembre",
+    }
+    return f"{int(day)} de {months[month]} de {year}"
+
 for article in articles:
     article["read_minutes"] = reading_minutes(article)
     article["read"] = f'{article["read_minutes"]} min'
@@ -646,7 +743,7 @@ if any(count == 0 for count in related_inbound.values()):
     raise ValueError(f"Guías sin enlaces relacionados entrantes: {related_inbound}")
 
 header = '''<header class="site-header"><nav class="nav container"><a class="brand" href="/"><img class="brand-logo" src="/assets/images/toyo-services-logo.svg" alt="" width="60" height="40" /><span>TOYO <span>SERVICES</span></span></a><button class="menu" aria-expanded="false" aria-label="Abrir menú">☰</button><div class="nav-links"><a href="/">Inicio</a><a href="/servicios/">Servicios</a><a href="/modelos/">Modelos</a><a aria-current="page" href="/blog/">Guía Toyota</a><a href="/#ubicacion">Área de atención</a></div></nav></header>'''
-footer = '''<footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="/"><img class="brand-logo" src="/assets/images/toyo-services-logo.svg" alt="" width="60" height="40" /><span>TOYO <span>SERVICES</span></span></a><p class="muted">Mantenimiento, mecánica, repuestos y acabados premium en Cartagena.</p><p class="footer-contact"><a href="tel:+573018638164">+57 301 863 8164</a> · <a href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20informaci%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener">WhatsApp</a></p></div><div><h3>Explora</h3><a href="/servicios/">Servicios</a><a href="/modelos/">Modelos Toyota</a><a href="/blog/">Guía Toyota</a><a href="/nosotros/">Nosotros</a></div><div><h3>Información</h3><a href="/metodologia/">Metodología editorial</a><a href="/preguntas-frecuentes/">Preguntas frecuentes</a><a href="/legal/">Condiciones del servicio</a><a href="/privacidad/">Privacidad y datos</a><a href="/creditos-imagenes/">Créditos visuales</a></div></div><div class="legal"><span>© <span data-year></span> Toyo Services.</span><span>Taller independiente no afiliado a Toyota Motor Corporation.</span></div></div></footer><a class="wa-float" href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20informaci%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener" title="Escribir a Toyo Services por WhatsApp" aria-label="Escribir a Toyo Services por WhatsApp"><img src="/assets/images/whatsapp-logo.png" width="224" height="225" alt="" aria-hidden="true"></a><script src="/assets/js/main.js?v=19" defer></script>'''
+footer = '''<footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="/"><img class="brand-logo" src="/assets/images/toyo-services-logo.svg" alt="" width="60" height="40" /><span>TOYO <span>SERVICES</span></span></a><p class="muted">Mantenimiento, mecánica, repuestos y acabados premium en Cartagena.</p><p class="footer-contact"><a href="tel:+573018638164">+57 301 863 8164</a> · <a href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20informaci%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener">WhatsApp</a></p></div><div><h3>Explora</h3><a href="/servicios/">Servicios</a><a href="/modelos/">Modelos Toyota</a><a href="/blog/">Guía Toyota</a><a href="/nosotros/">Nosotros</a></div><div><h3>Información</h3><a href="/metodologia/">Metodología editorial</a><a href="/preguntas-frecuentes/">Preguntas frecuentes</a><a href="/legal/">Condiciones del servicio</a><a href="/privacidad/">Privacidad y datos</a><a href="/creditos-imagenes/">Créditos visuales</a></div></div><div class="legal"><span>© <span data-year></span> Toyo Services.</span><span>Taller independiente no afiliado a Toyota Motor Corporation.</span></div></div></footer><a class="wa-float" href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20informaci%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener" title="Escribir a Toyo Services por WhatsApp" aria-label="Escribir a Toyo Services por WhatsApp"><img src="/assets/images/whatsapp-logo.png" width="96" height="96" alt="" aria-hidden="true"></a><script src="/assets/js/main.js?v=19" defer></script>'''
 
 def article_page(a):
     canonical=f"{BASE}/blog/{a['slug']}/"
@@ -678,14 +775,19 @@ def article_page(a):
     )
     conclusion_heading, conclusion_text = CONCLUSIONS_BY_SERVICE[a["service_path"]]
     cta_label=f'Conocer el servicio de {a["service_label"]}'
-    return f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(a['title'])}</title><meta name="description" content="{html.escape(a['description'])}"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{canonical}"><meta property="og:type" content="article"><meta property="og:title" content="{html.escape(a['title'])}"><meta property="og:description" content="{html.escape(a['description'])}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}/assets/images/{a['image']}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/favicon.ico?v=4" sizes="any"><link rel="icon" href="/assets/images/favicon.svg?v=4" type="image/svg+xml"><link rel="icon" href="/assets/images/favicon-48.png?v=4" type="image/png" sizes="48x48"><link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png?v=4" sizes="180x180"><link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.css?v=21"><script type="application/ld+json">{json.dumps(posting,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(faq_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(breadcrumb_schema,ensure_ascii=False)}</script></head><body>{header}<main class="article"><nav class="breadcrumb" aria-label="Migas de pan"><a href="/">Inicio</a> / <a href="/blog/">Guía Toyota</a> / {html.escape(a['category'])}</nav><span class="eyebrow">{html.escape(a['category'])} Toyota</span><h1>{html.escape(a['title'])}</h1><p class="article-byline">Contenido elaborado por <a href="/nosotros/">Toyo Services</a> · <time datetime="2026-08-13">actualizado el 13 de agosto de 2026</time></p><p class="lead">{html.escape(a['intro'])}</p><img src="/assets/images/{a['image']}" width="1200" height="800" alt="{html.escape(a['title'])}" fetchpriority="high"><aside class="article-toc"><strong>En esta guía</strong><ol>{toc}</ol></aside>{body}<h2>{html.escape(conclusion_heading)}</h2><p>{html.escape(conclusion_text)}</p>{source_section}<section class="faq article-faq"><h2>Preguntas frecuentes</h2>{faqs}</section><aside class="related-guides"><h2>Guías relacionadas</h2><ul>{related}</ul></aside><div class="actions"><a class="btn btn-primary" href="{a['service_path']}">{html.escape(cta_label)}</a><a class="btn btn-outline" href="/#ubicacion">Ver área de atención</a></div></main>{footer}</body></html>'''
+    eyebrow = a["category"] if a["category"].endswith("Toyota") else f'{a["category"]} Toyota'
+    image_attrs = responsive_attrs(a["image"], "(max-width: 720px) calc(100vw - 40px), 920px")
+    return f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(a['title'])}</title><meta name="description" content="{html.escape(a['description'])}"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{canonical}"><meta property="og:type" content="article"><meta property="og:locale" content="es_CO"><meta property="og:site_name" content="Toyo Services"><meta property="og:title" content="{html.escape(a['title'])}"><meta property="og:description" content="{html.escape(a['description'])}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}/assets/images/{a['image']}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" sizes="180x180"><link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.min.css?v=22"><script type="application/ld+json">{json.dumps(posting,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(faq_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(breadcrumb_schema,ensure_ascii=False)}</script></head><body>{header}<main class="article"><nav class="breadcrumb" aria-label="Migas de pan"><a href="/">Inicio</a> / <a href="/blog/">Guía Toyota</a> / {html.escape(a['category'])}</nav><span class="eyebrow">{html.escape(eyebrow)}</span><h1>{html.escape(a['title'])}</h1><p class="article-byline">Contenido elaborado por <a href="/nosotros/">Toyo Services</a> · <time datetime="2026-08-13">actualizado el 13 de agosto de 2026</time></p><p class="lead">{html.escape(a['intro'])}</p><img src="/assets/images/{a['image']}" {image_attrs} width="1200" height="800" alt="{html.escape(a['title'])}" fetchpriority="high"><aside class="article-toc"><strong>En esta guía</strong><ol>{toc}</ol></aside>{body}<h2>{html.escape(conclusion_heading)}</h2><p>{html.escape(conclusion_text)}</p>{source_section}<section class="faq article-faq"><h2>Preguntas frecuentes</h2>{faqs}</section><aside class="related-guides"><h2>Guías relacionadas</h2><ul>{related}</ul></aside><div class="actions"><a class="btn btn-primary" href="{a['service_path']}">{html.escape(cta_label)}</a><a class="btn btn-outline" href="/#ubicacion">Ver área de atención</a></div></main>{footer}</body></html>'''
 
 for article in articles:
     folder=ROOT/'blog'/article['slug']; folder.mkdir(parents=True,exist_ok=True)
     page=article_page(article).replace('/assets/images/toyo-services-logo.svg','/assets/images/toyo-services-logo.svg?v=3')
     page=page.replace('</a> · <time datetime=', '</a> · <a href="/metodologia/">Metodología editorial</a> · <time datetime=', 1)
-    if article["dateModified"] == "2026-08-20":
-        page=page.replace('datetime="2026-08-13">actualizado el 13 de agosto de 2026', 'datetime="2026-08-20">actualizado el 20 de agosto de 2026')
+    if article["dateModified"] != "2026-08-13":
+        page=page.replace(
+            'datetime="2026-08-13">actualizado el 13 de agosto de 2026',
+            f'datetime="{article["dateModified"]}">actualizado el {spanish_date(article["dateModified"])}',
+        )
     page=page.replace(f'<span class="eyebrow">{html.escape(article["category"])} Toyota Toyota</span>', f'<span class="eyebrow">{html.escape(article["category"])} Toyota</span>')
     page=sync_html_image_dimensions(page, ROOT)
     (folder/'index.html').write_text(page,encoding='utf-8')
@@ -693,10 +795,10 @@ for article in articles:
 cards=[]
 for a in articles:
     cards.append((a['slug'],a['title'],a['category'],a['read'],a['image'],a['description']))
-card_html=''.join(f'''<article class="card blog-card"><a class="blog-card-content" href="/blog/{slug}/"><img loading="lazy" src="/assets/images/{img}" width="800" height="500" alt="{html.escape(title)}"><div class="blog-body"><span class="tag">{html.escape(cat)} · {read}</span><h2>{html.escape(title)}</h2><p>{html.escape(desc)}</p><span class="card-link" aria-hidden="true">Leer artículo →</span></div></a></article>''' for slug,title,cat,read,img,desc in cards)
+card_html=''.join(f'''<article class="card blog-card"><a class="blog-card-content" href="/blog/{slug}/"><img loading="lazy" src="/assets/images/{img}" {responsive_attrs(img, "(max-width: 700px) calc(100vw - 40px), (max-width: 1100px) 46vw, 360px")} width="800" height="500" alt="{html.escape(title)}"><div class="blog-body"><span class="tag">{html.escape(cat)} · {read}</span><h2>{html.escape(title)}</h2><p>{html.escape(desc)}</p><span class="card-link" aria-hidden="true">Leer artículo →</span></div></a></article>''' for slug,title,cat,read,img,desc in cards)
 item_schema={"@context":"https://schema.org","@type":"CollectionPage","@id":f"{BASE}/blog/#collection","name":"Guía Toyota de Toyo Services","url":f"{BASE}/blog/","publisher":{"@id":BUSINESS_ID},"hasPart":[{"@type":"BlogPosting","headline":title,"url":f"{BASE}/blog/{slug}/"} for slug,title,*_ in cards]}
 blog_breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":f"{BASE}/"},{"@type":"ListItem","position":2,"name":"Guía Toyota","item":f"{BASE}/blog/"}]}
-blog=f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guía Toyota en Cartagena | Toyo Services</title><meta name="description" content="Guías de Toyo Services sobre mantenimiento, diagnóstico, repuestos, aceite, Prado, Fortuner, Hilux y cuidado Toyota en Cartagena."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{BASE}/blog/"><meta property="og:type" content="website"><meta property="og:title" content="Guía Toyota en Cartagena | Toyo Services"><meta property="og:description" content="Información útil sobre mantenimiento, diagnóstico, repuestos y cuidado Toyota."><meta property="og:url" content="{BASE}/blog/"><meta property="og:image" content="{BASE}/assets/images/blog-maintenance-guide.webp"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/favicon.ico?v=4" sizes="any"><link rel="icon" href="/assets/images/favicon.svg?v=4" type="image/svg+xml"><link rel="icon" href="/assets/images/favicon-48.png?v=4" type="image/png" sizes="48x48"><link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png?v=4" sizes="180x180"><link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.css?v=21"><script type="application/ld+json">{json.dumps(item_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(blog_breadcrumb,ensure_ascii=False)}</script></head><body>{header}<main><header class="page-hero blog-hero"><div class="container"><div class="breadcrumb"><a href="/">Inicio</a> / Guía Toyota</div><span class="eyebrow">Conocimiento especializado</span><h1>Guías para cuidar y mantener tu Toyota en Cartagena.</h1><p>{len(cards)} guías para tomar mejores decisiones sobre mantenimiento, diagnóstico, repuestos, seguridad, modificaciones y conservación.</p></div></header><section><div class="container"><div class="blog-grid">{card_html}</div></div></section></main>{footer}</body></html>'''
+blog=f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guía Toyota en Cartagena | Toyo Services</title><meta name="description" content="Guías de Toyo Services sobre mantenimiento, diagnóstico, repuestos, aceite, Prado, Fortuner, Hilux y cuidado Toyota en Cartagena."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{BASE}/blog/"><meta property="og:type" content="website"><meta property="og:locale" content="es_CO"><meta property="og:site_name" content="Toyo Services"><meta property="og:title" content="Guía Toyota en Cartagena | Toyo Services"><meta property="og:description" content="Información útil sobre mantenimiento, diagnóstico, repuestos y cuidado Toyota."><meta property="og:url" content="{BASE}/blog/"><meta property="og:image" content="{BASE}/assets/images/blog-maintenance-guide.webp"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" sizes="180x180"><link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.min.css?v=22"><script type="application/ld+json">{json.dumps(item_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(blog_breadcrumb,ensure_ascii=False)}</script></head><body>{header}<main><header class="page-hero blog-hero"><div class="container"><div class="breadcrumb"><a href="/">Inicio</a> / Guía Toyota</div><span class="eyebrow">Conocimiento especializado</span><h1>Guías para cuidar y mantener tu Toyota en Cartagena.</h1><p>{len(cards)} guías para tomar mejores decisiones sobre mantenimiento, diagnóstico, repuestos, seguridad, modificaciones y conservación.</p></div></header><section><div class="container"><div class="blog-grid">{card_html}</div></div></section></main>{footer}</body></html>'''
 blog=blog.replace('/assets/images/toyo-services-logo.svg','/assets/images/toyo-services-logo.svg?v=3')
 blog=sync_html_image_dimensions(blog, ROOT)
 (ROOT/'blog'/'index.html').write_text(blog,encoding='utf-8')
