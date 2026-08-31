@@ -1,0 +1,28 @@
+{
+  "slug": "reemplazar-por-slug-del-caso",
+  "title": "Reemplazar por un título factual",
+  "vehicle": {
+    "model": "",
+    "year": "",
+    "version": "",
+    "odometer_km": null
+  },
+  "service": "",
+  "date_completed": "YYYY-MM-DD",
+  "customer_consent_reference": "",
+  "initial_symptom": "",
+  "verified_findings": [],
+  "authorized_scope": [],
+  "parts_and_materials": [],
+  "measurements_before": [],
+  "measurements_after": [],
+  "verification_performed": [],
+  "limitations_and_pending_items": [],
+  "images": {
+    "before": [],
+    "during": [],
+    "after": []
+  },
+  "privacy_review_complete": false,
+  "editorial_review_complete": false
+}

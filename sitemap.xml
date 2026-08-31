@@ -2,12 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://toyoservicescartagena.com/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://toyoservicescartagena.com/blog/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
@@ -46,6 +46,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://toyoservicescartagena.com/blog/cambio-aceite-transmision-automatica-toyota/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://toyoservicescartagena.com/blog/check-engine-diagnostico-electronico-toyota/</loc>
     <lastmod>2026-08-25</lastmod>
     <priority>0.8</priority>
@@ -53,6 +58,16 @@
   <url>
     <loc>https://toyoservicescartagena.com/blog/frenos-toyota-mantenimiento-cartagena/</loc>
     <lastmod>2026-08-25</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toyoservicescartagena.com/blog/igualacion-color-pintura-toyota-cartagena/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toyoservicescartagena.com/blog/inspeccion-precompra-toyota-usado-cartagena/</loc>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -78,6 +93,11 @@
   <url>
     <loc>https://toyoservicescartagena.com/blog/mantenimiento-toyota-fortuner-cartagena/</loc>
     <lastmod>2026-08-25</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toyoservicescartagena.com/blog/mantenimiento-toyota-hibrido-cartagena/</loc>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -117,7 +137,17 @@
   </url>
   <url>
     <loc>https://toyoservicescartagena.com/blog/repuestos-toyota-originales-homologados-cartagena/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toyoservicescartagena.com/blog/repuestos-toyota-por-vin-cartagena/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toyoservicescartagena.com/blog/revision-toyota-antes-de-viaje-cartagena/</loc>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -172,32 +202,32 @@
   </url>
   <url>
     <loc>https://toyoservicescartagena.com/modelos/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://toyoservicescartagena.com/modelos/toyota-fortuner/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://toyoservicescartagena.com/modelos/toyota-hilux/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://toyoservicescartagena.com/modelos/toyota-prado/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://toyoservicescartagena.com/nosotros/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://toyoservicescartagena.com/preguntas-frecuentes/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
@@ -282,7 +312,7 @@
   </url>
   <url>
     <loc>https://toyoservicescartagena.com/servicios/repuestos/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>

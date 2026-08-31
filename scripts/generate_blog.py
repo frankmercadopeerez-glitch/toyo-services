@@ -126,6 +126,7 @@ articles = [
 ]
 
 articles += json.loads((ROOT / "scripts" / "seo_articles.json").read_text(encoding="utf-8"))
+articles += json.loads((ROOT / "scripts" / "seo_articles_2026_08_31.json").read_text(encoding="utf-8"))
 articles += [article for article in json.loads((ROOT / "scripts" / "additional_services_articles.json").read_text(encoding="utf-8")) if not article.get("disabled")]
 articles += json.loads((ROOT / "scripts" / "legacy_articles.json").read_text(encoding="utf-8"))
 
@@ -282,6 +283,36 @@ EDITORIAL = {
   "Mantenimiento Toyota en el clima de Cartagena",
   "Guía para cuidar un Toyota en Cartagena frente a calor, humedad, tráfico y recorridos cortos, sin reemplazar el programa específico del fabricante.",
   "mantenimiento condicionado por el clima de Cartagena", "/servicios/mantenimiento-general/", "mantenimiento general"
+ ),
+ "igualacion-color-pintura-toyota-cartagena": (
+  "Igualación de color Toyota en Cartagena",
+  "Cómo se iguala el color de un Toyota en Cartagena: código de pintura, lectura del tono, panel de prueba, difuminado, barniz y control final.",
+  "igualación profesional del color de pintura", "/servicios/latoneria-pintura/", "latonería y pintura"
+ ),
+ "inspeccion-precompra-toyota-usado-cartagena": (
+  "Inspección precompra Toyota usado en Cartagena",
+  "Qué revisar antes de comprar un Toyota usado en Cartagena: historial, escaneo, motor, transmisión, chasis, pintura, prueba de manejo y documentos.",
+  "inspección precompra de un Toyota usado", "/servicios/mantenimiento-general/", "mantenimiento general"
+ ),
+ "mantenimiento-toyota-hibrido-cartagena": (
+  "Mantenimiento de Toyota híbrido en Cartagena",
+  "Mantenimiento Toyota híbrido en Cartagena: batería de 12 V, ventilación híbrida, refrigeración, frenos, escaneo y seguridad de alto voltaje.",
+  "mantenimiento seguro de Toyota híbrido", "/servicios/mantenimiento-general/", "mantenimiento general"
+ ),
+ "repuestos-toyota-por-vin-cartagena": (
+  "Repuestos Toyota por VIN: evita piezas equivocadas",
+  "Cómo identificar repuestos Toyota por VIN en Cartagena: versión, motor, transmisión, referencia, fabricante, compatibilidad, instalación y garantía.",
+  "identificación de repuestos Toyota por VIN", "/servicios/repuestos/", "repuestos Toyota"
+ ),
+ "cambio-aceite-transmision-automatica-toyota": (
+  "Aceite de transmisión Toyota: revisión y cambio",
+  "Cuándo revisar o cambiar el aceite de transmisión Toyota: fluido correcto, temperatura, nivel, uso severo, fugas, servicio parcial y diagnóstico.",
+  "revisión y cambio de aceite de transmisión", "/servicios/transmision/", "transmisión"
+ ),
+ "revision-toyota-antes-de-viaje-cartagena": (
+  "Revisión Toyota antes de viajar desde Cartagena",
+  "Checklist Toyota antes de viajar desde Cartagena: llantas, frenos, aceite, refrigeración, batería, luces, aire acondicionado y prueba de ruta.",
+  "revisión preventiva antes de viajar", "/servicios/mantenimiento-general/", "mantenimiento general"
  )
 }
 
@@ -363,6 +394,15 @@ NEW_ENGINE_ARTICLES = {
     "reparar-o-cambiar-motor-toyota",
 }
 
+NEW_SEO_ARTICLES = {
+    "igualacion-color-pintura-toyota-cartagena",
+    "inspeccion-precompra-toyota-usado-cartagena",
+    "mantenimiento-toyota-hibrido-cartagena",
+    "repuestos-toyota-por-vin-cartagena",
+    "cambio-aceite-transmision-automatica-toyota",
+    "revision-toyota-antes-de-viaje-cartagena",
+}
+
 for article in articles:
     title, description, intent, service_path, service_label = EDITORIAL[article["slug"]]
     article.update({
@@ -372,7 +412,9 @@ for article in articles:
         "service_path": service_path,
         "service_label": service_label,
         "dateModified": (
-            "2026-08-25"
+            "2026-08-31"
+            if article["slug"] in NEW_SEO_ARTICLES
+            else "2026-08-25"
             if article["slug"] in SOURCE_UPDATE_SLUGS
             else "2026-08-20"
             if article["slug"] in NEW_ENGINE_ARTICLES
@@ -381,6 +423,8 @@ for article in articles:
     })
     if article["slug"] in NEW_ENGINE_ARTICLES:
         article["datePublished"] = "2026-08-20"
+    if article["slug"] in NEW_SEO_ARTICLES:
+        article["datePublished"] = "2026-08-31"
     if article["slug"] in INTRO_OVERRIDES:
         article["intro"] = INTRO_OVERRIDES[article["slug"]]
 
@@ -598,6 +642,12 @@ for article in articles:
     article["source_note"] = SOURCE_NOTES_BY_SERVICE[article["service_path"]]
 
 RELATED_OVERRIDES = {
+    "igualacion-color-pintura-toyota-cartagena": ["latoneria-pintura-toyota-cartagena", "ppf-toyota-cartagena-proteccion-pintura", "recubrimiento-ceramico-cristal-liquido-toyota-cartagena"],
+    "inspeccion-precompra-toyota-usado-cartagena": ["mantenimiento-preventivo-toyota-cartagena", "check-engine-diagnostico-electronico-toyota", "repuestos-toyota-por-vin-cartagena"],
+    "mantenimiento-toyota-hibrido-cartagena": ["mantenimiento-preventivo-toyota-cartagena", "bateria-toyota-senales-cambio-cartagena", "frenos-toyota-mantenimiento-cartagena"],
+    "repuestos-toyota-por-vin-cartagena": ["repuestos-toyota-originales-homologados-cartagena", "inspeccion-precompra-toyota-usado-cartagena", "mantenimiento-preventivo-toyota-cartagena"],
+    "cambio-aceite-transmision-automatica-toyota": ["senales-transmision-toyota", "mantenimiento-toyota-fortuner-cartagena", "mecanica-avanzada-toyota-cartagena"],
+    "revision-toyota-antes-de-viaje-cartagena": ["mantenimiento-preventivo-toyota-cartagena", "frenos-toyota-mantenimiento-cartagena", "sistema-refrigeracion-toyota-cartagena"],
     "mantenimiento-preventivo-toyota-cartagena": ["bateria-toyota-senales-cambio-cartagena", "sistema-refrigeracion-toyota-cartagena", "frenos-toyota-mantenimiento-cartagena"],
     "accesorios-toyota-cartagena-guia": ["actualizacion-estetica-toyota-cartagena", "proteccion-interior-toyota-cuero-plasticos-cartagena", "transformaciones-toyota-hilux-4x4-cartagena"],
     "actualizacion-estetica-toyota-cartagena": ["latoneria-pintura-toyota-cartagena", "proteccion-interior-toyota-cuero-plasticos-cartagena", "accesorios-toyota-cartagena-guia"],

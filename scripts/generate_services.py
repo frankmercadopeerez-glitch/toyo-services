@@ -254,7 +254,7 @@ commercial = {
     "related": [("Cómo se diagnostica una falla compleja", "/blog/mecanica-avanzada-toyota-cartagena/"), ("Diagnóstico electrónico Toyota", "/servicios/diagnostico-electronico/"), ("Transmisión Toyota", "/servicios/transmision/")]
   },
   "repuestos": {
-    "meta_title": "Repuestos Toyota en Cartagena | Toyo Services",
+    "meta_title": "Repuestos Toyota por VIN en Cartagena | Toyo Services",
     "meta_desc": "Repuestos Toyota en Cartagena identificados por VIN y referencia, con opciones genuinas, OEM u homologadas, suministro, instalación y trazabilidad.",
     "signs_heading": "La referencia correcta antes de comprar",
     "signs_intro": [
@@ -277,7 +277,7 @@ commercial = {
     "bring_heading": "Datos para solicitar un repuesto",
     "bring_intro": "Cuanta más precisión exista al inicio, menor es el riesgo de cotizar una variante incompatible.",
     "bring": ["VIN, modelo, año, motor y transmisión", "Referencia de la pieza o fotografía legible de etiquetas", "Lado, posición, medidas y conector cuando aplican", "Diagnóstico que justifica el cambio y piezas relacionadas"],
-    "related": [("Guía de repuestos originales, OEM y homologados", "/blog/repuestos-toyota-originales-homologados-cartagena/"), ("Mantenimiento general Toyota", "/servicios/mantenimiento-general/"), ("Diagnóstico electrónico Toyota", "/servicios/diagnostico-electronico/")]
+    "related": [("Cómo identificar repuestos Toyota por VIN", "/blog/repuestos-toyota-por-vin-cartagena/"), ("Guía de repuestos originales, OEM y homologados", "/blog/repuestos-toyota-originales-homologados-cartagena/"), ("Diagnóstico electrónico Toyota", "/servicios/diagnostico-electronico/")]
   },
   "modificaciones": {
     "meta_title": "Modificaciones Toyota en Cartagena | Toyo Services",
