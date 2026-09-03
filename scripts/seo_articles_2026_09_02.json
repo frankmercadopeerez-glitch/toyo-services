@@ -1,0 +1,179 @@
+[
+  {
+    "slug": "toyota-pierde-potencia-causas-diagnostico",
+    "title": "Toyota pierde potencia: causas y diagnóstico",
+    "description": "¿Tu Toyota pierde potencia al acelerar? Conoce las causas posibles, las pruebas de diagnóstico y cuándo conviene detenerlo y pedir revisión.",
+    "category": "Diagnóstico y motor",
+    "image": "blog-toyota-power-loss-diagnosis.webp",
+    "datePublished": "2026-09-02",
+    "dateModified": "2026-09-02",
+    "intro": "Una pérdida de potencia puede sentirse como respuesta lenta al acelerador, dificultad para subir, tirones o un límite de revoluciones. Es un síntoma compartido por admisión, combustible, encendido, escape, control electrónico, transmisión y, en algunos motores, sobrealimentación. La forma responsable de resolverlo es reproducir la condición y medir antes de recomendar piezas.",
+    "sections": [
+      [
+        "Cómo describir la pérdida de potencia",
+        [
+          "Anota si aparece en frío o caliente, al arrancar, adelantar, subir, conectar el aire acondicionado o superar cierta velocidad. También importa si el motor sube de revoluciones sin que el vehículo acelere en la misma proporción, porque ese comportamiento puede orientar la revisión hacia transmisión o embrague y no solo hacia el motor.",
+          "Registra luces de advertencia, humo, olores, ruidos, vibraciones, consumo anormal y cualquier servicio reciente. Un video breve del tablero y del sonido, tomado sin distraerse al conducir, puede ayudar a reproducir una falla intermitente en condiciones seguras."
+        ]
+      ],
+      [
+        "Admisión, sensores y control electrónico",
+        [
+          "Un filtro restringido, una manguera abierta, una fuga de vacío, suciedad en el cuerpo de aceleración o una lectura incoherente de presión, temperatura o flujo pueden alterar la mezcla y la carga calculada. La inspección visual se combina con datos en vivo y pruebas de estanqueidad cuando corresponda.",
+          "El modo de protección puede limitar la respuesta para reducir el riesgo de daño. Borrar códigos o desconectar la batería puede ocultar el contexto sin corregir la causa; primero se guardan códigos, datos congelados y condiciones en las que se activó la advertencia."
+        ]
+      ],
+      [
+        "Combustible, encendido y escape",
+        [
+          "Presión o caudal insuficientes, combustible contaminado, inyectores con funcionamiento irregular, bujías desgastadas o bobinas deficientes pueden fallar principalmente bajo carga. Cambiar bujías por calendario no confirma que ellas sean la causa de una pérdida repentina.",
+          "Una restricción en el escape o un catalizador afectado también puede impedir que el motor respire. Temperaturas, presión, correcciones de combustible y conteos de falla ayudan a diferenciar hipótesis antes de desmontar componentes costosos."
+        ]
+      ],
+      [
+        "Motor, turbo y transmisión",
+        [
+          "Compresión desigual, sincronización incorrecta, recalentamientos previos o consumo elevado de aceite justifican pruebas mecánicas. En motores turbo se revisan conductos, control de presión, lubricación y fugas; que el vehículo tenga turbo no convierte automáticamente ese conjunto en culpable.",
+          "Si las revoluciones aumentan pero la velocidad no acompaña, existen golpes al engranar o el síntoma depende de una marcha, se evalúan transmisión, fluido, embragues, soportes y control electrónico. Motor y caja se analizan como un sistema y no como diagnósticos separados por intuición."
+        ]
+      ],
+      [
+        "Qué pruebas debe incluir el diagnóstico",
+        [
+          "El proceso comienza confirmando la queja y revisando historial, niveles, fugas, conexiones y mangueras. Después se eligen pruebas dirigidas: escaneo con datos en vivo, presión de combustible, humo en admisión, señales eléctricas, compresión, contrapresión o prueba de ruta controlada, según la evidencia.",
+          "El resultado útil relaciona síntoma, condición, medición y causa probable. Una lista extensa de códigos o una cotización de varias piezas sin comprobación no equivale a diagnóstico. También deben explicarse las limitaciones cuando la falla no pudo reproducirse."
+        ]
+      ],
+      [
+        "Cuándo detener el Toyota",
+        [
+          "Si la pérdida de potencia aparece con luz de presión de aceite, temperatura alta, humo abundante, olor fuerte a combustible, golpeteo severo o una luz de motor parpadeante, busca un lugar seguro y evita seguir exigiendo el vehículo. Consulta el manual de la unidad y solicita asistencia cuando corresponda.",
+          "Tras la reparación se repite la condición de falla, se comprueban fugas y advertencias y se conservan los valores finales. La entrega debe indicar qué se probó, qué se corrigió y qué observaciones requieren seguimiento."
+        ]
+      ]
+    ],
+    "faqs": [
+      ["¿Un filtro de aire sucio siempre causa la pérdida de potencia?", "Puede contribuir si existe restricción, pero el síntoma tiene muchas causas. Se inspecciona y se confirma junto con datos y otras pruebas."],
+      ["¿El escáner dice qué pieza cambiar?", "No necesariamente. Los códigos y parámetros orientan hacia un circuito o una condición; las mediciones confirman la causa."],
+      ["¿Puedo seguir conduciendo si el Toyota aún se mueve?", "Depende de las advertencias y síntomas. Temperatura alta, presión de aceite, humo, ruido severo o luz parpadeante justifican detenerse con seguridad."]
+    ]
+  },
+  {
+    "slug": "toyota-vibra-al-frenar-causas",
+    "title": "Toyota vibra al frenar: qué revisar",
+    "description": "Descubre por qué un Toyota vibra al frenar, qué relación tienen discos, ruedas y suspensión, y cómo se diagnostica antes de cambiar piezas.",
+    "category": "Frenos y suspensión",
+    "image": "blog-toyota-brake-vibration.webp",
+    "datePublished": "2026-09-02",
+    "dateModified": "2026-09-02",
+    "intro": "Una vibración al frenar puede sentirse en el volante, el pedal, el asiento o toda la carrocería. La ubicación y la velocidad a la que aparece aportan pistas, pero no identifican por sí solas una pieza. Discos, cubos, cálipers, llantas, rodamientos y suspensión deben revisarse como un conjunto antes de decidir el alcance.",
+    "sections": [
+      [
+        "Dónde y cuándo se siente la vibración",
+        [
+          "Si predomina en el volante puede involucrar el eje delantero; si se percibe más en el asiento puede orientar hacia la parte trasera. Aun así, fuerzas de frenado y holguras se transmiten por el chasis, por lo que esta percepción solo organiza la inspección.",
+          "Anota si ocurre en frenadas suaves o fuertes, desde una velocidad determinada, después de calentar los frenos o también sin pisar el pedal. Una vibración permanente a cierta velocidad puede estar relacionada con rueda o llanta y hacerse más evidente al frenar."
+        ]
+      ],
+      [
+        "Discos, espesor y apoyo en el cubo",
+        [
+          "Variaciones de espesor, alabeo medido, depósitos desiguales o superficies dañadas pueden producir cambios periódicos en la fuerza de frenado. La evaluación compara medidas con especificaciones y revisa ambas caras, no se limita a observar brillo o color.",
+          "Óxido, suciedad o rebabas entre disco, cubo y rin pueden alterar el apoyo. Antes de atribuir el problema a un disco nuevo se revisan superficies, torque y descentramiento del conjunto instalado."
+        ]
+      ],
+      [
+        "Pastillas, cálipers y temperatura",
+        [
+          "Guías restringidas, pistones con movimiento irregular, pastillas contaminadas o desgaste desigual cambian cómo trabaja cada rueda. Comparar desgaste y temperatura ayuda a detectar un freno que arrastra o que aporta menos fuerza.",
+          "Rectificar o reemplazar discos sin corregir el cáliper, la contaminación o el procedimiento de asentamiento puede hacer que la vibración regrese. El alcance debe contemplar la causa y no únicamente la superficie visible."
+        ]
+      ],
+      [
+        "Llantas, rines, rodamientos y suspensión",
+        [
+          "Una llanta deformada, un rin golpeado, balanceo incorrecto o tuercas apretadas de manera desigual pueden confundirse con una falla exclusiva de frenos. Se verifica condición, medida, presión y montaje antes de aislar el sistema.",
+          "Holguras en rodamientos, rótulas, terminales o bujes permiten movimientos que se amplifican al transferir peso hacia adelante. Alinear el vehículo no elimina una holgura mecánica; primero se inspecciona y corrige lo que corresponda."
+        ]
+      ],
+      [
+        "Diagnóstico antes de comprar piezas",
+        [
+          "Una prueba de ruta controlada confirma velocidad, intensidad y zona de la vibración. En elevador se revisan holguras y fugas; después pueden medirse espesor y descentramiento con herramientas adecuadas y comprobar torque y temperatura.",
+          "El informe debe distinguir una condición de seguridad inmediata, una recomendación preventiva y una observación que necesita más prueba. No toda vibración exige reemplazar el juego completo, pero tampoco debe minimizarse sin inspección."
+        ]
+      ],
+      [
+        "Verificación después del servicio",
+        [
+          "Tras intervenir se comprueban pedal, nivel y fugas, torque de ruedas y funcionamiento a baja velocidad antes de la prueba final. Discos y pastillas nuevos pueden requerir un procedimiento de asentamiento y evitar frenadas severas durante el periodo indicado.",
+          "Si el pedal se hunde, el vehículo se desvía con fuerza, existe ruido metálico, una rueda se calienta de forma anormal o se enciende una alerta de frenos, detén el uso en condiciones seguras y solicita revisión."
+        ]
+      ]
+    ],
+    "faqs": [
+      ["¿Si vibra el volante hay que cambiar los discos delanteros?", "No automáticamente. Primero se revisan discos, apoyo en el cubo, cálipers, ruedas, rodamientos y holguras."],
+      ["¿Una alineación puede quitar la vibración al frenar?", "Solo si el problema realmente corresponde a geometría y no existen holguras, deformaciones o fallas de freno. Alinear no repara componentes dañados."],
+      ["¿Es seguro seguir conduciendo?", "Una vibración leve también merece revisión. Si hay pérdida de frenado, desvío fuerte, pedal anormal, ruido metálico o calentamiento, evita continuar y busca asistencia."]
+    ]
+  },
+  {
+    "slug": "toyota-se-recalienta-con-aire-acondicionado",
+    "title": "Toyota se recalienta con el aire acondicionado",
+    "description": "Qué revisar si tu Toyota sube de temperatura con el aire acondicionado en Cartagena: ventiladores, refrigerante, radiador, presión y diagnóstico.",
+    "category": "Motor y refrigeración",
+    "image": "blog-toyota-overheating-ac.webp",
+    "datePublished": "2026-09-02",
+    "dateModified": "2026-09-02",
+    "intro": "Conectar el aire acondicionado añade carga al motor y calor frente al radiador. Un sistema de refrigeración en buen estado debe gestionar esa condición dentro de los límites previstos. Si la temperatura aumenta en tráfico, al detenerse o en días calurosos, no se resuelve apagando la alerta: hay que comprobar flujo de aire, refrigerante, presión, circulación y control.",
+    "sections": [
+      [
+        "Por qué el aire acondicionado cambia la carga térmica",
+        [
+          "El compresor demanda energía y el condensador libera calor delante del radiador. En movimiento, el aire de la marcha ayuda a evacuarlo; a baja velocidad, los ventiladores y el estado de ambos intercambiadores se vuelven especialmente importantes.",
+          "Que la temperatura suba solo con el aire conectado es una pista sobre la condición de prueba, no una condena automática del compresor. El diagnóstico debe observar temperaturas, comandos y funcionamiento real cuando aparece el síntoma."
+        ]
+      ],
+      [
+        "Ventiladores, relés y flujo de aire",
+        [
+          "Se verifica si los ventiladores reciben comando, alcanzan la velocidad esperada y giran en el sentido correcto. Fusibles, relés, cableado, módulos, sensores y motores pueden intervenir según el modelo; puentearlos sin diagrama puede causar daños o movimiento inesperado.",
+          "Hojas, bolsas, barro, aletas dobladas o suciedad entre condensador y radiador reducen el paso de aire. La limpieza debe evitar presión excesiva que deforme las aletas y debe buscar también objetos atrapados entre los dos conjuntos."
+        ]
+      ],
+      [
+        "Nivel, fugas y presión del refrigerante",
+        [
+          "Un nivel bajo suele indicar pérdida o un llenado previo incompleto. Mangueras, tapas, depósitos, bomba, radiador, calefacción y uniones se inspeccionan en frío; una prueba de presión puede localizar fugas que no dejan charco permanente.",
+          "Nunca se abre la tapa de un sistema caliente. Rellenar con agua o refrigerante no compatible puede cambiar protección, concentración y punto de ebullición. La especificación y el procedimiento de purga se confirman para la unidad exacta."
+        ]
+      ],
+      [
+        "Circulación, termostato y radiador",
+        [
+          "Un termostato restringido, una bomba con desempeño insuficiente, aire atrapado o un radiador obstruido pueden limitar la capacidad disponible cuando aumenta la carga. Las temperaturas de entrada y salida, la presión y el comportamiento durante la prueba ayudan a diferenciarlos.",
+          "Cambiar el termostato por intuición no demuestra que el radiador transfiera calor ni que el sistema haya quedado purgado. Después de cada intervención se repite la condición con aire acondicionado y se comprueba estabilidad."
+        ]
+      ],
+      [
+        "Cuándo mirar más allá del sistema de refrigeración",
+        [
+          "Combustión que entra al circuito, sincronización incorrecta, mezcla anormal, escape restringido o una reparación previa deficiente también pueden elevar la carga térmica. Burbujas, pérdida recurrente, presión temprana o contaminación justifican pruebas dirigidas.",
+          "El sistema de aire acondicionado también se revisa si existen presiones anormales, carga incorrecta o un condensador restringido. Refrigeración del motor y climatización intercambian calor, pero requieren mediciones diferentes."
+        ]
+      ],
+      [
+        "Qué hacer si sube la temperatura",
+        [
+          "Si aparece una advertencia de temperatura alta, reduce la carga, busca un lugar seguro y sigue las indicaciones del manual. No permanezcas frente a ventiladores que pueden arrancar automáticamente ni abras el sistema caliente. Solicita asistencia si la alerta continúa o hay vapor o fuga.",
+          "En Cartagena, el calor, la humedad y el tráfico hacen valiosa una prueba real a baja velocidad, pero no justifican que el vehículo opere recalentado. El reporte final debe registrar la condición reproducida, las mediciones, la reparación y la verificación posterior."
+        ]
+      ]
+    ],
+    "faqs": [
+      ["¿Apagar el aire acondicionado soluciona el recalentamiento?", "Puede reducir temporalmente la carga, pero no corrige la causa. Si la temperatura sube, se debe seguir el manual y diagnosticar el sistema."],
+      ["¿Siempre son los ventiladores?", "No. Son una causa posible cuando falla a baja velocidad, pero también se revisan nivel, fugas, presión, radiador, termostato, bomba y control."],
+      ["¿Puedo abrir la tapa para añadir refrigerante?", "No con el sistema caliente. Existe riesgo de quemadura por presión y vapor; espera, sigue el manual y solicita asistencia si es necesario."]
+    ]
+  }
+]
