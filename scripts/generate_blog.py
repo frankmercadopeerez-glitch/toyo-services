@@ -128,6 +128,8 @@ articles = [
 articles += json.loads((ROOT / "scripts" / "seo_articles.json").read_text(encoding="utf-8"))
 articles += json.loads((ROOT / "scripts" / "seo_articles_2026_08_31.json").read_text(encoding="utf-8"))
 articles += json.loads((ROOT / "scripts" / "seo_articles_2026_09_02.json").read_text(encoding="utf-8"))
+campaign_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_09_07.json").read_text(encoding="utf-8"))
+articles += campaign_articles
 articles += [article for article in json.loads((ROOT / "scripts" / "additional_services_articles.json").read_text(encoding="utf-8")) if not article.get("disabled")]
 articles += json.loads((ROOT / "scripts" / "legacy_articles.json").read_text(encoding="utf-8"))
 
@@ -425,6 +427,9 @@ NEW_SEO_ARTICLES_2026_09_02 = {
     "toyota-se-recalienta-con-aire-acondicionado",
 }
 
+for article in campaign_articles:
+    EDITORIAL[article["slug"]] = tuple(article[key] for key in ("title", "description", "intent", "service_path", "service_label"))
+
 for article in articles:
     title, description, intent, service_path, service_label = EDITORIAL[article["slug"]]
     article.update({
@@ -434,6 +439,9 @@ for article in articles:
         "service_path": service_path,
         "service_label": service_label,
         "dateModified": (
+            "2026-09-07"
+            if article["slug"] in {a["slug"] for a in campaign_articles}
+            else
             "2026-09-02"
             if article["slug"] in NEW_SEO_ARTICLES_2026_09_02
             else
@@ -667,8 +675,12 @@ for article in articles:
         sources = [TOYOTA_MANUALS]
     article["sources"] = sources
     article["source_note"] = SOURCE_NOTES_BY_SERVICE[article["service_path"]]
+    if article["slug"] == "costo-mantenimiento-toyota-cartagena":
+        article["sources"] = [("Mantenimiento Toyota Colombia", "https://www.toyota.com.co/mi-toyota/mantenimiento"), ("Plan de mantenimiento de la red Toyota Colombia", "https://www.toyota.com.co/mi-toyota/mantenimiento/planeado")]
+        article["source_note"] = "Consulta el manual y programa de la unidad. Los planes de la red autorizada tienen condiciones propias; las recomendaciones para comparar cotizaciones son orientación editorial de Toyo Services, no tarifas del fabricante."
 
 RELATED_OVERRIDES = {
+    "costo-mantenimiento-toyota-cartagena": ["mantenimiento-toyota-cartagena", "cada-cuanto-cambiar-aceite-toyota", "repuestos-toyota-por-vin-cartagena"],
     "toyota-pierde-potencia-causas-diagnostico": ["check-engine-diagnostico-electronico-toyota", "toyota-no-enciende-causas", "reparar-o-cambiar-motor-toyota"],
     "toyota-vibra-al-frenar-causas": ["frenos-toyota-mantenimiento-cartagena", "suspension-toyota-ruidos-vibraciones-cartagena", "revision-toyota-antes-de-viaje-cartagena"],
     "toyota-se-recalienta-con-aire-acondicionado": ["sistema-refrigeracion-toyota-cartagena", "aire-acondicionado-toyota-cartagena", "mantenimiento-toyota-cartagena"],
@@ -870,6 +882,11 @@ for article in articles:
         )
     page=page.replace(f'<span class="eyebrow">{html.escape(article["category"])} Toyota Toyota</span>', f'<span class="eyebrow">{html.escape(article["category"])} Toyota</span>')
     page=sync_html_image_dimensions(page, ROOT)
+    if article.get("image_caption"):
+        hero_pattern = r'(<img src="/assets/images/' + re.escape(article["image"]) + r'"[^>]*>)'
+        page = re.sub(hero_pattern, lambda match: '<figure>' + match.group(1).replace('alt="' + html.escape(article['title']) + '"', 'alt="' + html.escape(article['image_alt']) + '"') + '<figcaption class="muted">' + html.escape(article['image_caption']) + '</figcaption></figure>', page, count=1)
+    if article["slug"] == "costo-mantenimiento-toyota-cartagena":
+        page = page.replace('<a class="btn btn-outline" href="/#ubicacion">Ver área de atención</a>', '<a class="btn btn-outline" href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20cotizar%20el%20mantenimiento%20de%20mi%20Toyota.%20Modelo%3A%20%20A%C3%B1o%3A%20%20Kilometraje%3A" target="_blank" rel="noopener">Cotizar por WhatsApp</a>', 1)
     (folder/'index.html').write_text(page,encoding='utf-8')
 
 cards=[]
