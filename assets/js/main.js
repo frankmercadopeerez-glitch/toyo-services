@@ -8,8 +8,18 @@ if (menu && links) {
   links
     .querySelectorAll("a")
     .forEach((a) =>
-      a.addEventListener("click", () => links.classList.remove("open")),
+      a.addEventListener("click", () => {
+        links.classList.remove("open");
+        menu.setAttribute("aria-expanded", "false");
+      }),
     );
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && links.classList.contains("open")) {
+      links.classList.remove("open");
+      menu.setAttribute("aria-expanded", "false");
+      menu.focus();
+    }
+  });
 }
 
 if (links) {
@@ -25,9 +35,10 @@ if (links) {
       const isLocation = url.hash === "#ubicacion";
       const isSection =
         linkPath !== "/" && currentPath.startsWith(`${linkPath}/`);
+      const atLocation = currentPath === "/" && window.location.hash === "#ubicacion";
       const selected = isLocation
-        ? window.location.hash === "#ubicacion"
-        : !window.location.hash && (linkPath === currentPath || isSection);
+        ? atLocation
+        : !atLocation && (linkPath === currentPath || isSection);
       link.classList.toggle("active", selected);
       if (selected) link.setAttribute("aria-current", "page");
       else link.removeAttribute("aria-current");
@@ -48,6 +59,7 @@ document
 
 const whatsappForm = document.querySelector("[data-whatsapp-form]");
 if (whatsappForm) {
+  whatsappForm.hidden = false;
   whatsappForm.addEventListener("submit", (event) => {
     event.preventDefault();
     if (!whatsappForm.reportValidity()) return;
@@ -57,7 +69,7 @@ if (whatsappForm) {
     const lines = [
       "Hola Toyo Services. Quiero solicitar atención para mi Toyota.",
       "",
-      `Nombre: ${value("nombre")}`,
+      ...(value("nombre") ? [`Nombre: ${value("nombre")}`] : []),
       `Modelo: ${value("modelo")}`,
       `Año: ${value("anio") || "No indicado"}`,
       `Servicio: ${value("servicio")}`,
@@ -68,4 +80,34 @@ if (whatsappForm) {
     const url = `https://wa.me/573018638164?text=${encodeURIComponent(lines.join("\n"))}`;
     window.location.assign(url);
   });
+}
+
+// Progressive enhancement: every guide remains crawlable without JavaScript.
+const guideSearch = document.querySelector("[data-guide-search]");
+if (guideSearch) {
+  const input = guideSearch.querySelector("input");
+  const status = guideSearch.querySelector("[data-guide-count]");
+  const sections = [...document.querySelectorAll(".guide-topic")];
+  const normalize = (text) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const filterGuides = () => {
+    const terms = normalize(input.value.trim()).split(/\s+/).filter(Boolean);
+    let count = 0;
+    for (const section of sections) {
+      let visible = 0;
+      for (const item of section.querySelectorAll("li")) {
+        item.hidden = !terms.every((term) => normalize(item.textContent).includes(term));
+        if (!item.hidden) visible++;
+      }
+      section.hidden = visible === 0;
+      count += visible;
+    }
+    status.textContent = count ? `${count} ${count === 1 ? "guía disponible" : "guías disponibles"}` : "No encontramos esa búsqueda. Prueba con el modelo o con otro síntoma.";
+  };
+  input.addEventListener("input", filterGuides);
+  document.querySelectorAll(".topic-links a").forEach((link) => link.addEventListener("click", () => {
+    input.value = "";
+    filterGuides();
+  }));
+  guideSearch.hidden = false;
+  filterGuides();
 }

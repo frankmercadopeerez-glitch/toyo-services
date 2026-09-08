@@ -8,7 +8,7 @@ Importa este repositorio en Vercel como proyecto estático. No requiere comando 
 
 La URL canónica de producción es `https://toyoservicescartagena.com`. Los canonical, datos estructurados, `sitemap.xml` y `robots.txt` deben conservar este dominio.
 
-El botón de WhatsApp está intencionalmente inactivo hasta disponer del número comercial.
+Los botones de WhatsApp usan el número comercial +57 301 863 8164. El formulario prepara una solicitud; el visitante debe enviarla desde WhatsApp. No hay un sistema de analítica configurado en el repositorio.
 
 ## Imágenes
 
@@ -29,7 +29,7 @@ Las fotografías públicas fueron redimensionadas, adaptadas y convertidas a Web
 python scripts\generate_services.py
 python scripts\generate_blog.py
 python scripts\sync_image_dimensions.py
-python scripts\generate_sitemap.py --date 2026-08-13
+python scripts\generate_sitemap.py
 python scripts\validate_site.py
-python scripts\generate_sitemap.py --date 2026-08-13 --check
+python scripts\generate_sitemap.py --check
 ```
