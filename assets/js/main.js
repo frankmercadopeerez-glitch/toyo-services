@@ -192,6 +192,9 @@ if (serviceSearch) {
     serviceSearch.querySelector("[data-service-count]").textContent = `${count} ${count === 1 ? "servicio disponible para consultar" : "servicios disponibles para consultar"}`;
     serviceSearch.querySelector("[data-service-empty]").hidden = count !== 0;
     document.querySelectorAll(".supplementary-intro").forEach(el => el.hidden = terms.length > 0);
+    for (const section of document.querySelectorAll("#service-results, #service-protection-results")) {
+      section.hidden = ![...section.querySelectorAll(".service-row")].some(row => !row.hidden);
+    }
   };
   input.addEventListener("input", filter);
   serviceSearch.querySelector("[data-clear-services]").addEventListener("click", () => { input.value = ""; filter(); input.focus(); });

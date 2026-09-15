@@ -34,6 +34,11 @@ def main():
             page = page.replace('</header>\n      <section>', '</header>'+finder+'\n      <section>', 1)
             if 'data-service-search' not in page:
                 raise ValueError('Service directory insertion failed')
+        if rel.as_posix() == 'servicios/index.html':
+            page = re.sub(r'<section>\s*<div class="container">\s*<div id="service-results"></div>', '<section id="service-results"><div class="container">', page, count=1)
+            if 'id="service-protection-results"' not in page:
+                page = page.replace('class="service-secondary"', 'class="service-secondary" id="service-protection-results"', 1)
+            page = page.replace('aria-controls="service-results"', 'aria-controls="service-results service-protection-results"')
         file.write_text(page, encoding='utf-8')
     css = (ROOT/'assets/css/styles.css').read_text(encoding='utf-8')
     css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)

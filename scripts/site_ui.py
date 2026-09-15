@@ -46,7 +46,7 @@ def service_finder():
 
 def enhance_page(page, route):
     page = re.sub(r'/assets/css/styles.min.css\?v=\d+', '/assets/css/styles.min.css?v=25', page)
-    page = re.sub(r'/assets/js/main.js\?v=\d+', '/assets/js/main.js?v=21', page)
+    page = re.sub(r'/assets/js/main.js\?v=\d+', '/assets/js/main.js?v=22', page)
     if 'class="site-header"' in page:
         if 'class="skip"' not in page:
             page = page.replace('<body>', '<body><a class="skip" href="#contenido">Saltar al contenido</a>', 1)

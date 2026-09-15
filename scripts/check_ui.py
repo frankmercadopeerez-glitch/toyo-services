@@ -21,7 +21,7 @@ class Markup(HTMLParser):
         attrs = dict(attrs)
         if 'id' in attrs: self.ids.append(attrs['id'])
         if tag == 'label' and 'for' in attrs: self.labels.append(attrs['for'])
-        if 'aria-controls' in attrs: self.controls.append(attrs['aria-controls'])
+        if 'aria-controls' in attrs: self.controls.extend(attrs['aria-controls'].split())
 
 class SiteUI(unittest.TestCase):
     def test_styles_use_defined_tokens(self):
