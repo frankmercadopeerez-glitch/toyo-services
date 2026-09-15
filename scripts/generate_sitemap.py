@@ -45,7 +45,7 @@ def discover_indexable_pages() -> dict[str, Path]:
     pages: dict[str, Path] = {}
     for page in sorted(PROJECT_ROOT.rglob("index.html")):
         relative = page.relative_to(PROJECT_ROOT)
-        if any(part.startswith(".") for part in relative.parts):
+        if any(part.startswith(".") or part in {"output", "scripts", "tests", "node_modules"} for part in relative.parts):
             continue
 
         parser = PageMetadataParser()

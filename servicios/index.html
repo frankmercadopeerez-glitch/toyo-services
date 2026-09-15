@@ -30,7 +30,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#080a0d" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48" /><link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" sizes="180x180" /><link rel="manifest" href="/site.webmanifest">
-    <link rel="stylesheet" href="/assets/css/styles.min.css?v=24" />
+    <link rel="stylesheet" href="/assets/css/styles.min.css?v=25" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -206,7 +206,7 @@
       }
     </script>
   </head>
-  <body>
+  <body><a class="skip" href="#contenido">Saltar al contenido</a>
     <header class="site-header">
       <nav class="nav container">
         <a class="brand" href="/"
@@ -217,18 +217,18 @@
             width="42"
             height="42"
           /><span>TOYO <span>SERVICES</span></span></a
-        ><button class="menu" aria-expanded="false" aria-label="Abrir menú">
+        ><button class="menu" aria-controls="principal-links" type="button" aria-expanded="false" aria-label="Abrir menú">
           ☰
         </button>
-        <div class="nav-links">
+        <div class="nav-links" id="principal-links">
           <a href="/">Inicio</a
           ><a aria-current="page" href="/servicios/">Servicios</a
           ><a href="/modelos/">Modelos</a><a href="/blog/">Guía Toyota</a
           ><a href="/#ubicacion">Área de atención</a>
-        </div>
+        <a href="/servicios/repuestos/">Repuestos</a><a class="nav-quote" href="/cotizar/">Cotizar →</a></div>
       </nav>
     </header>
-    <main>
+    <main id="contenido">
       <header class="page-hero">
         <div class="container">
           <div class="breadcrumb"><a href="/">Inicio</a> / Servicios</div>
@@ -247,10 +247,10 @@
             <a href="/modelos/toyota-hilux/">Toyota Hilux</a>.
           </p>
         </div>
-      </header>
+      </header><div class="container service-search" data-service-search hidden><label for="service-search">Encuentra un servicio o describe el síntoma</label><div class="search-line"><input id="service-search" type="search" placeholder="Ej. aceite, repuestos, ruido, caja…" aria-controls="service-results" autocomplete="off"><button type="button" data-clear-services>Limpiar</button></div><p role="status" data-service-count></p><p data-service-empty hidden>Podemos orientarte aunque no conozcas el nombre del servicio. <a href="/cotizar/?servicio=otro">Cuéntanos qué ocurre →</a></p></div>
       <section>
         <div class="container">
-          <article class="service-row" id="mantenimiento-general">
+          <div id="service-results"></div><article class="service-row" id="mantenimiento-general">
             <div>
               <span>01 · SERVICIO INTEGRAL</span>
               <h2>Mantenimiento general Toyota</h2>
@@ -794,6 +794,6 @@
       </div>
     </footer>
     <a class="wa-float" href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20informaci%C3%B3n%20para%20mi%20Toyota." target="_blank" rel="noopener" title="Escribir a Toyo Services por WhatsApp" aria-label="Escribir a Toyo Services por WhatsApp"><img src="/assets/images/whatsapp-logo.png" width="96" height="96" alt="" aria-hidden="true"></a>
-    <script src="/assets/js/main.js?v=20" defer></script>
+    <script src="/assets/js/main.js?v=21" defer></script>
   </body>
 </html>

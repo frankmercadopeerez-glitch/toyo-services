@@ -1,3 +1,4 @@
+from site_ui import enhance_page
 from pathlib import Path
 import html, json, math, re
 
@@ -891,7 +892,7 @@ for article in articles:
         page = re.sub(hero_pattern, lambda match: '<figure>' + match.group(1).replace('alt="' + html.escape(article['title']) + '"', 'alt="' + html.escape(article['image_alt']) + '"') + '<figcaption class="muted">' + html.escape(article['image_caption']) + '</figcaption></figure>', page, count=1)
     if article["slug"] == "costo-mantenimiento-toyota-cartagena":
         page = page.replace('<a class="btn btn-outline" href="/#ubicacion">Ver área de atención</a>', '<a class="btn btn-outline" href="https://wa.me/573018638164?text=Hola%20Toyo%20Services.%20Quiero%20cotizar%20el%20mantenimiento%20de%20mi%20Toyota.%20Modelo%3A%20%20A%C3%B1o%3A%20%20Kilometraje%3A" target="_blank" rel="noopener">Cotizar por WhatsApp</a>', 1)
-    (folder/'index.html').write_text(page,encoding='utf-8')
+    (folder/'index.html').write_text(enhance_page(page, '/blog/'+article['slug']+'/'),encoding='utf-8')
 
 cards=[]
 for a in articles:
@@ -904,5 +905,5 @@ blog_breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList","itemL
 blog=f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guía Toyota en Cartagena | Toyo Services</title><meta name="description" content="Guías de Toyo Services sobre mantenimiento, diagnóstico, repuestos, aceite, Prado, Fortuner, Hilux y cuidado Toyota en Cartagena."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{BASE}/blog/"><meta property="og:type" content="website"><meta property="og:locale" content="es_CO"><meta property="og:site_name" content="Toyo Services"><meta property="og:title" content="Guía Toyota en Cartagena | Toyo Services"><meta property="og:description" content="Información útil sobre mantenimiento, diagnóstico, repuestos y cuidado Toyota."><meta property="og:url" content="{BASE}/blog/"><meta property="og:image" content="{BASE}/assets/images/blog-maintenance-guide.webp"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" sizes="180x180"><link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.min.css?v=24"><script type="application/ld+json">{json.dumps(item_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(blog_breadcrumb,ensure_ascii=False)}</script></head><body>{header}<main><header class="page-hero blog-hero"><div class="container"><div class="breadcrumb"><a href="/">Inicio</a> / Guía Toyota</div><span class="eyebrow">Conocimiento especializado</span><h1>Guías para cuidar y mantener tu Toyota en Cartagena.</h1><p>{len(cards)} guías para tomar mejores decisiones sobre mantenimiento, diagnóstico, repuestos, seguridad, modificaciones y conservación.</p></div></header><section><div class="container">{guide_directory(articles)}<h2 class="guide-featured-title">Guías destacadas</h2><div class="blog-grid">{featured_html}</div></div></section></main>{footer}</body></html>'''
 blog=blog.replace('/assets/images/toyo-services-logo.svg','/assets/images/toyo-services-logo.svg?v=3')
 blog=sync_html_image_dimensions(blog, ROOT)
-(ROOT/'blog'/'index.html').write_text(blog,encoding='utf-8')
+(ROOT/'blog'/'index.html').write_text(enhance_page(blog, '/blog/'),encoding='utf-8')
 print(f"Generated {len(articles)} articles and blog index with {len(cards)} entries")

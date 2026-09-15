@@ -1,3 +1,4 @@
+from site_ui import enhance_page
 from pathlib import Path
 import html, json
 from urllib.parse import quote
@@ -512,6 +513,6 @@ for service in services:
         page = page.replace('<a class="btn btn-outline" href="/#ubicacion">Ver área de atención</a>', f'<a class="btn btn-outline" href="#{anchor}">{label}</a>', 1)
     page=sync_html_image_dimensions(page, ROOT)
     folder=ROOT/'servicios'/service['slug']; folder.mkdir(parents=True,exist_ok=True)
-    (folder/'index.html').write_text(page,encoding='utf-8')
+    (folder/'index.html').write_text(enhance_page(page, '/servicios/'+service['slug']+'/'),encoding='utf-8')
 
 print(f"Generated {len(services)} service pages")

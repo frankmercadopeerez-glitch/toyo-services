@@ -1,0 +1,7 @@
+.git/
+output/
+scripts/
+tests/
+node_modules/
+*.md
+assets/images/social/

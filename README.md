@@ -28,8 +28,14 @@ Las fotografías públicas fueron redimensionadas, adaptadas y convertidas a Web
 ```powershell
 python scripts\generate_services.py
 python scripts\generate_blog.py
+python scripts\upgrade_site.py
 python scripts\sync_image_dimensions.py
 python scripts\generate_sitemap.py
 python scripts\validate_site.py
+python scripts\check_ui.py
 python scripts\generate_sitemap.py --check
 ```
+
+`scripts/site_ui.py` conserva los componentes compartidos al regenerar páginas. `upgrade_site.py` actualiza las páginas manuales, la solicitud `/cotizar/` y el CSS servido. Los formularios preparan y muestran el mensaje antes de abrir WhatsApp; no almacenan datos ni confirman reservas. La búsqueda de servicios funciona sobre contenido HTML disponible sin JavaScript.
+
+`output/`, scripts y contenido social se excluyen del despliegue mediante `.vercelignore`. Los recursos con nombres estables usan caché de una hora y las versiones de CSS/JS deben incrementarse al cambiar su contenido.

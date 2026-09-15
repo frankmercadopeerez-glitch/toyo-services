@@ -22,7 +22,7 @@ from urllib.parse import unquote, urljoin, urlparse
 SITE_ORIGIN = "https://toyoservicescartagena.com"
 SITE_HOST = "toyoservicescartagena.com"
 EXPECTED_SITEMAP = f"{SITE_ORIGIN}/sitemap.xml"
-SKIP_DIRS = {".git", ".venv", "venv", "node_modules", "dist", "build"}
+SKIP_DIRS = {".git", ".venv", "venv", "node_modules", "dist", "build", "output", "scripts", "tests"}
 ASSET_LINK_RELS = {
     "apple-touch-icon",
     "icon",
