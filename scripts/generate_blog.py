@@ -277,8 +277,8 @@ EDITORIAL = {
   "decisión entre reparar o reemplazar el motor", "/servicios/reparacion-motor/", "reparación de motor"
  ),
  "cada-cuanto-cambiar-aceite-toyota": (
-  "¿Cada cuánto cambiar el aceite de tu Toyota?",
-  "¿Cambio de aceite por meses o kilómetros? Revisa el intervalo de tu Toyota según manual, motor y uso, y qué hacer si no tienes historial de servicio.",
+  "Cambio de aceite Toyota: ¿cada cuánto hacerlo?",
+  "Conoce cuándo cambiar el aceite de un Toyota por tiempo, kilometraje, motor y tipo de uso, y qué revisar si no tienes historial de servicio.",
   "momento correcto para cambiar el aceite", "/servicios/aceite-filtros/", "aceite y filtros"
  ),
  "senales-transmision-toyota": (

@@ -308,8 +308,8 @@ commercial = {
     "related": [("Guía de modificaciones Hilux y 4x4", "/blog/transformaciones-toyota-hilux-4x4-cartagena/"), ("Rines recomendados para Toyota Prado", "/blog/rines-toyota-prado-medidas-recomendadas/"), ("Frenos y suspensión Toyota", "/servicios/frenos-suspension/")]
   },
   "latoneria-pintura": {
-    "meta_title": "Latonería Toyota en Cartagena | Toyo Services",
-    "meta_desc": "Latonería y pintura Toyota en Cartagena para golpes, rayones y paneles reparados, con evaluación, preparación, igualación de color y control de acabado.",
+    "meta_title": "Colisión, latonería y pintura Toyota en Cartagena",
+    "meta_desc": "Reparación de colisiones, latonería y pintura Toyota en Cartagena: evaluación de daños, preparación, igualación de color y control final.",
     "signs_heading": "Evaluar el daño antes de prometer un acabado",
     "signs_intro": [
       "Un golpe visible puede involucrar soportes, grapas, luces, sensores o bordes ocultos. También puede existir pintura anterior con espesor o adherencia diferentes. La inspección define si conviene reparar, sustituir, desmontar o realizar una prueba antes de cotizar el acabado final.",
