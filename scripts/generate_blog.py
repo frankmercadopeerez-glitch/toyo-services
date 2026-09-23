@@ -132,6 +132,8 @@ articles += json.loads((ROOT / "scripts" / "seo_articles_2026_08_31.json").read_
 articles += json.loads((ROOT / "scripts" / "seo_articles_2026_09_02.json").read_text(encoding="utf-8"))
 campaign_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_09_07.json").read_text(encoding="utf-8"))
 articles += campaign_articles
+latest_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_09_22.json").read_text(encoding="utf-8"))
+articles += latest_articles
 articles += [article for article in json.loads((ROOT / "scripts" / "additional_services_articles.json").read_text(encoding="utf-8")) if not article.get("disabled")]
 articles += json.loads((ROOT / "scripts" / "legacy_articles.json").read_text(encoding="utf-8"))
 
@@ -435,6 +437,9 @@ NEW_SEO_ARTICLES_2026_09_02 = {
 for article in campaign_articles:
     EDITORIAL[article["slug"]] = tuple(article[key] for key in ("title", "description", "intent", "service_path", "service_label"))
 
+for article in latest_articles:
+    EDITORIAL[article["slug"]] = tuple(article[key] for key in ("title", "description", "intent", "service_path", "service_label"))
+
 for article in articles:
     title, description, intent, service_path, service_label = EDITORIAL[article["slug"]]
     article.update({
@@ -444,6 +449,9 @@ for article in articles:
         "service_path": service_path,
         "service_label": service_label,
         "dateModified": (
+            "2026-09-22"
+            if article["slug"] in {a["slug"] for a in latest_articles}
+            else
             "2026-09-07"
             if article["slug"] in {a["slug"] for a in campaign_articles} | {"cada-cuanto-cambiar-aceite-toyota", "aceite-recomendado-toyota-hilux-diesel", "llantas-toyota-prado-medida-presion"}
             else
@@ -465,6 +473,8 @@ for article in articles:
         article["datePublished"] = "2026-08-31"
     if article["slug"] in NEW_SEO_ARTICLES_2026_09_02:
         article["datePublished"] = "2026-09-02"
+    if article["slug"] in {a["slug"] for a in latest_articles}:
+        article["datePublished"] = "2026-09-22"
     if article["slug"] in INTRO_OVERRIDES:
         article["intro"] = INTRO_OVERRIDES[article["slug"]]
 
@@ -683,8 +693,16 @@ for article in articles:
     if article["slug"] == "costo-mantenimiento-toyota-cartagena":
         article["sources"] = [("Mantenimiento Toyota Colombia", "https://www.toyota.com.co/mi-toyota/mantenimiento"), ("Plan de mantenimiento de la red Toyota Colombia", "https://www.toyota.com.co/mi-toyota/mantenimiento/planeado")]
         article["source_note"] = "Consulta el manual y programa de la unidad. Los planes de la red autorizada tienen condiciones propias; las recomendaciones para comparar cotizaciones son orientación editorial de Toyo Services, no tarifas del fabricante."
+    elif article["slug"] == "concesionario-toyota-vs-taller-especialista-cartagena":
+        article["sources"] = [
+            ("Toyota Colombia: Mantenimiento Planeado", "https://www.toyota.com.co/mi-toyota/mantenimiento/planeado"),
+            ("Toyota Colombia: red de concesionarios autorizados", "https://www.toyota.com.co/concesionarios"),
+            ("SIC: garantías y vehículos", "https://sedeelectronica.sic.gov.co/index.php/temas/proteccion-al-consumidor/derechos-y-deberes/fallas-en-un-producto"),
+        ]
+        article["source_note"] = "Consulta el certificado de garantía y mantenimiento de tu vehículo, el manual aplicable y las condiciones vigentes del proveedor. La cobertura puede depender del modelo, fecha, kilometraje, historial y programa contratado."
 
 RELATED_OVERRIDES = {
+    "concesionario-toyota-vs-taller-especialista-cartagena": ["costo-mantenimiento-toyota-cartagena", "mantenimiento-preventivo-toyota-cartagena", "repuestos-toyota-por-vin-cartagena"],
     "costo-mantenimiento-toyota-cartagena": ["mantenimiento-toyota-cartagena", "cada-cuanto-cambiar-aceite-toyota", "repuestos-toyota-por-vin-cartagena"],
     "toyota-pierde-potencia-causas-diagnostico": ["check-engine-diagnostico-electronico-toyota", "toyota-no-enciende-causas", "reparar-o-cambiar-motor-toyota"],
     "toyota-vibra-al-frenar-causas": ["frenos-toyota-mantenimiento-cartagena", "suspension-toyota-ruidos-vibraciones-cartagena", "revision-toyota-antes-de-viaje-cartagena"],
