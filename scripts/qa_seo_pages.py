@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 
 OUT = Path(__file__).resolve().parents[1] / "qa-seo-pages"
 OUT.mkdir(exist_ok=True)
-PAGES = ["", "modelos/", "modelos/toyota-corolla/", "modelos/toyota-rav4/", "servicios/latoneria-pintura/", "servicios/ppf/", "blog/precio-ppf-completo-toyota-cartagena/"]
+PAGES = ["", "modelos/", "modelos/toyota-corolla/", "modelos/toyota-rav4/", "servicios/latoneria-pintura/", "servicios/ppf/", "blog/ppf-toyota-cartagena-proteccion-pintura/", "blog/precio-ppf-completo-toyota-cartagena/"]
 ROOT = Path(__file__).resolve().parents[1]
 server = ThreadingHTTPServer(("127.0.0.1", 0), partial(SimpleHTTPRequestHandler, directory=ROOT))
 Thread(target=server.serve_forever, daemon=True).start()

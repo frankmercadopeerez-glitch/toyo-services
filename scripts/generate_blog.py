@@ -244,9 +244,9 @@ EDITORIAL = {
   "mantenimiento integral de Toyota Fortuner", "/servicios/mantenimiento-general/", "mantenimiento general"
  ),
  "ppf-toyota-cartagena-proteccion-pintura": (
-  "PPF para Toyota en Cartagena: guía de protección",
-  "Guía de PPF para Toyota en Cartagena: límites de protección, zonas de cobertura, preparación de pintura, instalación, curado y mantenimiento.",
-  "protección de pintura con PPF", "/servicios/ppf/", "PPF"
+  "PPF para carros: 22 preguntas frecuentes",
+  "Respuestas sobre PPF para carros en Cartagena: precio, duración, garantía, retiro, repintes, cuidados, cobertura completa y diferencias frente al cerámico.",
+  "preguntas frecuentes sobre PPF para carros", "/servicios/ppf/", "PPF"
  ),
  "recubrimiento-ceramico-cristal-liquido-toyota-cartagena": (
   "Recubrimiento cerámico Toyota: beneficios reales",
@@ -454,6 +454,9 @@ for article in articles:
         "service_path": service_path,
         "service_label": service_label,
         "dateModified": (
+            "2026-09-25"
+            if article["slug"] == "ppf-toyota-cartagena-proteccion-pintura"
+            else
             "2026-09-24"
             if article["slug"] in {a["slug"] for a in price_articles}
             else
