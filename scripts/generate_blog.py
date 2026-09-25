@@ -134,6 +134,8 @@ campaign_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_09_07.json
 articles += campaign_articles
 latest_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_09_22.json").read_text(encoding="utf-8"))
 articles += latest_articles
+price_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_09_24.json").read_text(encoding="utf-8"))
+articles += price_articles
 articles += [article for article in json.loads((ROOT / "scripts" / "additional_services_articles.json").read_text(encoding="utf-8")) if not article.get("disabled")]
 articles += json.loads((ROOT / "scripts" / "legacy_articles.json").read_text(encoding="utf-8"))
 
@@ -440,6 +442,9 @@ for article in campaign_articles:
 for article in latest_articles:
     EDITORIAL[article["slug"]] = tuple(article[key] for key in ("title", "description", "intent", "service_path", "service_label"))
 
+for article in price_articles:
+    EDITORIAL[article["slug"]] = tuple(article[key] for key in ("title", "description", "intent", "service_path", "service_label"))
+
 for article in articles:
     title, description, intent, service_path, service_label = EDITORIAL[article["slug"]]
     article.update({
@@ -449,6 +454,9 @@ for article in articles:
         "service_path": service_path,
         "service_label": service_label,
         "dateModified": (
+            "2026-09-24"
+            if article["slug"] in {a["slug"] for a in price_articles}
+            else
             "2026-09-22"
             if article["slug"] in {a["slug"] for a in latest_articles}
             else
@@ -717,7 +725,8 @@ RELATED_OVERRIDES = {
     "accesorios-toyota-cartagena-guia": ["actualizacion-estetica-toyota-cartagena", "proteccion-interior-toyota-cuero-plasticos-cartagena", "transformaciones-toyota-hilux-4x4-cartagena"],
     "actualizacion-estetica-toyota-cartagena": ["latoneria-pintura-toyota-cartagena", "proteccion-interior-toyota-cuero-plasticos-cartagena", "accesorios-toyota-cartagena-guia"],
     "latoneria-pintura-toyota-cartagena": ["actualizacion-estetica-toyota-cartagena", "ppf-toyota-cartagena-proteccion-pintura", "recubrimiento-ceramico-cristal-liquido-toyota-cartagena"],
-    "ppf-toyota-cartagena-proteccion-pintura": ["recubrimiento-ceramico-cristal-liquido-toyota-cartagena", "proteccion-anticorrosiva-toyota-cartagena", "latoneria-pintura-toyota-cartagena"],
+    "ppf-toyota-cartagena-proteccion-pintura": ["precio-ppf-completo-toyota-cartagena", "recubrimiento-ceramico-cristal-liquido-toyota-cartagena", "proteccion-anticorrosiva-toyota-cartagena"],
+    "precio-ppf-completo-toyota-cartagena": ["ppf-toyota-cartagena-proteccion-pintura", "recubrimiento-ceramico-cristal-liquido-toyota-cartagena", "latoneria-pintura-toyota-cartagena"],
     "recubrimiento-ceramico-cristal-liquido-toyota-cartagena": ["ppf-toyota-cartagena-proteccion-pintura", "proteccion-interior-toyota-cuero-plasticos-cartagena", "actualizacion-estetica-toyota-cartagena"],
     "proteccion-anticorrosiva-toyota-cartagena": ["ppf-toyota-cartagena-proteccion-pintura", "mantenimiento-toyota-cartagena", "recubrimiento-ceramico-cristal-liquido-toyota-cartagena"],
     "proteccion-interior-toyota-cuero-plasticos-cartagena": ["actualizacion-estetica-toyota-cartagena", "recubrimiento-ceramico-cristal-liquido-toyota-cartagena", "accesorios-toyota-cartagena-guia"],

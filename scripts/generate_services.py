@@ -383,7 +383,7 @@ commercial = {
     "bring_heading": "Datos para definir la cobertura",
     "bring_intro": "Una inspección presencial permite identificar repintes y medir la complejidad mejor que una sola fotografía. También ayuda a acordar terminaciones, bordes y zonas que deben quedar excluidas.",
     "bring": ["Modelo, año y paneles que deseas proteger", "Uso urbano, carretera, parqueadero y zonas de contacto", "Historial de pintura, pulido, cerámico o PPF anterior", "Resultado esperado y presupuesto de cobertura"],
-    "related": [("Guía completa de PPF para Toyota", "/blog/ppf-toyota-cartagena-proteccion-pintura/"), ("Recubrimiento cerámico Toyota", "/servicios/recubrimiento-ceramico/"), ("Latonería y pintura Toyota", "/servicios/latoneria-pintura/")]
+    "related": [("Precio de PPF completo para Toyota", "/blog/precio-ppf-completo-toyota-cartagena/"), ("Guía completa de PPF para Toyota", "/blog/ppf-toyota-cartagena-proteccion-pintura/"), ("Recubrimiento cerámico Toyota", "/servicios/recubrimiento-ceramico/"), ("Latonería y pintura Toyota", "/servicios/latoneria-pintura/")]
   },
   "recubrimiento-ceramico": {
     "meta_title": "Cerámico Toyota en Cartagena | Toyo Services",

@@ -1938,6 +1938,7 @@ main [id] { scroll-margin-top: 110px; }
   .request-preview { padding: 16px; }
   .request-preview .btn { width: 100%; }
   .wa-float { bottom: calc(18px + env(safe-area-inset-bottom)); }
+  main.article + .footer + .wa-float { display: none; }
   .footer { padding-bottom: 90px; }
 }
 @media (max-width: 380px) { .finder-grid { grid-template-columns: 1fr; } }
