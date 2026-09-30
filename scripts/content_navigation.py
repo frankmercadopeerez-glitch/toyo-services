@@ -55,6 +55,15 @@ PARTS = [
     ('electrico', 'Batería, sensores y encendido', 'La batería debe corresponder a la capacidad y tecnología aplicables. Sensores, bobinas y otras piezas eléctricas exigen comprobar conector, referencia y causa de la falla: un código del escáner no confirma por sí solo un repuesto dañado.', '/servicios/diagnostico-electronico/', 'Diagnóstico antes de cambiar sensores'),
 ]
 
+PART_MODELS = [
+    ('Toyota Prado', '/modelos/toyota-prado/', 'Confirma generación, motor, mercado y posición de la pieza; Prado comparte nombres comerciales entre variantes que no siempre usan la misma referencia.'),
+    ('Toyota Fortuner', '/modelos/toyota-fortuner/', 'Indica motor, tracción 4x2 o 4x4 y año. Frenos, suspensión, filtros y componentes de transmisión pueden variar entre versiones.'),
+    ('Toyota Hilux', '/modelos/toyota-hilux/', 'Añade cabina, motor, tracción y uso de carga. En una Hilux diésel también importa el sistema de emisiones y la fecha de producción.'),
+    ('Toyota Corolla', '/modelos/toyota-corolla/', 'Confirma generación, motor y transmisión antes de pedir filtros, soportes, sensores, frenos o piezas de suspensión.'),
+    ('Toyota RAV4', '/modelos/toyota-rav4/', 'Indica motorización, tracción y si es híbrida. Una referencia de una versión a gasolina no debe asumirse compatible con otra configuración.'),
+    ('Toyota Yaris', None, 'Comparte año, carrocería, motor, transmisión y VIN. Sedán y hatchback pueden requerir referencias distintas aunque compartan nombre de modelo.'),
+]
+
 
 def parts_content():
     rows = []
@@ -62,11 +71,20 @@ def parts_content():
         wa = whatsapp_url(f'Hola Toyo Services. Busco un repuesto de {title.lower()} para mi Toyota. Modelo: __. Año: __. Motor: __. Pieza o referencia: __. Compartiré el VIN y la foto por este chat.')
         rows.append(f'<article id="repuestos-{key}"><h3>{title}</h3><p>{text}</p>'
                     f'<p><a href="{href}">{label}</a></p><a href="{wa}" target="_blank" rel="noopener">Consultar referencia y disponibilidad →</a></article>')
+    model_rows = []
+    for model, href, text in PART_MODELS:
+        title = f'<a href="{href}">{model}</a>' if href else model
+        wa = whatsapp_url(f'Hola Toyo Services. Busco un repuesto para mi {model}. Año: __. Motor: __. Transmisión: __. Pieza o referencia: __. Compartiré el VIN y la foto por este chat.')
+        model_rows.append(f'<article><h3>{title}</h3><p>{text}</p>'
+                          f'<a href="{wa}" target="_blank" rel="noopener">Cotizar repuesto para {model.replace("Toyota ", "")} →</a></article>')
     return ('<section class="service-expansion" id="categorias-repuestos"><div class="container">'
             '<span class="eyebrow">Encuentra la pieza correcta</span><h2>Repuestos Toyota por sistema</h2>'
             '<p>Estas son familias de repuestos que puedes consultar para Prado, Fortuner, Hilux, Corolla, Yaris y RAV4. '
             'Confirmamos disponibilidad, marca y plazo para cada referencia antes de cerrar la solicitud.</p>'
             '<div class="parts-grid">' + ''.join(rows) + '</div>'
+            '<h2>Repuestos Toyota por modelo</h2>'
+            '<p>El nombre del modelo no basta para asegurar compatibilidad. Usa estas guías para identificar la versión y envía los datos del vehículo junto con la pieza que buscas.</p>'
+            '<div class="parts-grid">' + ''.join(model_rows) + '</div>'
             '<h2>Cómo cotizar un repuesto sin confundir la versión</h2>'
             '<ol><li>Indica modelo, año, motor y si tu Toyota es 4x2 o 4x4 cuando aplique.</li>'
             '<li>Comparte por WhatsApp el VIN y una foto legible de la referencia. Para piezas de carrocería, indica lado y posición.</li>'
