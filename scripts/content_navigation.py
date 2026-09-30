@@ -91,6 +91,7 @@ def parts_content():
             '<li>Confirma si necesitas solo suministro o también instalación. La cotización debe identificar pieza, marca, plazo y condiciones.</li></ol>'
             '<p>Consulta la <a href="/blog/repuestos-toyota-por-vin-cartagena/">guía de identificación por VIN</a> '
             'y las <a href="/blog/repuestos-toyota-originales-homologados-cartagena/">diferencias entre repuestos genuinos, OEM y alternativos</a>.</p>'
+            '<p><strong>Consulta precios publicados:</strong> visita el <a href="/repuestos/">catálogo de repuestos Toyota disponibles por pedido</a>.</p>'
             '</div></section>')
 
 

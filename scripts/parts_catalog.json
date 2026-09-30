@@ -1,0 +1,28 @@
+[
+  {
+    "slug": "sensor-velocidad-toyota-hilux",
+    "name": "Sensor de velocidad para Toyota Hilux",
+    "short_name": "Sensor de velocidad Toyota Hilux",
+    "price": 290000,
+    "currency": "COP",
+    "availability": "LimitedAvailability",
+    "availability_label": "Disponible por pedido",
+    "origin": "Bogotá",
+    "destination": "Cartagena",
+    "lead_time_days": 3,
+    "category": "Sensores y sistema eléctrico",
+    "vehicle": "Toyota Hilux",
+    "description": "Sensor de velocidad para Toyota Hilux disponible por pedido para Cartagena. La referencia compatible se confirma con VIN, año, motor y transmisión antes de comprar.",
+    "compatibility": [
+      "Toyota Hilux, sujeto a confirmación por VIN",
+      "Año, motor, transmisión y mercado del vehículo",
+      "Conector, ubicación y referencia de la pieza instalada"
+    ],
+    "request_data": [
+      "VIN completo",
+      "Año y motor de la Hilux",
+      "Tipo de transmisión",
+      "Foto de la pieza, conector o referencia si está disponible"
+    ]
+  }
+]
