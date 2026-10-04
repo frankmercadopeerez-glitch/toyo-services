@@ -1,4 +1,30 @@
 document.documentElement.classList.add("js");
+
+const trackAnalyticsEvent = (name, parameters = {}) => {
+  if (typeof window.gtag !== "function") return;
+  window.gtag("event", name, {
+    page_path: window.location.pathname,
+    ...parameters,
+  });
+};
+
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("a[href]");
+  if (!link) return;
+  const href = link.getAttribute("href") || "";
+  const linkLocation = link.classList.contains("wa-float")
+    ? "floating_button"
+    : link.closest("header")
+      ? "header"
+      : link.closest("footer")
+        ? "footer"
+        : "content";
+  if (href.includes("wa.me/573018638164")) {
+    trackAnalyticsEvent("whatsapp_click", { link_location: linkLocation });
+  } else if (href.startsWith("tel:+573018638164")) {
+    trackAnalyticsEvent("phone_click", { link_location: linkLocation });
+  }
+});
 const menu = document.querySelector(".menu"),
   links = document.querySelector(".nav-links");
 if (menu && links) {
@@ -122,7 +148,11 @@ if (whatsappForm) {
     send.href = `https://wa.me/573018638164?text=${encodeURIComponent(message.value)}`;
     status.textContent = "La solicitud aún no se ha enviado. Revísala y continúa en WhatsApp.";
     preview.hidden = false;
+    trackAnalyticsEvent("quote_prepared", { service: service.value || "otro" });
     whatsappForm.querySelector("[data-preview-heading]").focus();
+  });
+  send.addEventListener("click", () => {
+    trackAnalyticsEvent("generate_lead", { method: "whatsapp", service: service.value || "otro" });
   });
   whatsappForm.querySelector("[data-copy-request]").addEventListener("click", async () => {
     try {

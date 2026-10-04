@@ -256,8 +256,8 @@ commercial = {
     "related": [("Cómo se diagnostica una falla compleja", "/blog/mecanica-avanzada-toyota-cartagena/"), ("Diagnóstico electrónico Toyota", "/servicios/diagnostico-electronico/"), ("Transmisión Toyota", "/servicios/transmision/")]
   },
   "repuestos": {
-    "meta_title": "Repuestos Toyota en Cartagena | Cotiza por referencia",
-    "meta_desc": "Cotiza repuestos Toyota en Cartagena: filtros, frenos, suspensión y motor. Identificación por VIN, marca y disponibilidad confirmadas por WhatsApp.",
+    "meta_title": "Repuestos Toyota Cartagena | Cotiza por VIN",
+    "meta_desc": "Encuentra repuestos Toyota en Cartagena para Hilux, Prado, Fortuner, Corolla, Yaris y RAV4. Cotiza por VIN, referencia y disponibilidad.",
     "signs_heading": "La referencia correcta antes de comprar",
     "signs_intro": [
       "Dos Toyota del mismo modelo pueden utilizar piezas diferentes por año, motor, transmisión, mercado o fecha de producción. Por eso evitamos confirmar compatibilidad únicamente con una fotografía. VIN, referencia desmontada y datos técnicos reducen devoluciones y montajes incorrectos.",
@@ -308,8 +308,8 @@ commercial = {
     "related": [("Guía de modificaciones Hilux y 4x4", "/blog/transformaciones-toyota-hilux-4x4-cartagena/"), ("Rines recomendados para Toyota Prado", "/blog/rines-toyota-prado-medidas-recomendadas/"), ("Frenos y suspensión Toyota", "/servicios/frenos-suspension/")]
   },
   "latoneria-pintura": {
-    "meta_title": "Colisión, latonería y pintura Toyota en Cartagena",
-    "meta_desc": "Reparación de colisiones, latonería y pintura Toyota en Cartagena: evaluación de daños, preparación, igualación de color y control final.",
+    "meta_title": "Colisión y Pintura Toyota en Cartagena | Cotiza",
+    "meta_desc": "Reparación de colisiones, latonería y pintura Toyota en Cartagena. Evaluamos daños, igualamos el color y cotizamos por WhatsApp.",
     "signs_heading": "Evaluar el daño antes de prometer un acabado",
     "signs_intro": [
       "Un golpe visible puede involucrar soportes, grapas, luces, sensores o bordes ocultos. También puede existir pintura anterior con espesor o adherencia diferentes. La inspección define si conviene reparar, sustituir, desmontar o realizar una prueba antes de cotizar el acabado final.",

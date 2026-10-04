@@ -31,6 +31,7 @@ python scripts\generate_blog.py
 python scripts\upgrade_site.py
 python scripts\sync_image_dimensions.py
 python scripts\generate_sitemap.py
+python scripts\install_analytics.py
 python scripts\validate_site.py
 python scripts\check_ui.py
 python scripts\generate_sitemap.py --check
@@ -39,3 +40,5 @@ python scripts\generate_sitemap.py --check
 `scripts/site_ui.py` conserva los componentes compartidos al regenerar páginas. `upgrade_site.py` actualiza las páginas manuales, la solicitud `/cotizar/` y el CSS servido. Los formularios preparan y muestran el mensaje antes de abrir WhatsApp; no almacenan datos ni confirman reservas. La búsqueda de servicios funciona sobre contenido HTML disponible sin JavaScript.
 
 `output/`, scripts y contenido social se excluyen del despliegue mediante `.vercelignore`. Los recursos con nombres estables usan caché de una hora y las versiones de CSS/JS deben incrementarse al cambiar su contenido.
+
+Google Analytics 4 usa la propiedad **Toyo Services Cartagena** y el ID de medición `G-H76912PXD3`. `install_analytics.py` es idempotente y debe ejecutarse después de regenerar páginas. `main.js` registra clics en WhatsApp y teléfono, solicitudes preparadas y leads enviados desde el formulario sin transmitir los datos escritos por el usuario.
