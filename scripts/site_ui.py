@@ -44,9 +44,25 @@ def service_finder():
     cards = ''.join(f'<a href="{url}"><span class="finder-number">{n}</span><h3>{title}</h3><p>{desc}</p><span class="finder-arrow" aria-hidden="true">↗</span></a>' for n,title,desc,url in items)
     return f'''<section class="service-finder" aria-labelledby="finder-title"><div class="container"><span class="eyebrow">Empieza por lo que necesitas</span><h2 id="finder-title">Encuentra el siguiente paso para tu Toyota.</h2><div class="finder-grid">{cards}</div><p class="finder-help">¿No sabes por dónde empezar? <a href="/cotizar/?servicio=otro">Describe tu caso y solicita orientación →</a></p></div></section>'''
 
+def apply_branding(page):
+    """Approved Racing identity, independent of content/navigation upgrades."""
+    brand = ('<a class="brand" href="/" aria-label="Toyo Services, inicio">'
+             '<img class="brand-wordmark" src="/assets/images/toyo-services-wordmark.svg?v=20261104" '
+             'alt="Toyo Services" width="392" height="58" decoding="async"></a>')
+    page = re.sub(r'<a\b[^>]*\bclass="brand"[^>]*>.*?</a\s*>', lambda _: brand, page, flags=re.S)
+    page = re.sub(r'/assets/css/styles(?:\.min)?\.css(?:\?v=\d+)?', '/assets/css/styles.min.css?v=27', page)
+    page = re.sub(r'(/(?:favicon.ico|assets/images/(?:favicon(?:-\d+)?\.(?:svg|png)|apple-touch-icon.png)))(?:\?v=\d+)?', r'\1?v=20261104', page)
+    page = re.sub(r'/site.webmanifest(?:\?v=\d+)?', '/site.webmanifest?v=20261104', page)
+    for name in ['normal', 'italic']:
+        href = f'/assets/fonts/exo-2-latin-{name}.woff2'
+        if href not in page:
+            page = page.replace('</head>', f'<link rel="preload" href="{href}" as="font" type="font/woff2" crossorigin>\n</head>', 1)
+    return page
+
+
 def enhance_page(page, route):
-    page = re.sub(r'/assets/css/styles.min.css\?v=\d+', '/assets/css/styles.min.css?v=25', page)
-    page = re.sub(r'/assets/js/main.js\?v=\d+', '/assets/js/main.js?v=22', page)
+    page = apply_branding(page)
+    page = re.sub(r'/assets/js/main\.js\?v=(\d+)', lambda m: f'/assets/js/main.js?v={max(23, int(m[1]))}', page)
     if 'class="site-header"' in page:
         if 'class="skip"' not in page:
             page = page.replace('<body>', '<body><a class="skip" href="#contenido">Saltar al contenido</a>', 1)

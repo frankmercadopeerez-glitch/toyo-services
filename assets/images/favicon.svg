@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
-  <title id="title">Toyo Services</title>
-  <rect width="512" height="512" rx="104" fill="#080a0d"/>
-  <ellipse cx="256" cy="256" rx="205" ry="146" fill="none" stroke="#ed1b2f" stroke-width="28"/>
-  <path fill="#f5f7fa" d="M105 169h182v48h-66v132h-54V217h-62Z"/>
-  <path fill="none" stroke="#ed1b2f" stroke-width="38" stroke-linecap="square" stroke-linejoin="round" d="M398 188h-76c-28 0-46 14-46 34s18 34 46 34h32c35 0 54 19 54 48s-22 39-54 39h-74"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img"><title>Toyo Services</title><rect width="512" height="512" rx="104" fill="#080A0D"/><g transform="translate(32 106.6666666667) scale(4.6666666667)"><ellipse cx="48" cy="32" rx="43" ry="27" fill="#080a0d" stroke="#ed1b2f" stroke-width="4"/><path fill="#F5F7FA" fill-rule="evenodd" transform="translate(17.076 18.5) scale(0.27)" d="M 4.4 0 L 104.4 0 L 100 22 L 61 22 L 45.4 100 L 23.4 100 L 39 22 L 0 22 Z"/><path fill="#ED1B2F" fill-rule="evenodd" transform="translate(47.064 18.5) scale(0.27)" d="M 40 0 L 118 0 L 113.6 22 L 39.6 22 L 36.2 39 L 90.2 39 C 101.2457 39 108.4091 47.9543 106.2 59 L 102 80 C 99.7909 91.0457 89.0457 100 78 100 L 0 100 L 4.4 78 L 78.4 78 L 81.8 61 L 27.8 61 C 16.7543 61 9.5909 52.0457 11.8 41 L 16 20 C 18.2091 8.9543 28.9543 0 40 0 Z"/></g></svg>

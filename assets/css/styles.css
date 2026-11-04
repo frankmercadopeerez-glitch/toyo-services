@@ -1,4 +1,39 @@
+/* Exo 2 variable, self-hosted under SIL Open Font License 1.1. */
+@font-face {
+  font-family: "Exo 2";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/exo-2-latin-ext-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Exo 2";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/exo-2-latin-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Exo 2";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/exo-2-latin-ext-italic.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Exo 2";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/exo-2-latin-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 :root {
+  --font-body: "Exo 2", "Segoe UI", Arial, sans-serif;
+  --font-display: "Exo 2", "Segoe UI", Arial, sans-serif;
   --bg: #080a0d;
   --surface: #11151a;
   --surface2: #171c22;
@@ -22,9 +57,16 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family:
-    "Segoe UI Variable Text", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-body);
+  font-weight: 400;
   line-height: 1.65;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
 }
 img {
   max-width: 100%;
@@ -69,7 +111,7 @@ a {
   align-items: center;
   gap: 13px;
   white-space: nowrap;
-  font-family: Bahnschrift, "Arial Narrow", "Segoe UI", sans-serif;
+  font-family: var(--font-display);
   font-weight: 750;
   letter-spacing: 0.015em;
   font-size: 1.12rem;
@@ -79,6 +121,19 @@ a {
   width: 60px;
   height: 40px;
   flex: 0 0 60px;
+}
+.brand-wordmark {
+  display: block;
+  width: 246px;
+  height: auto;
+  max-width: 100%;
+  flex: 0 1 auto;
+}
+.site-header .brand {
+  flex-shrink: 0;
+}
+.nav {
+  gap: 24px;
 }
 .brand span span {
   color: var(--red-on-dark);
@@ -216,16 +271,21 @@ a {
 }
 h1,
 h2,
-h3 {
-  font-family: Bahnschrift, "Arial Narrow", "Segoe UI", sans-serif;
-  line-height: 1.08;
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.12;
   margin: 0 0 18px;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.025em;
 }
 h1 {
   font-size: clamp(3.9rem, 7vw, 6.85rem);
   max-width: 1080px;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.035em;
 }
 h2 {
   font-size: clamp(2.2rem, 4.5vw, 4rem);
@@ -403,7 +463,9 @@ section {
 }
 .model-links strong {
   font-size: clamp(1.45rem, 2.5vw, 2.25rem);
-  font-family: Bahnschrift, "Arial Narrow", "Segoe UI", sans-serif;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 750;
 }
 .home-faq .container,
 .faq-hub .container {
@@ -444,7 +506,9 @@ section {
   border-right: 0;
 }
 .priority-service-links strong {
-  font-family: Bahnschrift, "Arial Narrow", "Segoe UI", sans-serif;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 750;
   font-size: 1.08rem;
 }
 .priority-service-links span {
@@ -721,7 +785,8 @@ section {
 .location-status strong {
   max-width: 600px;
   margin: 12px 0;
-  font-family: Bahnschrift, "Arial Narrow", "Segoe UI", sans-serif;
+  font-family: var(--font-display);
+  font-style: italic;
   font-size: clamp(1.9rem, 4vw, 3.4rem);
   line-height: 1;
   letter-spacing: -0.04em;
@@ -1279,6 +1344,12 @@ section {
   }
 }
 @media (max-width: 560px) {
+  .brand-wordmark {
+    width: 215px;
+  }
+  .nav {
+    column-gap: 16px;
+  }
   .container {
     width: min(calc(100% - 28px), var(--max));
   }
@@ -1941,7 +2012,10 @@ main [id] { scroll-margin-top: 110px; }
   main.article + .footer + .wa-float { display: none; }
   .footer { padding-bottom: 90px; }
 }
-@media (max-width: 380px) { .finder-grid { grid-template-columns: 1fr; } }
+@media (max-width: 380px) {
+  .finder-grid { grid-template-columns: 1fr; }
+  .brand-wordmark { width: 195px; }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }

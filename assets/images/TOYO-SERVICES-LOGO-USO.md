@@ -1,5 +1,24 @@
 # Sistema de logo Toyo Services
 
+## Identidad aprobada el 4 de noviembre de 2026
+
+El logo horizontal aprobado usa rotulación vectorial propia **Toyo Services Racing V2**
+en el nombre y en las letras TS. No es el archivo de la fuente comercial Drag Racing.
+Se conserva el óvalo del isotipo original, centrado en (48, 32), con radios 43 y 27
+y grosor de 4 unidades. Las letras son contornos cerrados, no imágenes ni texto editable.
+
+En el sitio, encabezados y pies usan `toyo-services-wordmark.svg`; los iconos y
+datos estructurados usan el isotipo. Los textos generales emplean **Exo 2**,
+autohospedada bajo SIL OFL 1.1 en `assets/fonts/`, normal para lectura y cursiva
+en títulos. El texto del nombre no debe sustituirse por una fuente del sistema.
+
+### Logo completo
+
+- `toyo-services-wordmark.svg`: horizontal a color para fondos oscuros.
+- `toyo-services-wordmark-positive.svg`: horizontal para fondos claros.
+- `toyo-services-wordmark-mono.svg`: horizontal monocromático oscuro.
+- `toyo-services-wordmark-mono-negative.svg`: horizontal blanco.
+
 ## Construcción
 
 El isotipo usa una retícula de 96 × 64 unidades. El óvalo está centrado en los ejes horizontal y vertical. La `T` y la `S` comparten altura óptica, línea superior y línea de base.

@@ -5,3 +5,14 @@ tests/
 node_modules/
 *.md
 assets/images/social/
+tools/
+tmp/
+social/
+research/
+qa-seo-pages/
+.chrome-preview-v2/
+entrega-logo-*/
+Toyo Services - */
+ToyoServices-*/
+*.zip
+.env*
