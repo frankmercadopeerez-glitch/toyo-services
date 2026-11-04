@@ -136,6 +136,8 @@ latest_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_09_22.json")
 articles += latest_articles
 price_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_09_24.json").read_text(encoding="utf-8"))
 articles += price_articles
+festival_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_11_03.json").read_text(encoding="utf-8"))
+articles += festival_articles
 articles += [article for article in json.loads((ROOT / "scripts" / "additional_services_articles.json").read_text(encoding="utf-8")) if not article.get("disabled")]
 articles += json.loads((ROOT / "scripts" / "legacy_articles.json").read_text(encoding="utf-8"))
 
@@ -445,6 +447,9 @@ for article in latest_articles:
 for article in price_articles:
     EDITORIAL[article["slug"]] = tuple(article[key] for key in ("title", "description", "intent", "service_path", "service_label"))
 
+for article in festival_articles:
+    EDITORIAL[article["slug"]] = tuple(article[key] for key in ("title", "description", "intent", "service_path", "service_label"))
+
 for article in articles:
     title, description, intent, service_path, service_label = EDITORIAL[article["slug"]]
     article.update({
@@ -454,6 +459,9 @@ for article in articles:
         "service_path": service_path,
         "service_label": service_label,
         "dateModified": (
+            "2026-11-03"
+            if article["slug"] in {a["slug"] for a in festival_articles}
+            else
             "2026-09-25"
             if article["slug"] == "ppf-toyota-cartagena-proteccion-pintura"
             else
@@ -486,6 +494,8 @@ for article in articles:
         article["datePublished"] = "2026-09-02"
     if article["slug"] in {a["slug"] for a in latest_articles}:
         article["datePublished"] = "2026-09-22"
+    if article["slug"] in {a["slug"] for a in festival_articles}:
+        article["datePublished"] = "2026-11-03"
     if article["slug"] in INTRO_OVERRIDES:
         article["intro"] = INTRO_OVERRIDES[article["slug"]]
 
