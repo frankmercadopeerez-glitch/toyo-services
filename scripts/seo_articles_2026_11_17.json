@@ -1,0 +1,45 @@
+[
+  {
+    "slug": "toyota-inundado-lluvias-cartagena",
+    "title": "Toyota inundado en Cartagena: qué hacer y qué evitar",
+    "description": "Si tu Toyota se inundó en Cartagena, evita encenderlo. Aprende cuándo pedir grúa, cómo documentar lo ocurrido y qué debe revisar el taller.",
+    "intent": "qué hacer después de que un Toyota se inunda en Cartagena",
+    "service_path": "/servicios/diagnostico-electronico/",
+    "service_label": "diagnóstico electrónico",
+    "category": "Lluvias y seguridad",
+    "image": "blog-diagnostics-guide.webp",
+    "image_alt": "Inspección de diagnóstico en un vehículo Toyota",
+    "image_caption": "Imagen ilustrativa de diagnóstico. La inspección después de una inundación depende de la altura del agua y de los sistemas expuestos.",
+    "datePublished": "2026-11-17",
+    "dateModified": "2026-11-17",
+    "intro": "Si tu Toyota se apagó en una vía inundada o el agua entró al habitáculo, evita encenderlo y pide asistencia. Cartagena sigue en temporada de lluvias y el DATT ha advertido que la marea alta también puede inundar temporalmente algunas vías. La prioridad es ponerte a salvo y, una vez fuera de peligro, evitar daños adicionales al vehículo.",
+    "sections": [
+      ["Si ves una vía inundada, cambia de ruta", [
+        "Evita cruzar una calle cubierta de agua. Desde el puesto del conductor puede ser difícil distinguir la profundidad, el estado del pavimento o la fuerza de la corriente. Busca una ruta habilitada y sigue las indicaciones del DATT.",
+        "Si quedaste atrapado y el agua está subiendo, prioriza la seguridad de las personas. Llama al 123 desde un lugar seguro si puedes y sigue las instrucciones de los equipos de emergencia. Deja las fotos y la evaluación del vehículo para cuando haya pasado el peligro."
+      ]],
+      ["Si el agua alcanzó el vehículo, evita arrancarlo", [
+        "Si el motor se apagó en el agua, si esta entró a la cabina o si no sabes hasta dónde llegó, no intentes arrancar ni pongas el vehículo en modo READY. Si entró agua por la admisión, otro intento puede agravar el daño. También puede haber humedad en conexiones y módulos aunque el tablero parezca funcionar.",
+        "Contacta a tu aseguradora o al servicio de asistencia. Indica si el vehículo es híbrido o 4x4 para que el operador confirme el método de traslado compatible con el manual. Si es híbrido y estuvo sumergido, mantén distancia y no manipules la batería ni los cables de alta tensión."
+      ]],
+      ["Qué información llevar al taller", [
+        "Desde un lugar seguro, registra el modelo, año, lugar y hora aproximada. Anota si el Toyota estaba estacionado o en movimiento, si se apagó y si se intentó encender después. Si puedes hacerlo sin exponerte, toma fotos de la marca de agua en la carrocería o el interior.",
+        "Menciona si el agua pudo ser salobre o provenir de la marea. Los residuos y la corrosión importan incluso cuando el agua ya bajó. Si tienes cobertura, consulta el procedimiento de tu aseguradora antes de autorizar desmontajes."
+      ]],
+      ["Qué debería incluir la inspección", [
+        "Según la exposición, el taller puede revisar admisión, evidencias de agua en fluidos, conectores y módulos alcanzados, frenos, rodamientos y el interior. El escáner ayuda a identificar fallas electrónicas y se complementa con inspección física.",
+        "En modelos híbridos, la evaluación de los componentes de alta tensión requiere personal capacitado y procedimientos del fabricante. Pide un diagnóstico por escrito que distinga los daños comprobados de los componentes que requieren seguimiento."
+      ]]
+    ],
+    "faqs": [
+      ["¿Puedo encender el Toyota cuando baje el agua?", "Si el motor se apagó durante la inundación, entró agua al interior o desconoces la altura alcanzada, evita encenderlo hasta que lo inspeccionen."],
+      ["¿Que no haya testigos en el tablero significa que está bien?", "La ausencia de testigos por sí sola no confirma que la admisión, los fluidos o las conexiones estén libres de agua."],
+      ["¿Qué debo decir al pedir asistencia?", "Indica modelo, año, si es híbrido o 4x4, altura aproximada del agua y si el motor se apagó durante el incidente."]
+    ],
+    "sources": [
+      ["DATT: recomendaciones ante condiciones de marea alta", "https://cartagena.gov.co/noticias/datt-emite-recomendaciones-conductores-ante-condiciones-marea-alta-cartagena"],
+      ["Alcaldía de Cartagena: temporada de lluvias, 4 de noviembre de 2026", "https://cartagena.gov.co/noticias/cartagena-continua-temporada-lluvias-prepara-ante-posibles-efectos-fenomeno-el-nino"]
+    ],
+    "source_note": "Los avisos oficiales explican el contexto local. Consulta los reportes vigentes de tránsito antes de salir y el manual de tu Toyota para el traslado."
+  }
+]

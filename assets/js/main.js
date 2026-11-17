@@ -12,6 +12,11 @@ document.addEventListener("click", (event) => {
   const link = event.target.closest("a[href]");
   if (!link) return;
   const href = link.getAttribute("href") || "";
+  if (link.matches("[data-request-link]")) {
+    trackAnalyticsEvent("whatsapp_click", { link_location: "quote_form" });
+    trackAnalyticsEvent("quote_whatsapp_open", { service: link.closest("form").elements.servicio.value || "otro" });
+    return;
+  }
   const linkLocation = link.classList.contains("wa-float")
     ? "floating_button"
     : link.closest("header")
@@ -150,9 +155,6 @@ if (whatsappForm) {
     preview.hidden = false;
     trackAnalyticsEvent("quote_prepared", { service: service.value || "otro" });
     whatsappForm.querySelector("[data-preview-heading]").focus();
-  });
-  send.addEventListener("click", () => {
-    trackAnalyticsEvent("generate_lead", { method: "whatsapp", service: service.value || "otro" });
   });
   whatsappForm.querySelector("[data-copy-request]").addEventListener("click", async () => {
     try {

@@ -18,7 +18,7 @@ TAG = f'''{MARKER}
 def install(path: Path) -> bool:
     html = path.read_text(encoding="utf-8")
     original = html
-    html = re.sub(r"/assets/js/main\.js\?v=\d+", "/assets/js/main.js?v=23", html)
+    html = re.sub(r"/assets/js/main\.js\?v=(\d+)", lambda match: f"/assets/js/main.js?v={max(24, int(match[1]))}", html)
     if MARKER in html:
         if html != original:
             path.write_text(html, encoding="utf-8")

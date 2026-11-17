@@ -62,7 +62,7 @@ def apply_branding(page):
 
 def enhance_page(page, route):
     page = apply_branding(page)
-    page = re.sub(r'/assets/js/main\.js\?v=(\d+)', lambda m: f'/assets/js/main.js?v={max(23, int(m[1]))}', page)
+    page = re.sub(r'/assets/js/main\.js\?v=(\d+)', lambda m: f'/assets/js/main.js?v={max(24, int(m[1]))}', page)
     if 'class="site-header"' in page:
         if 'class="skip"' not in page:
             page = page.replace('<body>', '<body><a class="skip" href="#contenido">Saltar al contenido</a>', 1)

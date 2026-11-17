@@ -8,7 +8,7 @@ Importa este repositorio en Vercel como proyecto estático. No requiere comando 
 
 La URL canónica de producción es `https://toyoservicescartagena.com`. Los canonical, datos estructurados, `sitemap.xml` y `robots.txt` deben conservar este dominio.
 
-Los botones de WhatsApp usan el número comercial +57 301 863 8164. El formulario prepara una solicitud; el visitante debe enviarla desde WhatsApp. No hay un sistema de analítica configurado en el repositorio.
+Los botones de WhatsApp usan el número comercial +57 301 863 8164. El formulario prepara una solicitud que el visitante envía desde WhatsApp.
 
 ## Imágenes
 
@@ -41,4 +41,4 @@ python scripts\generate_sitemap.py --check
 
 `output/`, scripts y contenido social se excluyen del despliegue mediante `.vercelignore`. Los recursos con nombres estables usan caché de una hora y las versiones de CSS/JS deben incrementarse al cambiar su contenido.
 
-Google Analytics 4 usa la propiedad **Toyo Services Cartagena** y el ID de medición `G-H76912PXD3`. `install_analytics.py` es idempotente y debe ejecutarse después de regenerar páginas. `main.js` registra clics en WhatsApp y teléfono, solicitudes preparadas y leads enviados desde el formulario sin transmitir los datos escritos por el usuario.
+Google Analytics 4 usa la propiedad **Toyo Services Cartagena** y el ID de medición `G-H76912PXD3`. Ejecuta `install_analytics.py` después de regenerar páginas. Los eventos `whatsapp_click` y `phone_click` miden clics de contacto. `quote_prepared` mide la preparación de una solicitud y `quote_whatsapp_open` mide la apertura de WhatsApp desde el formulario. El sitio desconoce si el visitante envió el mensaje. Los eventos personalizados no envían el texto de la solicitud.

@@ -8,6 +8,14 @@ def whatsapp_url(message):
 
 
 def article_contact(article):
+    if article["slug"] == "cada-cuanto-cambiar-aceite-toyota":
+        message = ("Hola Toyo Services. Quiero cotizar el cambio de aceite y filtro. "
+                   "Modelo: __. Año: __. Motor: __. Kilometraje actual: __. Último cambio: __.")
+        return (f'<aside class="article-contact" aria-label="Cotizar cambio de aceite">'
+                '<strong>¿Ya le toca el cambio de aceite a tu Toyota?</strong>'
+                '<p>Envíanos el modelo, año, motor y kilometraje para cotizar el aceite y el filtro que corresponden.</p>'
+                f'<a class="btn btn-primary" href="{whatsapp_url(message)}" target="_blank" '
+                'rel="noopener">Cotizar aceite y filtro por WhatsApp</a></aside>')
     message = (f"Hola Toyo Services. Consulté la guía: {article['title']}. "
                "Quiero orientación para mi Toyota. Modelo: __. Año: __. "
                "Kilometraje: __. Síntoma o repuesto: __.")

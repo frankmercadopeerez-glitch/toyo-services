@@ -138,6 +138,8 @@ price_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_09_24.json").
 articles += price_articles
 festival_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_11_03.json").read_text(encoding="utf-8"))
 articles += festival_articles
+november_articles = json.loads((ROOT / "scripts" / "seo_articles_2026_11_17.json").read_text(encoding="utf-8"))
+articles += november_articles
 articles += [article for article in json.loads((ROOT / "scripts" / "additional_services_articles.json").read_text(encoding="utf-8")) if not article.get("disabled")]
 articles += json.loads((ROOT / "scripts" / "legacy_articles.json").read_text(encoding="utf-8"))
 
@@ -281,8 +283,8 @@ EDITORIAL = {
   "decisión entre reparar o reemplazar el motor", "/servicios/reparacion-motor/", "reparación de motor"
  ),
  "cada-cuanto-cambiar-aceite-toyota": (
-  "Cambio de aceite Toyota: ¿cada cuánto hacerlo?",
-  "Conoce cuándo cambiar el aceite de un Toyota por tiempo, kilometraje, motor y tipo de uso, y qué revisar si no tienes historial de servicio.",
+  "¿Cada cuánto cambiar el aceite de un Toyota?",
+  "Descubre cuándo cambiar el aceite de tu Toyota según kilometraje, tiempo y tipo de uso, y cómo decidir si compraste el carro sin historial.",
   "momento correcto para cambiar el aceite", "/servicios/aceite-filtros/", "aceite y filtros"
  ),
  "senales-transmision-toyota": (
@@ -447,7 +449,7 @@ for article in latest_articles:
 for article in price_articles:
     EDITORIAL[article["slug"]] = tuple(article[key] for key in ("title", "description", "intent", "service_path", "service_label"))
 
-for article in festival_articles:
+for article in festival_articles + november_articles:
     EDITORIAL[article["slug"]] = tuple(article[key] for key in ("title", "description", "intent", "service_path", "service_label"))
 
 for article in articles:
@@ -458,9 +460,9 @@ for article in articles:
         "intent": intent,
         "service_path": service_path,
         "service_label": service_label,
-        "dateModified": (
-            "2026-11-03"
-            if article["slug"] in {a["slug"] for a in festival_articles}
+        "dateModified": article.get("dateModified") or (
+            "2026-11-17"
+            if article["slug"] == "cada-cuanto-cambiar-aceite-toyota"
             else
             "2026-09-25"
             if article["slug"] == "ppf-toyota-cartagena-proteccion-pintura"
@@ -709,8 +711,8 @@ for article in articles:
         sources = [TOYOTA_BATTERY, TOYOTA_MANUALS]
     elif article["slug"] == "reparar-o-cambiar-motor-toyota":
         sources = [TOYOTA_MANUALS]
-    article["sources"] = sources
-    article["source_note"] = SOURCE_NOTES_BY_SERVICE[article["service_path"]]
+    article.setdefault("sources", sources)
+    article.setdefault("source_note", SOURCE_NOTES_BY_SERVICE[article["service_path"]])
     if article["slug"] == "costo-mantenimiento-toyota-cartagena":
         article["sources"] = [("Mantenimiento Toyota Colombia", "https://www.toyota.com.co/mi-toyota/mantenimiento"), ("Plan de mantenimiento de la red Toyota Colombia", "https://www.toyota.com.co/mi-toyota/mantenimiento/planeado")]
         article["source_note"] = "Consulta el manual y programa de la unidad. Los planes de la red autorizada tienen condiciones propias; las recomendaciones para comparar cotizaciones son orientación editorial de Toyo Services, no tarifas del fabricante."
@@ -757,7 +759,8 @@ RELATED_OVERRIDES = {
     "senales-transmision-toyota": ["mecanica-avanzada-toyota-cartagena", "check-engine-diagnostico-electronico-toyota", "mantenimiento-toyota-fortuner-cartagena"],
     "mantenimiento-toyota-cartagena": ["mantenimiento-preventivo-toyota-cartagena", "toyota-se-recalienta-con-aire-acondicionado", "proteccion-anticorrosiva-toyota-cartagena"],
     "toyota-consume-aceite-humo-azul": ["reparar-o-cambiar-motor-toyota", "sistema-refrigeracion-toyota-cartagena", "cambio-aceite-toyota-cartagena"],
-    "toyota-no-enciende-causas": ["check-engine-diagnostico-electronico-toyota", "bateria-toyota-senales-cambio-cartagena", "reparar-o-cambiar-motor-toyota"],
+    "toyota-no-enciende-causas": ["check-engine-diagnostico-electronico-toyota", "bateria-toyota-senales-cambio-cartagena", "toyota-inundado-lluvias-cartagena"],
+    "toyota-inundado-lluvias-cartagena": ["check-engine-diagnostico-electronico-toyota", "frenos-toyota-mantenimiento-cartagena", "mantenimiento-toyota-hibrido-cartagena"],
     "reparar-o-cambiar-motor-toyota": ["toyota-consume-aceite-humo-azul", "mecanica-avanzada-toyota-cartagena", "repuestos-toyota-originales-homologados-cartagena"],
 }
 
@@ -913,7 +916,7 @@ def article_page(a):
     conclusion_heading, conclusion_text = CONCLUSIONS_BY_SERVICE[a["service_path"]]
     cta_label=f'Conocer el servicio de {a["service_label"]}'
     eyebrow = a["category"] if a["category"].endswith("Toyota") else f'{a["category"]} Toyota'
-    image_attrs = responsive_attrs(a["image"], "(max-width: 720px) calc(100vw - 40px), 920px")
+    image_attrs = responsive_attrs(a["image"], "(max-width: 820px) calc(100vw - 40px), 780px")
     return f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(a['title'])}</title><meta name="description" content="{html.escape(a['description'])}"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{canonical}"><meta property="og:type" content="article"><meta property="og:locale" content="es_CO"><meta property="og:site_name" content="Toyo Services"><meta property="og:title" content="{html.escape(a['title'])}"><meta property="og:description" content="{html.escape(a['description'])}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}/assets/images/{a['image']}"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" sizes="180x180"><link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.min.css?v=24"><script type="application/ld+json">{json.dumps(posting,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(faq_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(breadcrumb_schema,ensure_ascii=False)}</script></head><body>{header}<main class="article"><nav class="breadcrumb" aria-label="Migas de pan"><a href="/">Inicio</a> / <a href="/blog/">Guía Toyota</a> / {html.escape(a['category'])}</nav><span class="eyebrow">{html.escape(eyebrow)}</span><h1>{html.escape(a['title'])}</h1><p class="article-byline">Contenido elaborado por <a href="/nosotros/">Toyo Services</a> · <time datetime="2026-08-13">actualizado el 13 de agosto de 2026</time></p><p class="lead">{html.escape(a['intro'])}</p><img src="/assets/images/{a['image']}" {image_attrs} width="1200" height="800" alt="{html.escape(a['title'])}" fetchpriority="high"><aside class="article-toc"><strong>En esta guía</strong><ol>{toc}</ol></aside>{body}{article_contact(a)}<h2>{html.escape(conclusion_heading)}</h2><p>{html.escape(conclusion_text)}</p>{source_section}<section class="faq article-faq"><h2>Preguntas frecuentes</h2>{faqs}</section><aside class="related-guides"><h2>Guías relacionadas</h2><ul>{related}</ul></aside><div class="actions"><a class="btn btn-primary" href="{a['service_path']}">{html.escape(cta_label)}</a><a class="btn btn-outline" href="/#ubicacion">Ver área de atención</a></div></main>{footer}</body></html>'''
 
 for article in articles:
@@ -938,11 +941,15 @@ cards=[]
 for a in articles:
     cards.append((a['slug'],a['title'],a['category'],a['read'],a['image'],a['description']))
 card_html=''.join(f'''<article class="card blog-card"><a class="blog-card-content" href="/blog/{slug}/"><img loading="lazy" src="/assets/images/{img}" {responsive_attrs(img, "(max-width: 700px) calc(100vw - 40px), (max-width: 1100px) 46vw, 360px")} width="800" height="500" alt="{html.escape(title)}"><div class="blog-body"><span class="tag">{html.escape(cat)} · {read}</span><h2>{html.escape(title)}</h2><p>{html.escape(desc)}</p><span class="card-link" aria-hidden="true">Leer artículo →</span></div></a></article>''' for slug,title,cat,read,img,desc in cards)
-featured_slugs = {'costo-mantenimiento-toyota-cartagena', 'repuestos-toyota-por-vin-cartagena', 'inspeccion-precompra-toyota-usado-cartagena'}
-featured_html = ''.join(re.findall(r'<article class="card blog-card">.*?</article>', card_html)[i] for i, card in enumerate(cards) if card[0] in featured_slugs)
+featured_slugs = ['toyota-inundado-lluvias-cartagena', 'costo-mantenimiento-toyota-cartagena', 'repuestos-toyota-por-vin-cartagena']
+cards_by_slug = {card[0]: markup for card, markup in zip(cards, re.findall(r'<article class="card blog-card">.*?</article>', card_html))}
+featured_html = ''.join(cards_by_slug[slug] for slug in featured_slugs)
 item_schema={"@context":"https://schema.org","@type":"CollectionPage","@id":f"{BASE}/blog/#collection","name":"Guía Toyota de Toyo Services","url":f"{BASE}/blog/","publisher":{"@id":BUSINESS_ID},"hasPart":[{"@type":"BlogPosting","headline":title,"url":f"{BASE}/blog/{slug}/"} for slug,title,*_ in cards]}
 blog_breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":f"{BASE}/"},{"@type":"ListItem","position":2,"name":"Guía Toyota","item":f"{BASE}/blog/"}]}
 blog=f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guía Toyota en Cartagena | Toyo Services</title><meta name="description" content="Guías de Toyo Services sobre mantenimiento, diagnóstico, repuestos, aceite, Prado, Fortuner, Hilux y cuidado Toyota en Cartagena."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{BASE}/blog/"><meta property="og:type" content="website"><meta property="og:locale" content="es_CO"><meta property="og:site_name" content="Toyo Services"><meta property="og:title" content="Guía Toyota en Cartagena | Toyo Services"><meta property="og:description" content="Información útil sobre mantenimiento, diagnóstico, repuestos y cuidado Toyota."><meta property="og:url" content="{BASE}/blog/"><meta property="og:image" content="{BASE}/assets/images/blog-maintenance-guide.webp"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#080a0d"><link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" sizes="180x180"><link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.min.css?v=24"><script type="application/ld+json">{json.dumps(item_schema,ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(blog_breadcrumb,ensure_ascii=False)}</script></head><body>{header}<main><header class="page-hero blog-hero"><div class="container"><div class="breadcrumb"><a href="/">Inicio</a> / Guía Toyota</div><span class="eyebrow">Conocimiento especializado</span><h1>Guías para cuidar y mantener tu Toyota en Cartagena.</h1><p>{len(cards)} guías para tomar mejores decisiones sobre mantenimiento, diagnóstico, repuestos, seguridad, modificaciones y conservación.</p></div></header><section><div class="container">{guide_directory(articles)}<h2 class="guide-featured-title">Guías destacadas</h2><div class="blog-grid">{featured_html}</div></div></section></main>{footer}</body></html>'''
+directory = guide_directory(articles)
+featured = f'<h2 class="guide-featured-title">Guías destacadas</h2><div class="blog-grid">{featured_html}</div>'
+blog=blog.replace(directory + featured, featured + directory, 1)
 blog=blog.replace('/assets/images/toyo-services-logo.svg','/assets/images/toyo-services-logo.svg?v=3')
 blog=sync_html_image_dimensions(blog, ROOT)
 (ROOT/'blog'/'index.html').write_text(enhance_page(blog, '/blog/'),encoding='utf-8')
